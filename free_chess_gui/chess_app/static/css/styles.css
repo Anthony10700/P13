@@ -1,0 +1,125 @@
+.btn_for_chessboard {
+    margin-top: 20px;
+}
+
+#img-night-mode:hover {
+    width: 38px;
+    cursor: pointer;
+}
+
+#page-top,
+#footer_base {
+    background-color: #f8f9fa;
+}
+
+#wrapper {
+    overflow-x: hidden;
+}
+
+#sidebar-wrapper {
+    min-height: 100vh;
+    margin-left: -15rem;
+    -webkit-transition: margin .25s ease-out;
+    -moz-transition: margin .25s ease-out;
+    -o-transition: margin .25s ease-out;
+    transition: margin .25s ease-out;
+    box-shadow: 2px 2px 12px #aaa;
+}
+
+#sidebar-wrapper .sidebar-heading {
+    padding: 0.875rem 1.25rem;
+    font-size: 1.2rem;
+}
+
+#sidebar-wrapper .list-group {
+    width: 15rem;
+}
+
+#page-content-wrapper {
+    min-width: 100vw;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: 0;
+}
+
+@media (min-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: 0;
+    }
+    #page-content-wrapper {
+        min-width: 0;
+        width: 100%;
+    }
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: -15rem;
+    }
+}
+
+#menu-toggle {
+    background-color: rgba(48, 48, 48, 0.884);
+    color: #f8f9fa;
+    width: 30px;
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-left: 8px;
+    font-size: 20px;
+}
+
+#menu-toggle:hover {
+    box-shadow: 2px 2px 12px rgb(77, 77, 77);
+}
+
+.module {
+    margin: 3px;
+    border-radius: 5px;
+    height: 60px;
+}
+
+.module h5 {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.module:hover {
+    box-shadow: 2px 2px 12px #aaa;
+}
+
+#img-stockfish-mod {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    width: 30%;
+    max-height: 90%;
+    margin-right: 5px;
+    padding: 0px;
+}
+
+#img-lc0-mod {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    width: 30%;
+    max-height: 90%;
+    margin-right: 5px;
+}
+
+#img-komodo-mod {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    width: 30%;
+    max-height: 90%;
+    margin-right: 5px;
+}
+
+#text_of_module_all {
+    font-weight: bold;
+    font-size: 25px;
+}

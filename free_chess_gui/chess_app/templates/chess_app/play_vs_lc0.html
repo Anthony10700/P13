@@ -1,0 +1,18 @@
+{% extends "base.html" %}{% block left %} {% endblock %} {% block content %} {% load static %}
+
+<div id="myBoard" style="width: 800px"></div>
+
+<script>
+    DJANGO_STATIC_URL = '{% static "img/" %}';
+</script>
+
+
+<div></div>
+<label>Status:</label>
+<div id="status"></div>
+<label>FEN:</label>
+<div id="fen"></div>
+<label>PGN:</label>
+<div id="pgn"></div>
+
+{% endblock %}

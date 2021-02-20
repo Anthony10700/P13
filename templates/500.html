@@ -1,0 +1,94 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="anthony thillerot" />
+    <title>{{ title }}</title>
+
+
+    <link href="{% static 'css/chessboard-1.0.0.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body id="page-top" class="bg-light">
+
+    <header>
+        <ul class="nav justify-content-center mb-5 mt-5">
+            <li class="nav-item">
+                <a class="nav-link active" href="#">Index</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+        </ul>
+
+    </header>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                {% block left %} {% endblock %}
+            </div>
+            <div class="col">
+
+                {% block content %} {% endblock %}
+            </div>
+            <div class="col">
+
+            </div>
+        </div>
+
+
+        <!-- Footer-->
+        <div class="row" id="3">
+            <footer class="bg-light py-5 col-12">
+
+
+                <div class="row justify-content-center">
+                    <div class="col-4 text-center ">
+                        <a href="">Contact</a>
+                    </div>
+                    <div class="col-4 text-center">
+                        <a href="">Mentions légales</a>
+                    </div>
+                    <div class="small text-center text-muted col-4 text-center">Copyright © 2020 - Anthony THILLEROT</div>
+
+                </div>
+
+
+
+            </footer>
+        </div>
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{% static '/js/chess.js' %}"></script>
+    <script src="{% static '/js/chessboard-1.0.0.js' %}"></script>
+    <script src="{% static '/js/scripts.js' %}"></script>
+
+
+
+</body>
+
+</html>
