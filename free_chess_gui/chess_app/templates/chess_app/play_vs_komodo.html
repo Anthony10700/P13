@@ -1,0 +1,38 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+
+<div class="justify-content-center" id="div_of_board_parrent">
+    <div id="myBoard"></div>
+
+</div>
+
+
+<script>
+    DJANGO_STATIC_URL = '{% static "img/" %}';
+    MODULE = "komodo";
+</script>
+
+
+
+<div class="col-12" id="div_global_status">
+    <label>Status : </label>
+    <div id="status"></div>
+    <label>FEN : </label>
+    <div id="fen"></div>
+    <label>PGN : </label>
+    <div id="pgn"></div>
+</div>
+
+
+
+
+{% endblock %} {% block right %}
+<div class="col-12" id="div_info">
+    <p id="title_of_info">Info : </p>
+</div>
+<div class="col-12" id="div_chat">
+    <label>Chat : </label>
+
+</div>
+
+
+{% endblock %}

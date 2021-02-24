@@ -11,6 +11,23 @@ var human_take_white = true
 var color_night_views = "#DCDCDC"
 var color_day_views = "#f8f9fa"
 
+
+$(document).ready(function() {
+    if (MODULE == "lc0" || MODULE == "stockfish" || MODULE == "komodo") {
+        compurteur_vs_human = true
+    }
+    $('.dropdown-toggle').dropdown()
+    board = Chessboard('myBoard', config)
+    board.start
+
+    $(window).resize(board.resize)
+
+
+
+})
+
+
+
 function removeGreySquares() {
     $('#myBoard .square-55d63').css('background', '')
 }
@@ -113,23 +130,13 @@ var config = {
     pieceTheme: DJANGO_STATIC_URL + '{piece}.png',
     onChange: onChange
 }
-board = Chessboard('myBoard', config)
+
+
 
 function onChange(oldPos, newPos) {
 
     updateStatus()
 }
-
-$('#startPositionBtn').on('click', board.start)
-$('#btn_computer_computeur').on('click', function() {
-    compurteur_vs_computer = true
-    compurteur_vs_human = false
-
-})
-$('#btn_play_computeur').on('click', function() {
-    compurteur_vs_human = true
-    compurteur_vs_computer = false
-})
 
 
 $('#img-night-mode').on({
@@ -172,7 +179,7 @@ function send_fen(fen) {
     $.ajax({
         url: "get_fen",
         dataType: "json",
-        data: { "fen": fen },
+        data: { "fen": fen, "module": MODULE },
 
         success: function(response) {
             // console.log(response.new_fen)
@@ -189,12 +196,60 @@ function send_fen(fen) {
 
 
 $("#menu-toggle").click(function(e) {
-    e.preventDefault();
-    $("#wrapper").toggleClass("toggled");
+
+
     if ($("#menu-toggle").text() == "<") {
         $("#menu-toggle").text(">");
-    } else {
+
+        $("#sidebar-wrapper").animate({ "opacity": "hide", right: $("#sidebar-wrapper").width() }, 1000);
+
+        $('#sidebar-wrapper').promise().done(function() {
+            $(window).trigger('resize');
+            $(window).trigger('resize');
+        });
+
+    } else if ($("#menu-toggle").text() == ">") {
+
         $("#menu-toggle").text("<");
+
+        $("#sidebar-wrapper").animate({ "opacity": "show", right: 0 }, 1000);
+
+        $('#sidebar-wrapper').promise().done(function() {
+            $(window).trigger('resize');
+            $(window).trigger('resize');
+        });
     }
+
+});
+
+
+
+$("#menu-toggle-right").click(function(e) {
+
+
+    if ($("#menu-toggle-right").text() == "<") {
+        $("#menu-toggle-right").text(">");
+
+
+        $("#wrapper-right").animate({ "opacity": "show", left: 0 }, 1000);
+        $('#wrapper-right').promise().done(function() {
+            $(window).trigger('resize');
+            $(window).trigger('resize');
+        });
+
+
+    } else if ($("#menu-toggle-right").text() == ">") {
+
+        $("#menu-toggle-right").text("<");
+
+
+        $("#wrapper-right").animate({ "opacity": "hide", left: $("#wrapper-right").width() }, 1000);
+        $('#wrapper-right').promise().done(function() {
+            $(window).trigger('resize');
+            $(window).trigger('resize');
+        });
+    }
+
+
 
 });
