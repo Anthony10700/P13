@@ -14,21 +14,21 @@ def index(request):
     Returns:
         [type]: [description]
     """
-    context = {'title': "chess at"}
+    context = {'title': "chess at",
+               "user_is_connect": False}
+    if request.user.is_authenticated:
+        context["user_is_connect"] = True
     return render(request, 'chess_app/index.html', context=context)
 
 
 def get_fen(request):
     fen = request.GET["fen"]
-    print(fen)   
     if request.GET["module"] == "lc0":
         next_move = lc0_play_next_move(fen)
     elif request.GET["module"] == "stockfish":
         next_move = stockfish_play_next_move(fen)
     elif request.GET["module"] == "komodo":
-        next_move = komodo_play_next_move(fen)
-    
-    print(next_move)
+        next_move = komodo_play_next_move(fen)    
     context = {"new_fen": next_move}
     return HttpResponse(json.dumps(context))
 
@@ -42,7 +42,7 @@ def play_vs_lc0(request):
     Returns:
         [type]: [description]
     """
-    context = {"title": "Play vs lc0"}
+    context = {"title": "Play vs lc0", "play_vs_engine": "True"}
     return render(request, 'chess_app/play_vs_lc0.html', context=context)
 
 
@@ -55,7 +55,7 @@ def play_vs_stockfish(request):
     Returns:
         [type]: [description]
     """
-    context = {"title": "Play vs stockfish"}
+    context = {"title": "Play vs stockfish", "play_vs_engine": "True"}
     return render(request, 'chess_app/play_vs_stockfish.html', context=context)
 
 
@@ -68,14 +68,11 @@ def play_vs_komodo(request):
     Returns:
         [type]: [description]
     """
-    context = {"title": "Play vs komodo"}
+    context = {"title": "Play vs komodo", "play_vs_engine": "True"}
     return render(request, 'chess_app/play_vs_komodo.html', context=context)
 
-    # TODO status div, faire en sorte quelle dessendre avec bar
-    # TODO add premove
-    # TODO add takeback
-    # TODO add check red pieces
     # TODO ajouter en live l'analyse direct sans graph
+    # TODO ajouter pendule
     # TODO add play human match, add bdd , add model
     # TODO add bot lc0 match lvl
     # TODO add analyse , add graph.

@@ -2,9 +2,9 @@ import chess
 import chess.engine
 from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
-engine_lc0 = chess.engine.SimpleEngine.popen_uci(str(BASE_DIR) + "/lc0/lc0.exe")
-engine_stockfish = chess.engine.SimpleEngine.popen_uci(str(BASE_DIR) + "/stockfish/stockfish.exe")
-komodo = chess.engine.SimpleEngine.popen_uci(str(BASE_DIR) + "/komodo12/Windows/komodo-12.1.1-64bit.exe")
+# engine_lc0 = chess.engine.SimpleEngine.popen_uci(str(BASE_DIR) + "/lc0/lc0.exe")
+# engine_stockfish = chess.engine.SimpleEngine.popen_uci(str(BASE_DIR) + "/stockfish/stockfish.exe")
+# komodo = chess.engine.SimpleEngine.popen_uci(str(BASE_DIR) + "/komodo12/Windows/komodo-12.1.1-64bit.exe")
 
 
 def lc0_play_next_move(fen):

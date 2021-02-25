@@ -203,7 +203,10 @@
     box-shadow: 3px 3px 12px rgb(92, 92, 92);
 }
 
-#dropdown_div {}
+#dropdown_div {
+    min-height: 450px;
+    min-width: 350px;
+}
 
 #myBoard,
 #div_global_status {
@@ -220,27 +223,4 @@
 
 #myBoard {
     max-width: 764px;
-}
-
-#div_of_sign_in {
-    border: 1px solid rgba(0, 0, 0, .125);
-    border-radius: .5rem;
-    margin-top: 10px;
-    background-color: #fff;
-    box-shadow: 1px 2px 12px #aaa;
-    max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#div_of_account {
-    border: 1px solid rgba(0, 0, 0, .125);
-    border-radius: .5rem;
-    margin-top: 10px;
-    background-color: #fff;
-    box-shadow: 1px 2px 12px #aaa;
-    max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-bottom: 80px;
 }

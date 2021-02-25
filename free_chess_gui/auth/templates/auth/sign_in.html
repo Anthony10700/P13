@@ -1,0 +1,143 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+
+<div class="justify-content-center" id="div_of_board_parrent">
+    <div id="div_of_sign_in" class="row sign_back pb-5 mt-5" id="2">
+
+        <div class="container">
+            <div class="row justify-content-center mt-5">
+
+
+                <div class="row justify-content-center col-8">
+                    {% if err_show %}
+                    <b style="margin-bottom: 3rem;">{{ err_show }}</b> {% endif %}
+                    <div class="col-12 text-center ">
+
+
+
+                        <div class="block">
+
+
+
+                            <form action="{% url 'sign_in' %}" method="post">
+                                {% csrf_token %}
+
+
+                                <div class="form-group">
+                                    <label for="inputemail">Email</label>
+                                    <input type="email" class="form-control" id="inputemail" name="inputemail" placeholder="My-addresse@my-mail.com" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="inputUsername">Username</label>
+                                    <input type="text" class="form-control" id="inputUsername" name="inputUsername" placeholder="Username" required>
+                                </div>
+
+                                <div class="form-row">
+
+                                    <div class="form-group col-md-6">
+                                        <label for="inputPassword1">Password</label>
+                                        <input type="password" class="form-control" id="inputPassword1" name="inputPassword1" required>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="inputPassword2">Password repeat</label>
+                                        <input type="password" class="form-control" id="inputPassword2" name="inputPassword2" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="inputNom">Last name</label>
+                                        <input type="text" class="form-control" id="inputNom" placeholder="Nom" name="inputNom">
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="inputprenom">First name</label>
+                                        <input type="text" class="form-control" id="inputprenom" placeholder="Prénom" name="inputprenom">
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="gridCheck" required>
+                                        <label class="form-check-label" for="gridCheck">I valid !</label>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Register</button>
+                            </form>
+
+                        </div>
+
+
+                        {% if form.errors %}
+                        <!-- Error messaging -->
+                        <div id="errors">
+                            <div class="inner">
+                                <div class="alert alert-warning col-12" role="alert" style="margin-top: 50px;">
+                                    <h4>There are errors in your registration :</h4>
+                                    <ul>
+                                        {% for field in form %} {% if field.errors %}
+                                        <li>{{ field.label }}: {{ field.errors|striptags }}</li>{% endif %} {% endfor %}
+                                    </ul>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <!-- /Error messaging -->
+                        {% endif %} {% if messages %}
+
+                        <div class="alert alert-secondary col-12" role="alert" style="margin-top: 50px;">
+
+                            <div id="errors">
+                                <div class="inner">
+                                    {% for message in messages %} {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                                    <h4>There are errors :</h4>
+                                    <ul>
+                                        <li>{{ message }}</li>
+                                    </ul>
+
+                                    {% endif %} {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+
+                                    <h4>SUCCESS : </h4>
+                                    <ul>
+
+                                        <li>{{ message }}</li>
+
+                                    </ul>
+
+                                    {% endif %} {% endfor %}
+                                </div>
+                            </div>
+
+                        </div>
+
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+</div>
+
+
+
+<script>
+    DJANGO_STATIC_URL = '{% static "img/" %}';
+    MODULE = "";
+</script>
+
+{% endblock %} {% block right %}
+<div class="col-12" id="div_info">
+    <p id="title_of_info">Info : </p>
+</div>
+<div class="col-12" id="div_chat">
+    <label>Chat : </label>
+</div>
+
+{% endblock %} {% load static %}

@@ -23,6 +23,5 @@ urlpatterns = [
     path('', views.index),
     path('admin/', admin.site.urls),
     path('chess_app/', include('chess_app.urls')),
-
-    # path('auth/', include('auth.urls')),
+    path('auth/', include('auth.urls')),
 ]

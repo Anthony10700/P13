@@ -1,0 +1,79 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+
+
+
+<div class="justify-content-center" id="div_of_board_parrent">
+
+    <div class="row sign_back pb-5 " id="2">
+
+        <div class="container mb-5">
+            <div class="row justify-content-center mb-5" id="div_of_account">
+                <div class="row justify-content-center  mt-5">
+                    <div class="col-12 text-center mt-5">
+
+
+
+                        <img src="{% static '/img/user.svg' %}" alt="..." class="border rounded-circle mb-5 mt-5" width="150px">
+
+                        <hr class="divider_sign" />
+
+
+
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="card border-primary justify-content-center info_acc" style="width: 28rem; font-weight: bold;">
+                            <div class="card-header info_acc">
+                                <h5 class="card-title">Information sur le compte :</h5>
+
+                            </div>
+                            <ul class="list-group list-group-flush info_acc">
+
+                                {% if account_info %} {% for key, value in account_info.items %}
+
+                                <li class="list-group-item info_acc"><b>{{key}}</b> : {{ value }}</li>
+
+                                {% endfor %} {% endif %}
+
+
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+
+
+    </div>
+
+
+</div>
+
+
+
+<script>
+    DJANGO_STATIC_URL = '{% static "img/" %}';
+    MODULE = "";
+</script>
+
+
+
+
+
+
+{% endblock %} {% block right %}
+<div class="col-12" id="div_info">
+    <p id="title_of_info">Info : </p>
+</div>
+<div class="col-12" id="div_chat">
+    <label>Chat : </label>
+
+</div>
+
+
+{% endblock %} {% load static %}

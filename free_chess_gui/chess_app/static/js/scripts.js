@@ -20,10 +20,13 @@ $(document).ready(function() {
     board = Chessboard('myBoard', config)
     board.start
 
+    if ($(window).width() <= 1450 && $("#menu-toggle-right").text() == ">") {
+        $("#menu-toggle-right").trigger('click');
+    }
+    if ($(window).width() > 1450 && $("#menu-toggle-right").text() == "<") {
+        $("#menu-toggle-right").trigger('click');
+    }
     $(window).resize(board.resize)
-
-
-
 })
 
 
@@ -154,9 +157,7 @@ $('#img-night-mode').on({
             $('#footer_base').css("background-color", color_day_views);
             $('#wrapper').css("background-color", color_day_views);
             $('.list-group-item').css("background-color", color_day_views);
-
         }
-
 
     }
 });
@@ -206,6 +207,7 @@ $("#menu-toggle").click(function(e) {
         $('#sidebar-wrapper').promise().done(function() {
             $(window).trigger('resize');
             $(window).trigger('resize');
+            $(window).trigger('resize');
         });
 
     } else if ($("#menu-toggle").text() == ">") {
@@ -215,6 +217,7 @@ $("#menu-toggle").click(function(e) {
         $("#sidebar-wrapper").animate({ "opacity": "show", right: 0 }, 1000);
 
         $('#sidebar-wrapper').promise().done(function() {
+            $(window).trigger('resize');
             $(window).trigger('resize');
             $(window).trigger('resize');
         });
@@ -235,6 +238,7 @@ $("#menu-toggle-right").click(function(e) {
         $('#wrapper-right').promise().done(function() {
             $(window).trigger('resize');
             $(window).trigger('resize');
+            $(window).trigger('resize');
         });
 
 
@@ -245,6 +249,7 @@ $("#menu-toggle-right").click(function(e) {
 
         $("#wrapper-right").animate({ "opacity": "hide", left: $("#wrapper-right").width() }, 1000);
         $('#wrapper-right').promise().done(function() {
+            $(window).trigger('resize');
             $(window).trigger('resize');
             $(window).trigger('resize');
         });
