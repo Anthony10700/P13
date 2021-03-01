@@ -33,7 +33,7 @@
     padding: 0.875rem;
     font-size: 1.2rem;
     margin-top: 10vh;
-    border-radius: 5px;
+    border-radius: 0.5rem;
 }
 
 #sidebar-wrapper {
@@ -157,20 +157,21 @@
 #div_info {
     min-height: 150px;
     border: 1px solid rgba(0, 0, 0, 0.125);
-    border-radius: .25rem;
+    border-radius: .5rem;
     padding: 5px;
     background-color: #fff;
 }
 
 #div_global_status {
     border: 1px solid rgba(0, 0, 0, .125);
-    border-radius: .25rem;
+    border-radius: .5rem;
     margin-top: 10px;
     padding: 5px;
     background-color: #fff;
     word-wrap: break-word;
     max-width: 800px;
     width: 100%;
+    scrollbar-color: red yellow;
 }
 
 #status,
@@ -181,7 +182,7 @@
 
 #div_chat {
     border: 1px solid rgba(0, 0, 0, .125);
-    border-radius: .25rem;
+    border-radius: .5rem;
     margin-top: 10px;
     padding: 5px;
     background-color: #fff;
@@ -212,7 +213,7 @@
 }
 
 #div_global_status {
-    overflow: scroll;
+    overflow-y: scroll;
     overflow-x: hidden;
     height: 220px;
     max-width: 764px;
@@ -243,4 +244,21 @@
     margin-left: auto;
     margin-right: auto;
     padding-bottom: 80px;
+}
+
+.style-1::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+.style-1::-webkit-scrollbar {
+    width: 12px;
+    background-color: #F5F5F5;
+}
+
+.style-1::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: #555;
 }

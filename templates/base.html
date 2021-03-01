@@ -15,37 +15,37 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 
-<body id="page-top" class="container col-12 p-0 m-0">
+<body id="page-top" class="container col-12 p-0 m-0 bg-night">
 
-    <div class="d-flex" id="wrapper">
+    <div class="d-flex bg-night" id="wrapper">
 
         <!-- /#menu left , module , lc0 etc -->
-        <div class="border-right col-3" id="sidebar-wrapper">
+        <div class="col-3 bg-night shadow_perso" id="sidebar-wrapper">
             <div class="sidebar-heading text-center">
                 <p id="text_of_module_all">MODULE</p>
             </div>
 
             <div class="list-group list-group-flush">
                 <a href="{% url 'play_vs_lc0' %}">
-                    <div id="play_vs_lc0" class="card border-dark mb-3 module">
+                    <div id="play_vs_lc0" class="card border-dark mb-3 module bg-night_2">
                         <h5 class="">Play vs Lc0</h5>
-                        <img class="img-thumbnail rounded" id="img-lc0-mod" src="{% static 'img/Leela_Chess_Zero_logo.svg' %}">
+                        <img class="img-thumbnail rounded bg-night" id="img-lc0-mod" src="{% static 'img/Leela_Chess_Zero_logo.svg' %}">
                     </div>
                 </a>
 
                 <a href="{% url 'play_vs_stockfish' %}">
-                    <div id="play_vs_Stockfish" class="card border-dark mb-3 module">
+                    <div id="play_vs_Stockfish" class="card border-dark mb-3 module bg-night_2">
                         <h5 class="">Play vs Stockfish</h5>
-                        <img class="img-thumbnail rounded" id="img-stockfish-mod" src="{% static 'img/stockfish.png' %}">
+                        <img class="img-thumbnail rounded bg-night" id="img-stockfish-mod" src="{% static 'img/stockfish.png' %}">
                     </div>
 
                 </a>
 
                 <a href="{% url 'play_vs_komodo' %}">
 
-                    <div id="play_vs_komodo12" class="card border-dark mb-3 module">
+                    <div id="play_vs_komodo12" class="card border-dark mb-3 module bg-night_2">
                         <h5 class="">Play vs komodo</h5>
-                        <img class="img-thumbnail rounded" id="img-komodo-mod" src="{% static 'img/komodo.jpg' %}">
+                        <img class="img-thumbnail rounded bg-night" id="img-komodo-mod" src="{% static 'img/komodo.jpg' %}">
                     </div>
                 </a>
 
@@ -84,7 +84,7 @@
                         </div>
 
 
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" id="dropdown_div">
+                        <div class="dropdown-menu bg-night" aria-labelledby="dropdownMenuButton" id="dropdown_div">
                             {% if user_is_connect == False %}
 
                             <form class="p-3" action="{% url 'connect' %}" method="post">
@@ -93,13 +93,13 @@
 
 
                                 <div class="form-row">
-                                    <div class="form-group col-12">
+                                    <div class="form-group col-12 ">
                                         <label for="inputEmail_connect">Email</label>
-                                        <input type="text" class="form-control" id="inputEmail_connect" name="inputEmail_connect" placeholder="Email" required>
+                                        <input type="text" class="form-control bg-night_2" id="inputEmail_connect" name="inputEmail_connect" placeholder="Email" required>
                                     </div>
                                     <div class="form-group col-12">
                                         <label for="inputPassword">Password</label>
-                                        <input type="password" class="form-control" id="inputPassword_connect" name="inputPassword_connect" required>
+                                        <input type="password" class="form-control bg-night_2" id="inputPassword_connect" name="inputPassword_connect" required>
                                     </div>
                                 </div>
 
@@ -117,12 +117,13 @@
 
 
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="{% url 'sign_in' %}">New around here? Sign up</a>
+                            <a class="dropdown-item bg-night" href="{% url 'sign_in' %}">New around here? Sign up</a>
 
 
-                            <a class="dropdown-item" href="#">Forgot password?</a> {% endif %} {% if user_is_connect == True %}
-                            <a class="dropdown-item mt-2" href="{% url 'account' %}">My account</a>
-                            <a class="dropdown-item font-weight-bold mt-2" href="{% url 'deconnection' %}">Disconnection</a> {% endif %}
+                            <a class="dropdown-item bg-night" href="#">Forgot password?</a> {% endif %} {% if user_is_connect == True %}
+                            <a class="dropdown-item mt-2 bg-night" href="{% url 'account' %}">My account</a>
+                            <a class="dropdown-item mt-2 bg-night" href="{% url 'history_game' %}">My game history</a>
+                            <a class="dropdown-item font-weight-bold mt-2 bg-night" href="{% url 'deconnection' %}">Disconnection</a> {% endif %}
                         </div>
                     </div>
 
@@ -163,8 +164,8 @@
 
 
             <!-- Footer-->
-            <div class="justify-content-center col-12" id="div_footer">
-                <footer id="footer_base" class="py-5 col-12" style="max-width: 1980px;">
+            <div class="justify-content-center col-12  " id="div_footer">
+                <footer id="footer_base" class="py-5 col-12 bg-night " style="max-width: 1980px;">
 
 
                     <div class="row justify-content-center">
@@ -172,7 +173,7 @@
                             <a href="">Contact</a>
                         </div>
                         <div class="col-4 text-center">
-                            <a href="">Mentions légales</a>
+                            <a href="">Legal Notice</a>
                         </div>
                         <div class="small text-center text-muted col-4 text-center">Copyright © 2020 - Anthony THILLEROT</div>
 
@@ -188,10 +189,10 @@
 
 
         <button name="<" class="btn text-left" onclick="this.blur();" id="menu-toggle-right">></button>
-        <div class="col-3 pr-0" id="wrapper-right">
+        <div class="col-3 pr-0 " id="wrapper-right">
 
 
-            <div class="border-left" id="sidebar-wrapper-right">
+            <div class="bg-night shadow_perso" id="sidebar-wrapper-right">
 
                 {% block right %} {% endblock %}
 

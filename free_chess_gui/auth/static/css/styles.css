@@ -34,6 +34,7 @@
     font-size: 1.2rem;
     margin-top: 10vh;
     border-radius: 5px;
+    border: 0px;
 }
 
 #sidebar-wrapper {
@@ -41,6 +42,7 @@
     box-shadow: 2px 2px 12px #aaa;
     margin-left: 0;
     max-width: 20rem;
+    border: 0px;
 }
 
 #sidebar-wrapper .sidebar-heading {

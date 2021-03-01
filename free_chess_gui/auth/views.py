@@ -104,3 +104,12 @@ def logout_view(request):
                    'err_show': "Vous n'êtes pas connecté.",
                    "user_is_connect": False}
         return render(request, 'auth/sign_in.html',  context=context)
+
+def save_game(request):
+    """This views save a game in database
+
+    Args:
+        request ([type]): [description]
+    """
+
+

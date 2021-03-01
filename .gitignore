@@ -1,0 +1,11 @@
+/.idea/
+/__pycache__/
+*.pyc
+__pycache__
+/venv/
+.cache/
+.vscode
+/.vscode/
+/chess_app/settings/production.py
+geckodriver.log
+.production.py.swo

@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block content %} {% load static %}
 
 <div class="justify-content-center" id="div_of_board_parrent">
-    <div id="div_of_sign_in" class="row sign_back pb-5 mt-5" id="2">
+    <div id="div_of_sign_in" class="row sign_back pb-5 mt-5 bg-night_2" id="2">
 
         <div class="container">
             <div class="row justify-content-center mt-5">
@@ -39,7 +39,7 @@
                                         <input type="password" class="form-control" id="inputPassword1" name="inputPassword1" required>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label for="inputPassword2">Password repeat</label>
+                                        <label for="inputPassword2">Repeat password </label>
                                         <input type="password" class="form-control" id="inputPassword2" name="inputPassword2" required>
                                     </div>
                                 </div>
@@ -47,12 +47,12 @@
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="inputNom">Last name</label>
-                                        <input type="text" class="form-control" id="inputNom" placeholder="Nom" name="inputNom">
+                                        <input type="text" class="form-control" id="inputNom" placeholder="Last name" name="inputNom">
                                     </div>
 
                                     <div class="form-group col-md-6">
                                         <label for="inputprenom">First name</label>
-                                        <input type="text" class="form-control" id="inputprenom" placeholder="Prénom" name="inputprenom">
+                                        <input type="text" class="form-control" id="inputprenom" placeholder="First name" name="inputprenom">
                                     </div>
                                 </div>
 
@@ -133,11 +133,13 @@
 </script>
 
 {% endblock %} {% block right %}
-<div class="col-12" id="div_info">
+<div class="col-12 bg-night_2" id="div_info">
     <p id="title_of_info">Info : </p>
 </div>
-<div class="col-12" id="div_chat">
+<div class="col-12 bg-night_2" id="div_chat">
     <label>Chat : </label>
+
 </div>
+
 
 {% endblock %} {% load static %}

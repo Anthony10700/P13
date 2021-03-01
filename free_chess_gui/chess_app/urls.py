@@ -15,5 +15,7 @@ urlpatterns = [
     path('play_vs_stockfish.html', views.play_vs_stockfish,
          name="play_vs_stockfish"),  
     path('play_vs_komodo.html', views.play_vs_komodo,
-         name="play_vs_komodo"),  
+         name="play_vs_komodo"),
+    path('history_game.html', views.history_game,
+         name="history_game"),
 ]
