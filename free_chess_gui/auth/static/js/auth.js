@@ -1,7 +1,7 @@
 var color_night_views = "#DCDCDC"
 var color_day_views = "#f8f9fa"
-var color_night_views_1 = "#0D1117"
-var color_night_views_2 = "#161B22"
+var color_night_views_1 = "#0D1115"
+var color_night_views_2 = "#161B25"
 var color_night_views_3 = "#344052"
 var color_day_views = "#f8f9fa"
 var font_color_day_views = "#000000"
@@ -44,11 +44,10 @@ $('#img-night-mode').on({
             $('.shadow_perso').css({ "box-shadow": "2px 2px 12px #344052" });
             $('.bg-night_2').css({ "background-color": color_night_views_2 });
             $('#img_acc_dropdown').css({ "background-color": "rgba(255, 255, 255,0.9)" });
-            $('.style-1::-webkit-scrollbar-track').css({ "background-color": color_night_views_1 });
 
 
 
-            var styles = "<style type='text/css'>.style-1::-webkit-scrollbar{background-color: #0D1117}.style-1::-webkit-scrollbar-track{background-color: #161B22}</style>";
+            var styles = "<style type='text/css'>.style-1::-webkit-scrollbar{background-color: #0D1115}.style-1::-webkit-scrollbar-track{background-color: #161B25}</style>";
 
             $(styles).appendTo('head');
             localStorage.setItem("nigh_views_mode_activate", "true");

@@ -187,7 +187,7 @@
     padding: 5px;
     background-color: #fff;
     word-wrap: break-word;
-    min-height: 350px;
+    min-height: 60vh;
 }
 
 .board-b72b1 {
@@ -261,4 +261,23 @@
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
     background-color: #555;
+}
+
+#div_chat_message {
+    width: 100%;
+}
+
+#sidebar-wrapper-right .btn {
+    height: 40px;
+}
+
+#btn-input,
+#btn-chat {
+    margin-top: 5px;
+    height: 50px !important;
+    border-radius: .5rem;
+}
+
+.btn_opt {
+    min-width: 120px;
 }

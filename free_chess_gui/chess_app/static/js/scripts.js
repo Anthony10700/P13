@@ -8,16 +8,15 @@ var $pgn = $('#pgn')
 var compurteur_vs_computer = false
 var compurteur_vs_human = false
 var human_take_white = true
-var color_night_views_1 = "#0D1117"
-var color_night_views_2 = "#161B22"
+var color_night_views_1 = "#0D1115"
+var color_night_views_2 = "#161B25"
 var color_night_views_3 = "#344052"
 var color_day_views = "#f8f9fa"
 var font_color_day_views = "#000000"
-
-
-
-
-
+var user_color = "white"
+var last_move = ""
+var game_id_current = 0
+var config = {}
 
 $('#img-night-mode').on({
     'click': function() {
@@ -30,13 +29,15 @@ $('#img-night-mode').on({
                 "scrollbar-color": color_night_views_1
             });
             $('.shadow_perso').css({ "box-shadow": "2px 2px 12px #344052" });
-            $('.bg-night_2').css({ "background-color": color_night_views_2 });
+            $('.bg-night_2').css({
+                "background-color": color_night_views_2,
+                "color": color_day_views
+            });
             $('#img_acc_dropdown').css({ "background-color": "rgba(255, 255, 255,0.9)" });
-            $('.style-1::-webkit-scrollbar-track').css({ "background-color": color_night_views_1 });
 
 
 
-            var styles = "<style type='text/css'>.style-1::-webkit-scrollbar{background-color: #0D1117}.style-1::-webkit-scrollbar-track{background-color: #161B22}</style>";
+            var styles = "<style type='text/css'>.style-1::-webkit-scrollbar{background-color: #0D1115}.style-1::-webkit-scrollbar-track{background-color: #161B25}</style>";
 
             $(styles).appendTo('head');
 
@@ -51,7 +52,10 @@ $('#img-night-mode').on({
                 "background-color": color_day_views,
                 "color": font_color_day_views
             });
-            $('.bg-night_2').css({ "background-color": color_day_views });
+            $('.bg-night_2').css({
+                "background-color": color_day_views,
+                "color": font_color_day_views
+            });
             $('#img_acc_dropdown').css({ "background-color": "rgba(248, 249, 250,1)" });
 
             var styles = "<style type='text/css'>.style-1::-webkit-scrollbar{background-color: #f8f9fa}.style-1::-webkit-scrollbar-track{background-color: #f8f9fa}</style>";
@@ -83,8 +87,16 @@ $(document).ready(function() {
         compurteur_vs_human = true
     }
     $('.dropdown-toggle').dropdown()
+    config = {
+        orientation: user_color,
+        draggable: false,
+        position: 'start',
+        pieceTheme: DJANGO_STATIC_URL + '{piece}.png',
+
+    }
+
     board = Chessboard('myBoard', config)
-    board.start
+    board.start()
 
     if ($(window).width() <= 1450 && $("#menu-toggle-right").text() == ">") {
         $("#menu-toggle-right").trigger('click');
@@ -100,7 +112,18 @@ $(document).ready(function() {
             $('#img-night-mode').click();
         }
     }
-})
+
+    if (user_color == "white") {
+
+        $("#white_info").append("<p> You are white</p>");
+        $("#black_info").append("<p> Engine are black</p>");
+    } else {
+
+        $("#white_info").append("<p> You are black</p>");
+        $("#black_info").append("<p> Engine are white</p>");
+    }
+
+});
 
 
 
@@ -137,7 +160,10 @@ function onDrop(source, target) {
     })
 
     if (move === null) return 'snapback'
-    if (compurteur_vs_human == true && human_take_white == true && game.turn() == 'b') {
+    if (compurteur_vs_human == true && user_color == "white" && game.turn() == 'b') {
+        send_fen(game.fen())
+    }
+    if (compurteur_vs_human == true && user_color == "black" && game.turn() == 'w') {
         send_fen(game.fen())
     }
     if (compurteur_vs_computer == true) {
@@ -195,17 +221,6 @@ function updateStatus() {
     $pgn.html(game.pgn())
 }
 
-var config = {
-    draggable: true,
-    position: 'start',
-    onDragStart: onDragStart,
-    onDrop: onDrop,
-    onMouseoutSquare: onMouseoutSquare,
-    onMouseoverSquare: onMouseoverSquare,
-    onSnapEnd: onSnapEnd,
-    pieceTheme: DJANGO_STATIC_URL + '{piece}.png',
-    onChange: onChange
-}
 
 
 
@@ -215,14 +230,92 @@ function onChange(oldPos, newPos) {
 }
 
 
+$("#switch_color").click(function(e) {
+    $("#white_info").empty();
+    $("#black_info").empty();
+    if (user_color == "black") {
+        user_color = "white"
+        $("#white_info").append("<p> You are white</p>");
+        $("#black_info").append("<p> Engine are black</p>");
+    } else {
+        user_color = "black"
+        $("#white_info").append("<p> You are black</p>");
+        $("#black_info").append("<p> Engine are white</p>");
+    }
+    board.flip();
+    send_fen(game.fen())
+
+
+});
+
+$("#flip").click(function(e) {
+    board.flip();
+});
 
 
 
-function send_fen(fen) {
+
+
+$("#new_game").click(function(e) {
+    game = new Chess()
+    config = {
+        orientation: user_color,
+        draggable: true,
+        position: 'start',
+        onDragStart: onDragStart,
+        onDrop: onDrop,
+        onMouseoutSquare: onMouseoutSquare,
+        onMouseoverSquare: onMouseoverSquare,
+        onSnapEnd: onSnapEnd,
+        pieceTheme: DJANGO_STATIC_URL + '{piece}.png',
+        onChange: onChange
+    }
+    board = Chessboard('myBoard', config)
+    board.start()
+    $status.html(status)
+    $fen.html(game.fen())
+    $pgn.html(game.pgn())
+
+    $.ajax({
+        url: "new_game",
+        dataType: "json",
+        data: {
+            "module": MODULE,
+            "user_color": user_color
+        },
+
+        success: function(response) {
+            // console.log(response.new_fen)
+
+
+            if (parseInt(response.game_id) > 0) {
+                game_id_current = response.game_id
+                $("#div_chat").append("<p> I'm ready !!</p>");
+            }
+        },
+        error: function(error) {
+            alert("error")
+        }
+    });
+
+    if (user_color == "black") {
+        send_fen(game.fen())
+    }
+
+});
+
+
+function send_fen(fen, last_move) {
     $.ajax({
         url: "get_fen",
         dataType: "json",
-        data: { "fen": fen, "module": MODULE },
+        data: {
+            "fen": fen,
+            "module": MODULE,
+            "last_move": last_move,
+            "user_color": user_color,
+            "game_id_current": game_id_current
+        },
 
         success: function(response) {
             // console.log(response.new_fen)

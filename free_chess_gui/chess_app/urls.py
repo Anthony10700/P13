@@ -18,4 +18,6 @@ urlpatterns = [
          name="play_vs_komodo"),
     path('history_game.html', views.history_game,
          name="history_game"),
+    path('new_game', views.new_game,
+         name="new_game"),
 ]

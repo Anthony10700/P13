@@ -1,4 +1,26 @@
-{% extends "base.html" %} {% block content %} {% load static %}
+{% extends "base.html" %} {% block content %} {% load static %} {% if messages %}
+<div class="row justify-content-center">
+    <div class="alert alert-secondary col-8 " role="alert" style="margin-top: 50px;">
+
+        <div id="errors">
+            <div class="inner">
+                {% for message in messages %} {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                <ul>
+                    <li>{{ message }}</li>
+                </ul>
+
+                {% endif %} {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+{% endif %}
+
+
+
 <div class="justify-content-center" id="div_of_board_parrent">
     <div id="myBoard"></div>
 
@@ -32,6 +54,14 @@
 <div class="col-12 bg-night_2" id="div_chat">
     <label>Chat : </label>
 
+</div>
+<div class="panel-footer col-12 m-0 p-0" id="div_chat_message">
+    <div class="input-group">
+        <input id="btn-input" type="text" class="form-control input-sm chat_input bg-night_2" placeholder="Write your message here..." />
+        <span class="input-group-btn">
+            <button class="btn btn-primary btn ml-1" id="btn-chat">Send</button>
+            </span>
+    </div>
 </div>
 
 
