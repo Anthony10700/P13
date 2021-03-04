@@ -9,3 +9,7 @@ __pycache__
 /chess_app/settings/production.py
 geckodriver.log
 .production.py.swo
+/komodo12/*
+/lc0/*
+/stockfish/*
+
