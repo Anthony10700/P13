@@ -116,11 +116,11 @@ $(document).ready(function() {
     if (user_color == "white") {
 
         $("#white_info").append("<p> You are white</p>");
-        $("#black_info").append("<p> Engine are black</p>");
+        $("#black_info").append("<p> The computer is black</p>");
     } else {
 
         $("#white_info").append("<p> You are black</p>");
-        $("#black_info").append("<p> Engine are white</p>");
+        $("#black_info").append("<p> The computer is white</p>");
     }
 
 });
@@ -158,6 +158,7 @@ function onDrop(source, target) {
         to: target,
         promotion: 'q'
     })
+
 
     if (move === null) return 'snapback'
     if (compurteur_vs_human == true && user_color == "white" && game.turn() == 'b') {
@@ -219,6 +220,12 @@ function updateStatus() {
     $status.html(status)
     $fen.html(game.fen())
     $pgn.html(game.pgn())
+
+    var list_of_moves = game.history()
+
+
+    last_move = list_of_moves[list_of_moves.length - 1]
+
 }
 
 
@@ -236,11 +243,11 @@ $("#switch_color").click(function(e) {
     if (user_color == "black") {
         user_color = "white"
         $("#white_info").append("<p> You are white</p>");
-        $("#black_info").append("<p> Engine are black</p>");
+        $("#black_info").append("<p> The computer is black</p>");
     } else {
         user_color = "black"
         $("#white_info").append("<p> You are black</p>");
-        $("#black_info").append("<p> Engine are white</p>");
+        $("#black_info").append("<p> The computer is white</p>");
     }
     board.flip();
     send_fen(game.fen())
@@ -305,7 +312,12 @@ $("#new_game").click(function(e) {
 });
 
 
-function send_fen(fen, last_move) {
+function send_fen(fen) {
+    var list_of_moves = game.history()
+
+
+    last_move = list_of_moves[list_of_moves.length - 1]
+
     $.ajax({
         url: "get_fen",
         dataType: "json",

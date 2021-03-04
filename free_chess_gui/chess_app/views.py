@@ -2,7 +2,8 @@ from django.shortcuts import render, HttpResponse, redirect
 import json
 from django.contrib import messages
 from chess_app.services.chess_app_services import lc0_play_next_move, \
-    stockfish_play_next_move, komodo_play_next_move, make_new_game
+    stockfish_play_next_move, komodo_play_next_move, make_new_game,\
+    save_last_move, save_move_engine
 # Create your views here.
 
 
@@ -23,14 +24,35 @@ def index(request):
 
 
 def get_fen(request):
+    """This views get best move uci 
+
+    Args:
+        request ([type]): reqruiement {"module" = "lc0"} for example
+
+    Returns:
+        [type]: [description]
+    """
     if request.user.is_authenticated:
-        fen = request.GET["fen"]
+        if "fen" in request.GET:
+            fen = request.GET["fen"]
+        else:
+            context = {"new_fen": ""}
+            return HttpResponse(json.dumps(context))
         if request.GET["module"] == "lc0":
+            save_last_move(request)
             next_move = lc0_play_next_move(fen)
+            save_move_engine(request.GET["game_id_current"],
+                             next_move, fen)
         elif request.GET["module"] == "stockfish":
+            save_last_move(request)
             next_move = stockfish_play_next_move(fen)
+            save_move_engine(request.GET["game_id_current"],
+                             next_move, fen)
         elif request.GET["module"] == "komodo":
-            next_move = komodo_play_next_move(fen)    
+            save_last_move(request)
+            next_move = komodo_play_next_move(fen)
+            save_move_engine(request.GET["game_id_current"],
+                             next_move, fen)
         context = {"new_fen": next_move}
         return HttpResponse(json.dumps(context))
     else:
@@ -68,7 +90,8 @@ def play_vs_lc0(request):
             "user_is_connect": True}
         return render(request, 'chess_app/play_vs_lc0.html', context=context)
     else:
-        messages.error(request, "For play vs engine you need to make account")
+        messages.error(
+            request, "Create an account for playing against the computer")
         context = {
             'title': "chess at",
             "user_is_connect": False}
@@ -94,7 +117,8 @@ def play_vs_stockfish(request):
             'chess_app/play_vs_stockfish.html',
             context=context)
     else:
-        messages.error(request, "For play vs engine you need to make account")
+        messages.error(
+            request, "Create an account for playing against the computer")
         context = {
             'title': "chess at",
             "user_is_connect": False}
@@ -120,7 +144,8 @@ def play_vs_komodo(request):
             'chess_app/play_vs_komodo.html',
             context=context)
     else:
-        messages.error(request, "For play vs engine you need to make account")
+        messages.error(
+            request, "Create an account for playing against the computer")
         context = {
             'title': "chess at",
             "user_is_connect": False}
@@ -146,7 +171,8 @@ def new_game(request):
         context = {"message": "game_created", "game_id": id_of_game}
         return HttpResponse(json.dumps(context))
     else:
-        messages.error(request, "For play vs engine you need to make account")
+        messages.error(
+            request, "Create an account for playing against the computer")
         context = {
             'title': "chess at",
             "user_is_connect": False}
