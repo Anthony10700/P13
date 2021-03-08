@@ -3,7 +3,8 @@ import json
 from django.contrib import messages
 from chess_app.services.chess_app_services import lc0_play_next_move, \
     stockfish_play_next_move, komodo_play_next_move, make_new_game,\
-    save_last_move, save_move_engine, get_all_games_of_specify_user, get_page
+    save_last_move, save_move_engine, get_all_games_of_specify_user, get_page, \
+    get_the_game_services
 # Create your views here.
 
 
@@ -22,6 +23,31 @@ def index(request):
         context["user_is_connect"] = True
     return render(request, 'chess_app/index.html', context=context)
 
+
+def show_the_game(request):
+    """This views show the game of chess ,
+    There must be in the request , the id of the game.
+
+    Args:
+        request ([type]): [description]
+    """
+    game = get_the_game_services(request)
+    if game != None:
+        if request.user.is_authenticated:
+            context = {
+                'title': "Chess game",
+                "user_is_connect": True,
+                "games": game}
+            return render(request, 'chess_app/index.html', context=context)
+        else:
+            context = {
+                'title': "Chess game",
+                "user_is_connect": False,
+                "games": game}
+            return render(request, 'chess_app/index.html', context=context)
+    else:
+        return redirect("index")
+        
 
 def get_fen(request):
     """This views get best move uci 

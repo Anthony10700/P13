@@ -20,4 +20,6 @@ urlpatterns = [
          name="history_game"),
     path('new_game', views.new_game,
          name="new_game"),
+    path('show_the_game.html/', views.show_the_game,
+         name="show_the_game"),
 ]

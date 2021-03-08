@@ -8,6 +8,18 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 import io
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 
+def get_the_game_services(request):
+    """This method test if id in request and get the game model in database
+
+    Args:
+        request ([type]): [description]
+    """
+    # TODO test if user send "qsdqsdqsd"
+    if "id" in request.GET:
+        game = Game_chess.objects.get(id=request.GET["id"])
+        return game
+    else:
+        return None
 
 def get_page(page, all_game, nb_of_articles_per_page):
     """This method make a paginator of all products
