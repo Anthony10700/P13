@@ -1,0 +1,91 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+
+
+
+<div class="justify-content-center " id="div_of_board_parrent">
+
+    <div class="row bg-night_2 shadow_perso pt-4 style-1" id="div_of_history_game">
+
+
+
+
+
+
+        {% for game in games %}
+
+        <div class="card card_history_game p-2 m-2">
+            <a href="#">
+
+                <div class="card-header m-0 p-2">
+                    <div class="board_smaller m-0 p-0" id="myBoard{{ game.id }}" style="width: 100%" fen="{{ game.last_fen }}"></div>
+                </div>
+
+            </a>
+
+
+
+            <div class="card-body scrollbar_game">
+                <p class="card-text">PGN :{{ game.pgn }} </p>
+            </div>
+        </div>
+
+
+
+
+        {% empty %}
+        <h1>Sorry, no games.</h1>
+        {% endfor %}
+
+    </div>
+    {% if paginate %}
+    <div class="mt-4">
+        <nav aria-label="">
+            <ul class="pagination justify-content-center">
+                {% if games.has_previous %}
+                <li style="padding-right: 20px;">
+                    <a href="?page={{ games.previous_page_number }}">
+                        <button class="btn page-link">Précédent</button>
+                    </a>
+
+                </li>
+
+                {% endif %} {% if games.has_next %}
+                <li>
+                    <a href="?page={{ games.next_page_number }}">
+                        <button class="btn page-link ">Suivant</button>
+                    </a>
+                </li>
+
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+
+    {% endif %}
+
+
+</div>
+
+
+
+<script>
+    DJANGO_STATIC_URL = '{% static "img/" %}';
+    MODULE = "";
+</script>
+
+
+
+
+
+
+{% endblock %} {% block right %}
+<div class="col-12 bg-night_2" id="div_info">
+    <p id="title_of_info">Info : </p>
+</div>
+<div class="col-12 bg-night_2" id="div_chat">
+    <label>Chat : </label>
+
+</div>
+
+
+{% endblock %}{% load static %}

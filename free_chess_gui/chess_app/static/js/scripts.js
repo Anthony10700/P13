@@ -83,45 +83,80 @@ $('#img-night-mode').on({
 
 
 $(document).ready(function() {
-    if (MODULE == "lc0" || MODULE == "stockfish" || MODULE == "komodo") {
-        compurteur_vs_human = true
-    }
-    $('.dropdown-toggle').dropdown()
-    config = {
-        orientation: user_color,
-        draggable: false,
-        position: 'start',
-        pieceTheme: DJANGO_STATIC_URL + '{piece}.png',
-
-    }
-
-    board = Chessboard('myBoard', config)
-    board.start()
-
-    if ($(window).width() <= 1450 && $("#menu-toggle-right").text() == ">") {
-        $("#menu-toggle-right").trigger('click');
-    }
-    if ($(window).width() > 1450 && $("#menu-toggle-right").text() == "<") {
-        $("#menu-toggle-right").trigger('click');
-    }
-    $(window).resize(board.resize)
-
     if (localStorage.getItem("nigh_views_mode_activate") == "true") {
 
         if ($('#img-night-mode').attr('src') == DJANGO_STATIC_URL + 'night-mode.svg') {
             $('#img-night-mode').click();
         }
     }
-
-    if (user_color == "white") {
-
-        $("#white_info").append("<p> You are white</p>");
-        $("#black_info").append("<p> The computer is black</p>");
-    } else {
-
-        $("#white_info").append("<p> You are black</p>");
-        $("#black_info").append("<p> The computer is white</p>");
+    if ($(window).width() <= 1450 && $("#menu-toggle-right").text() == ">") {
+        $("#menu-toggle-right").trigger('click');
     }
+    if ($(window).width() > 1450 && $("#menu-toggle-right").text() == "<") {
+        $("#menu-toggle-right").trigger('click');
+    }
+
+
+    if (TITTLE != "History of your games") {
+        if (MODULE == "lc0" || MODULE == "stockfish" || MODULE == "komodo") {
+            compurteur_vs_human = true
+        }
+        $('.dropdown-toggle').dropdown()
+        config = {
+            orientation: user_color,
+            draggable: false,
+            position: 'start',
+            pieceTheme: DJANGO_STATIC_URL + '{piece}.png',
+
+        }
+
+        board = Chessboard('myBoard', config)
+        board.start()
+
+
+        $(window).resize(board.resize)
+
+
+
+        if (user_color == "white") {
+
+            $("#white_info").append("<p> You are white</p>");
+            $("#black_info").append("<p> The computer is black</p>");
+        } else {
+
+            $("#white_info").append("<p> You are black</p>");
+            $("#black_info").append("<p> The computer is white</p>");
+        }
+    } else if (TITTLE == "History of your games") {
+        $("#menu-toggle-right").trigger('click');
+        $('.dropdown-toggle').dropdown()
+
+
+
+        var list_of_board = []
+
+        $.each($(".board_smaller"), function(index, value) {
+            config = {
+                orientation: user_color,
+                draggable: false,
+                position: $("#" + value.id + "").attr("fen"),
+                pieceTheme: DJANGO_STATIC_URL + '{piece}.png',
+
+            }
+            list_of_board.push(Chessboard(value.id, config))
+
+        });
+
+        $(window).resize(
+            function() {
+                $.each(list_of_board, function(index, value) {
+                    value.resize()
+
+                });
+            })
+
+    }
+
 
 });
 

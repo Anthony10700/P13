@@ -3,7 +3,7 @@ import json
 from django.contrib import messages
 from chess_app.services.chess_app_services import lc0_play_next_move, \
     stockfish_play_next_move, komodo_play_next_move, make_new_game,\
-    save_last_move, save_move_engine
+    save_last_move, save_move_engine, get_all_games_of_specify_user, get_page
 # Create your views here.
 
 
@@ -71,7 +71,30 @@ def history_game(request):
     Returns:
         [type]: [description]
     """
-    return redirect("index")
+
+    context = {'title': "History of your games",
+               "user_is_connect": False}
+    if request.user.is_authenticated:
+        all_games = get_all_games_of_specify_user(request)
+        context["user_is_connect"] = True
+        if len(all_games) > 6:
+            if "page" in request.GET:
+                context["games"], context["paginate"] = get_page(
+                    request.GET["page"], all_games, 6)
+            else:
+                context["games"], context["paginate"] = get_page(
+                    1, all_games, 6)
+        else:
+            context["paginate"] = False
+            context["games"] = all_games
+        return render(request, 'chess_app/history_game.html', context=context)
+    else:
+        messages.error(
+            request, "Create an account")
+        context = {
+            'title': "chess at",
+            "user_is_connect": False}
+        return render(request, 'chess_app/index.html', context=context)
 
 
 def play_vs_lc0(request):

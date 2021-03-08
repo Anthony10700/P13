@@ -68,7 +68,11 @@ def connect_validation(request):
             user = None
         if user is not None:
             login(request, user)
-            request.session.set_expiry(3600)
+            if "checkbox_connect" in request.POST:
+                print("gridCheck_connect is 6220800")
+                request.session.set_expiry(6220800)
+            else:
+                request.session.set_expiry(86400)
             request.session.clear_expired()
             result_dict["methode"] = "redirect"
             result_dict["value"] = "account"

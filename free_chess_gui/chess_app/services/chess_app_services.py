@@ -4,11 +4,54 @@ import chess.pgn
 from pathlib import Path
 from chess_app.models import Game_chess
 from django.contrib.auth import get_user_model
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 import io
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 
 
-def save_move_engine(game_id_current, last_move, last_fen):
+def get_page(page, all_game, nb_of_articles_per_page):
+    """This method make a paginator of all products
+
+    Args:
+        page (int): page of paginator
+        all_game (Product): product
+        nb_of_articles_per_page (int): number of articles per page
+
+    Returns:
+        tuple: nb_of_articles_per_page product and paginate.
+        paginate in context is for: True the button show in html page,
+        False the button no visible
+    """
+    paginator = Paginator(all_game, nb_of_articles_per_page)
+
+    try:
+        recherche = paginator.page(page)
+    except PageNotAnInteger:
+        recherche = paginator.page(1)
+    except EmptyPage:
+        recherche = paginator.page(paginator.num_pages)
+
+    if paginator.num_pages > 1:
+        paginate = True
+    else:
+        paginate = False
+
+    return recherche, paginate
+
+def get_all_games_of_specify_user(request):
+    """This method get all game of user
+
+    Args:
+        request ([type]): [description]
+    """
+    queryset_games = Game_chess.objects.filter(
+        player_white=request.user.id) | Game_chess.objects.filter(
+            player_black=request.user.id)
+    queryset_games = queryset_games.filter(last_move__isnull=False)
+    return queryset_games
+
+
+def save_move_engine(game_id_current, last_move, last_fen_player):
     """This methodes save the last move of engine chess
 
     Args:
@@ -16,12 +59,14 @@ def save_move_engine(game_id_current, last_move, last_fen):
     """
     game = Game_chess.objects.get(id=game_id_current)
     game.last_move = last_move
-    game.pgn = add_last_move_to_pgn(last_move, game.pgn, from_uci=True)
-    game.last_fen = last_fen
+    game.pgn, game.last_fen = add_last_move_to_pgn(
+        last_move, game.pgn,
+        from_uci=True,
+        last_fen_player=last_fen_player)
     game.save()
 
 
-def add_last_move_to_pgn(last_move, pgn, from_uci=False):
+def add_last_move_to_pgn(last_move, pgn, from_uci=False, last_fen_player=""):
     """
     This method add last move to pgn and verify if true move
 
@@ -57,15 +102,15 @@ def add_last_move_to_pgn(last_move, pgn, from_uci=False):
             else:
                 node = node.add_variation(
                     board.push_san(last_move))
-        return new_pgn_chess_game
+        return new_pgn_chess_game, board.fen()
     except ValueError as err:        
         if str(err)[:11] == "illegal uci":
             print(str(err)[:11])
             # TODO rajouter ici un logger pour remonter l'info
             #  sur sentry par exemple
-            return pgn_chess_game
+            return pgn_chess_game, last_fen_player
         else:
-            return pgn_chess_game
+            return pgn_chess_game, last_fen_player
 
 
 def save_last_move(request):
@@ -78,8 +123,8 @@ def save_last_move(request):
             and "fen" in request.GET:
         game = Game_chess.objects.get(id=request.GET["game_id_current"])
         game.last_move = request.GET["last_move"]
-        game.pgn = add_last_move_to_pgn(request.GET["last_move"], game.pgn)
-        game.last_fen = request.GET["fen"]
+        game.pgn, game.last_fen = add_last_move_to_pgn(
+            request.GET["last_move"], game.pgn)
         game.save()
     else:
         return "game_id_current and last_move and fen not in request"
