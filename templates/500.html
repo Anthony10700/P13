@@ -1,0 +1,30 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+<div class="justify-content-center" id="div_of_board_parrent">
+    <p> Error 500 refresh page</p>
+
+</div>
+
+
+
+<script>
+    DJANGO_STATIC_URL = '{% static "img/" %}';
+    MODULE = "";
+</script>
+
+
+
+
+
+
+
+{% endblock %} {% block right %}
+<div class="col-12 bg-night_2" id="div_info">
+    <p id="title_of_info">Info : </p>
+</div>
+<div class="col-12 bg-night_2" id="div_chat">
+    <label>Chat : </label>
+
+</div>
+
+
+{% endblock %}
