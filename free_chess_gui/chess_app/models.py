@@ -31,7 +31,11 @@ class Game_chess(models.Model):
         max_length=80, unique=False, null=False)
     last_move = models.CharField(
         max_length=5, unique=False, null=True)
-    analyse_list_move = models.CharField(
+    analyse_list_move_lc0 = models.CharField(
+        max_length=8000, unique=False, null=True)
+    analyse_list_move_stockfish = models.CharField(
+        max_length=8000, unique=False, null=True)
+    analyse_list_move_komodo = models.CharField(
         max_length=8000, unique=False, null=True)
     chat_of_game = models.CharField(
         max_length=100000, unique=False, null=True)

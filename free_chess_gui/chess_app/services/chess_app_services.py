@@ -6,7 +6,11 @@ from chess_app.models import Game_chess
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 import io
+import json
+from multiprocessing import Process
+from django.core.exceptions import ObjectDoesNotExist
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
+
 
 def get_the_game_services(request):
     """This method test if id in request and get the game model in database
@@ -15,11 +19,16 @@ def get_the_game_services(request):
         request ([type]): [description]
     """
     # TODO test if user send "qsdqsdqsd"
-    if "id" in request.GET:
-        game = Game_chess.objects.get(id=request.GET["id"])
+    if "id" in request.GET and request.GET["id"] != "":
+        try:
+
+            game = Game_chess.objects.get(id=request.GET["id"])
+        except ObjectDoesNotExist:
+            return None
         return game
     else:
         return None
+
 
 def get_page(page, all_game, nb_of_articles_per_page):
     """This method make a paginator of all products
@@ -49,6 +58,7 @@ def get_page(page, all_game, nb_of_articles_per_page):
         paginate = False
 
     return recherche, paginate
+
 
 def get_all_games_of_specify_user(request):
     """This method get all game of user
@@ -91,7 +101,7 @@ def add_last_move_to_pgn(last_move, pgn, from_uci=False, last_fen_player=""):
         pgn_chess_game = chess.pgn.read_game(pgn)
         board = chess.Board()
         new_pgn_chess_game = chess.pgn.Game()
-        new_pgn_chess_game.headers["Event"] = "modif"
+        new_pgn_chess_game.headers["Event"] = "Chess game AT"
         nb_of_move = 0
         for (i, move) in enumerate(pgn_chess_game.mainline_moves()):
             if i == 0:
@@ -179,7 +189,7 @@ def lc0_play_next_move(fen, time_per_move=1):
     print("board = ", fen)
     # result = engine.play(board, chess.engine.Limit(time=5))
     info = engine_lc0.analyse(board, chess.engine.Limit(time=time_per_move))
-    print(info["score"])
+    print(info["score"])    
     print(info["pv"])
     engine_lc0.quit()
     return str(info["pv"][0])
@@ -220,3 +230,48 @@ def komodo_play_next_move(fen, time_per_move=1):
     print(info["pv"])
     komodo.quit()
     return str(info["pv"][0])
+
+
+def analyse_game(engine, pgn, time_per_move, dict_of_value):
+    """This method make a list of evaluation postion by the chess program engine
+
+    Args:
+        engine ([type]): [description]
+        pgn ([type]): [description]
+    """
+    print("Analyse start " + engine + " ############")
+    print("Time per move = ", time_per_move)
+    list_of_cp = []
+    pgn = io.StringIO(pgn)
+    pgn_chess_game = chess.pgn.read_game(pgn)
+    board = chess.Board()
+    if engine == "lc0":
+        engine_rdy = chess.engine.SimpleEngine.popen_uci(
+        str(BASE_DIR) + "/lc0/lc0.exe")
+    elif engine == "komodo12":
+        engine_rdy = chess.engine.SimpleEngine.popen_uci(
+        str(BASE_DIR) + "/komodo12/Windows/komodo-12.1.1-64bit.exe")
+    elif engine == "stockfish":
+        engine_rdy = chess.engine.SimpleEngine.popen_uci(
+        str(BASE_DIR) + "/stockfish/stockfish.exe")
+
+    for (i, move) in enumerate(pgn_chess_game.mainline_moves()):
+        board.push_uci(move.uci())
+        cp = None
+        if not board.is_checkmate():
+            info = engine_rdy.analyse(
+                board,
+                chess.engine.Limit(time=int(time_per_move)))
+            cp = info["score"].white().score()
+        if cp is not None:
+            list_of_cp.append(float(cp)/100)
+        else:
+            val_of_cp = float(str(info["score"].white()).replace("#", ''))
+            if val_of_cp >= 0:
+                list_of_cp.append(100)
+            else:
+                list_of_cp.append(-100)
+
+    dict_of_value[engine] = list_of_cp
+    engine_rdy.quit()        
+    print("Analyse finish " + engine + " ############")

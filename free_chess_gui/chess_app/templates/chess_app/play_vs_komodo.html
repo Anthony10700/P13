@@ -9,46 +9,15 @@
 <script>
     DJANGO_STATIC_URL = '{% static "img/" %}';
     MODULE = "komodo";
+    GAME_VIEWER = false;
 </script>
-
-
-
-<div class="col-12 bg-night_2 style-1 scrollbar" id="div_global_status">
-    <label>Status : </label>
-    <div id="status"></div>
-    <label>FEN : </label>
-    <div id="fen"></div>
-    <label>PGN : </label>
-    <div id="pgn"></div>
+<div class="col-12 bg-night_2 mt-2" id="div_btn_option">
+    <label>Options : </label>
+    <button id="switch_color" type="button" class="btn btn-secondary mt-2 btn_opt mb-2">Switch color</button>
+    <button id="new_game" type="button" class="btn btn-secondary  mt-2  btn_opt mb-2">New game</button>
+    <button id="analyse_opt" type="button" class="btn btn-secondary  mt-2 btn_opt mb-2">Analyse</button>
+    <button id="flip" type="button" class="btn btn-secondary  mt-2 btn_opt mb-2">Flip board</button>
 </div>
 
 
-
-
-{% endblock %} {% block right %}
-<div class="col-12  bg-night_2" id="div_info">
-    <p id="title_of_info">Info : </p>
-    <div class="row ml-2 mr-2 pt-0 mt-0">
-        <div class="col-6" id="white_info">
-
-        </div>
-        <div class="col-6" id="black_info">
-
-        </div>
-    </div>
-</div>
-<div class="col-12 bg-night_2" id="div_chat">
-    <label>Chat : </label>
-</div>
-<div class="panel-footer col-12 m-0 p-0" id="div_chat_message">
-    <div class="input-group">
-        <input id="btn-input" type="text" class="form-control input-sm chat_input bg-night_2" placeholder="Write your message here..." />
-        <span class="input-group-btn">
-            <button class="btn btn-primary btn ml-1" id="btn-chat">Send</button>
-            </span>
-    </div>
-</div>
-<button id="switch_color" type="button" class="btn btn-secondary  mt-3  btn_opt">Switch color</button>
-<button id="new_game" type="button" class="btn btn-secondary  mt-3  btn_opt ">New game</button>
-<button id="analyse" type="button" class="btn btn-secondary  mt-3 btn_opt">Analyse</button>
-<button id="flip" type="button" class="btn btn-secondary  mt-3 btn_opt">Flip board</button> {% endblock %}
+{% include "chess_app/status_block.html" %} {% endblock %} {% block right %} {% include "chess_app/chat_info_block.html" %}{% endblock %}
