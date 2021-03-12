@@ -31,38 +31,9 @@
 <script>
     DJANGO_STATIC_URL = '{% static "img/" %}';
     MODULE = "";
+    GAME_VIEWER = false;
 </script>
 
 
 
-<div class="col-12 bg-night_2 style-1 scrollbar" id="div_global_status">
-    <label>Status : </label>
-    <div id="status"></div>
-    <label>FEN : </label>
-    <div id="fen"></div>
-    <label>PGN : </label>
-    <div id="pgn"></div>
-</div>
-
-
-
-
-{% endblock %} {% block right %}
-<div class="col-12 bg-night_2" id="div_info">
-    <p id="title_of_info">Info : </p>
-</div>
-<div class="col-12 bg-night_2" id="div_chat">
-    <label>Chat : </label>
-
-</div>
-<div class="panel-footer col-12 m-0 p-0" id="div_chat_message">
-    <div class="input-group">
-        <input id="btn-input" type="text" class="form-control input-sm chat_input bg-night_2" placeholder="Write your message here..." />
-        <span class="input-group-btn">
-            <button class="btn btn-primary btn ml-1" id="btn-chat">Send</button>
-            </span>
-    </div>
-</div>
-
-
-{% endblock %}
+{% include "chess_app/status_block.html" %} {% endblock %} {% block right %} {% include "chess_app/chat_info_block.html" %}{% endblock %}

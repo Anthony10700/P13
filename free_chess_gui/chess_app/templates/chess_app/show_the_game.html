@@ -16,9 +16,7 @@
     </div>
 </div>
 
-
 {% endif %}
-
 
 
 <div class="justify-content-center" id="div_of_board_parrent">
@@ -26,43 +24,81 @@
 
 </div>
 
-
-
 <script>
     DJANGO_STATIC_URL = '{% static "img/" %}';
     MODULE = "";
+    GAME_VIEWER = true;
+    GAME_ID = "{{games.id}}";
 </script>
+{% if games.analyse_list_move_lc0 is None %}
+<script>
+    var data_for_chart_lc0 = [];
+    var data_for_chart_komodo = [];
+    var data_for_chart_stockfish = [];
+</script>
+{% else %}
+<script>
+    var data_for_chart_lc0 = JSON.parse("{{games.analyse_list_move_lc0}}");
+    var data_for_chart_komodo = JSON.parse("{{games.analyse_list_move_komodo}}");
+    var data_for_chart_stockfish = JSON.parse("{{games.analyse_list_move_stockfish}}");
+</script>
+{% endif %} {% include "chess_app/status_block.html" %} {% endblock %} {% block block_of_chess_viewer %}
 
-
-
-<div class="col-12 bg-night_2 style-1 scrollbar" id="div_global_status">
-    <label>Status : </label>
-    <div id="status"></div>
-    <label>FEN : </label>
-    <div id="fen">{{game.fen}}</div>
-    <label>PGN : </label>
-    <div id="pgn">{{game.pgn}}</div>
-</div>
-
-
-
-
-{% endblock %} {% block right %}
-<div class="col-12 bg-night_2" id="div_info">
-    <p id="title_of_info">Info : </p>
-</div>
-<div class="col-12 bg-night_2" id="div_chat">
-    <label>Chat : </label>
-
-</div>
-<div class="panel-footer col-12 m-0 p-0" id="div_chat_message">
-    <div class="input-group">
-        <input id="btn-input" type="text" class="form-control input-sm chat_input bg-night_2" placeholder="Write your message here..." />
-        <span class="input-group-btn">
-            <button class="btn btn-primary btn ml-1" id="btn-chat">Send</button>
-            </span>
+<div class="col-12 bg-night_2" id="div_of_chess_viewer">
+    <label>Graph  : </label>
+    <div class="col-12" id="graph_of_game">
+        <canvas id="myChart"></canvas>
     </div>
+    <div class="row">
+        <div class="col-4 bg-night_2" id="navigate_of_game">
+            <button class="btn btn-primary">
+                <i id="fa-arrow-left" class="fas fa-arrow-left"></i>
+            </button>
+            <button class="btn btn-primary"> 
+                <i id="fa-arrow-right" class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <div class="input-group col-8" id="analyse-div">
+            <div id="div_time_input">
+                <input id="time_input" type="text" class="form-control bg-night_2" placeholder="1" aria-label="Time" aria-describedby="Time" value=1>
+            </div>
+
+            <div class="input-group-append">
+
+                <button class="btn btn-primary ml-2" type="button" id="btn-analyse">Get analyse</button>
+
+            </div>
+
+        </div>
+    </div>
+
+    <div id="message_analyse">
+        <p>Indicate the time between 1 to 10 sec per movement</p>
+        <p>The more time you put in, the more accurate the analysis is</p>
+
+    </div>
+
+    <hr class="col-6 rounded mt-1 mb-4" style="height: 2px;  background-color: #2a73e0; width: 50%; border: none;">
+
+    <div id="div_of_load_pgn" class="input-group bg-night_2">
+
+        <textarea id="text_load_pgn" class="form-control bg-night_2" aria-label="Load pgn" placeholder="Paste your PGN here"></textarea>
+        <button class="btn btn-primary ml-2" type="button" id="btn_load_pgn">Load pgn</button>
+    </div>
+
+    <hr class="col-6 rounded mt-4 mb-1" style="height: 2px;  background-color: #2a73e0; width: 50%; border: none;">
+
+    <div id="div_of_btn_opt_viewer">
+        <button id="refresh" type="button" class="btn btn-secondary  mt-3 btn_opt">Refresh page</button>
+        <button id="save_game" type="button" class="btn btn-secondary  mt-3 btn_opt">Save game</button>
+        <button id="flip" type="button" class="btn btn-secondary  mt-3 btn_opt">Flip board</button>
+        <button id="do_any_moves_btn" type="button" class="btn btn-secondary  mt-3 btn_opt">Do any moves</button>
+    </div>
+
+
+
 </div>
 
 
-{% endblock %}
+{% endblock %} {% block right %} {% include "chess_app/chat_info_block.html" %}{% endblock %}

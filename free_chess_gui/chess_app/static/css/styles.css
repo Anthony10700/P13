@@ -14,7 +14,7 @@
 
 #page-top,
 #footer_base {
-    background-color: #f8f9fa;
+    background-color: #f2f2f2;
 }
 
 #wrapper,
@@ -65,7 +65,7 @@
 
 #menu-toggle-right {
     background-color: rgba(48, 48, 48, 0.884);
-    color: #f8f9fa;
+    color: #f2f2f2;
     width: 30px;
     margin-top: auto;
     margin-bottom: auto;
@@ -78,7 +78,7 @@
 
 #menu-toggle {
     background-color: rgba(48, 48, 48, 0.884);
-    color: #f8f9fa;
+    color: #f2f2f2;
     width: 30px;
     margin-top: auto;
     margin-bottom: auto;
@@ -109,6 +109,22 @@
 
 .module:hover {
     box-shadow: 2px 2px 12px #aaa;
+}
+
+#analyse {
+    padding: 8px;
+}
+
+#img_analyse {
+    position: absolute;
+    right: 8px;
+}
+
+#text_of_module_analyse {
+    position: absolute;
+    left: 8px;
+    width: 40%;
+    margin-top: 9px;
 }
 
 #img-stockfish-mod {
@@ -163,14 +179,18 @@
 }
 
 #div_global_status {
+    margin-left: auto;
+    margin-right: auto;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-width: 764px;
     border: 1px solid rgba(0, 0, 0, .125);
     border-radius: .5rem;
     margin-top: 10px;
     padding: 5px;
     background-color: #fff;
     word-wrap: break-word;
-    max-width: 800px;
-    width: 100%;
+    height: 15vh;
     scrollbar-color: red yellow;
 }
 
@@ -204,19 +224,9 @@
     box-shadow: 3px 3px 12px rgb(92, 92, 92);
 }
 
-#dropdown_div {}
-
-#myBoard,
-#div_global_status {
+#myBoard {
     margin-left: auto;
     margin-right: auto;
-}
-
-#div_global_status {
-    overflow-y: scroll;
-    overflow-x: hidden;
-    height: 220px;
-    max-width: 764px;
 }
 
 #myBoard {
@@ -280,15 +290,19 @@
 
 .btn_opt {
     min-width: 120px;
+    height: 38px !important;
 }
 
 #div_of_history_game {
     width: 100%;
-    height: 80vh;
+    height: 75vh;
     border-radius: 10px;
     display: flex;
     justify-content: center;
     overflow-x: auto;
+    border: 1px solid rgba(0, 0, 0, .225);
+    border-radius: 5px;
+    background-color: #fff;
 }
 
 .card-header {
@@ -298,7 +312,7 @@
 .card_history_game {
     height: 37vh;
     width: 30vh !important;
-    color: #f8f9fa;
+    color: #f2f2f2;
     background-color: #27333f !important;
 }
 
@@ -323,4 +337,106 @@
 .scrollbar_game::-webkit-scrollbar-track {
     background: #27333f;
     border-radius: 15px;
+}
+
+#div_col_middle,
+#div_col_right {
+    height: 80vh;
+}
+
+#div_col_right {
+    width: 150px !important;
+}
+
+#div_of_chess_viewer {
+    border-radius: 10px;
+    min-height: 764px;
+    border: 1px solid rgba(0, 0, 0, .125);
+}
+
+#myChart {
+    border: 1px solid rgba(117, 117, 117, 0.849);
+    border-radius: 15px;
+    height: 50%;
+}
+
+#navigate_of_game {
+    position: absolute;
+    right: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    height: 40px;
+    width: auto;
+}
+
+#fa-arrow-left,
+#fa-arrow-right {
+    height: 20px
+}
+
+#fa-arrow-left:hover,
+#fa-arrow-right:hover {
+    height: 25px
+}
+
+#analyse-div {
+    margin-left: 15px;
+    margin-top: 10px;
+    word-wrap: break-word;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+#div_time_input {
+    width: 40px !important;
+    height: 100%;
+}
+
+#message_analyse {
+    margin-top: 20px;
+    margin-left: 15px;
+    width: 100% !important;
+    word-wrap: break-word;
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+#div_of_load_pgn textarea {
+    height: 200px !important;
+    border-radius: 5px;
+}
+
+#div_of_load_pgn button {
+    height: 40px !important;
+}
+
+#div_of_load_pgn {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#btn-analyse {
+    border-radius: 5px;
+}
+
+#div_of_btn_opt_viewer {
+    position: relative;
+    bottom: 5px;
+}
+
+#div_btn_option {
+    border: 1px solid rgba(0, 0, 0, .125);
+    width: 100% !important;
+    border-radius: 5px;
+    max-width: 764px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #fff;
+}
+
+.message_me {
+    color: #f2f2f2;
+    background-color: #161B25 !important;
+    border: 1px solid rgb(25, 98, 255) !important;
+    border-radius: 5px;
 }

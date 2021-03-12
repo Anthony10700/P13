@@ -4,8 +4,108 @@ from django.contrib import messages
 from chess_app.services.chess_app_services import lc0_play_next_move, \
     stockfish_play_next_move, komodo_play_next_move, make_new_game,\
     save_last_move, save_move_engine, get_all_games_of_specify_user, get_page, \
-    get_the_game_services
+    get_the_game_services, analyse_game
+import threading
 # Create your views here.
+
+
+def get_list_of_evalutation(request):
+    """This viewe send the list of elvalution of the game,
+     requiered game id in request
+
+    Args:
+        request ([type]): [description]
+    """
+    if "time" in request.GET:
+        time = int(request.GET["time"])
+    else:
+        time = 0
+    if time < 10:
+        context = {}
+        game = get_the_game_services(request)
+        if game is not None:
+            list_of_process = []
+            list_of_process.append(
+                threading.Thread(
+                    target=analyse_game,
+                    args=(
+                        "lc0",
+                        game.pgn,                        
+                        time,
+                        context)))
+
+            list_of_process.append(
+                threading.Thread(
+                    target=analyse_game,
+                    args=(
+                        "stockfish",
+                        game.pgn,                        
+                        time,
+                        context)))
+
+            list_of_process.append(
+                threading.Thread(
+                    target=analyse_game,
+                    args=(
+                        "komodo12",
+                        game.pgn,                        
+                        time,
+                        context)))
+
+            for proc in list_of_process:
+                proc.start()
+
+            for proc in list_of_process:
+                proc.join()
+
+            game.analyse_list_move_lc0 = context["lc0"]
+            game.analyse_list_move_komodo = context["komodo12"]
+            game.analyse_list_move_stockfish = context["stockfish"]
+            game.save()
+            return HttpResponse(json.dumps(context))
+        elif game is None:
+            if "pgn" in request.GET:
+                pgn = request.GET["pgn"]
+                list_of_process = []
+                list_of_process.append(
+                    threading.Thread(
+                        target=analyse_game,
+                        args=(
+                            "lc0",
+                            pgn,                           
+                            time,
+                            context)))
+
+                list_of_process.append(
+                    threading.Thread(
+                        target=analyse_game,
+                        args=(
+                            "stockfish",
+                            pgn,                           
+                            time,
+                            context)))
+
+                list_of_process.append(
+                    threading.Thread(
+                        target=analyse_game,
+                        args=(
+                            "komodo12",
+                            pgn,                            
+                            time,
+                            context)))
+
+                for proc in list_of_process:
+                    proc.start()
+
+                for proc in list_of_process:
+                    proc.join()
+
+                return HttpResponse(json.dumps(context))
+    else:
+        context = {"error":
+                   "time per movement too large, less than ten recommend"}
+
+        return HttpResponse(json.dumps(context))
 
 
 def index(request):
@@ -32,20 +132,42 @@ def show_the_game(request):
         request ([type]): [description]
     """
     game = get_the_game_services(request)
-    if game != None:
+    if game is not None:
         if request.user.is_authenticated:
             context = {
-                'title': "Chess game",
+                'title': "Chess game viewer",
                 "user_is_connect": True,
                 "games": game}
-            return render(request, 'chess_app/index.html', context=context)
+            return render(
+                request,
+                'chess_app/show_the_game.html',
+                context=context)
         else:
             context = {
-                'title': "Chess game",
+                'title': "Chess game viewer",
                 "user_is_connect": False,
                 "games": game}
-            return render(request, 'chess_app/index.html', context=context)
+            return render(
+                request,
+                'chess_app/show_the_game.html',
+                context=context)
     else:
+        if request.user.is_authenticated:
+            context = {
+                'title': "Chess game viewer",
+                "user_is_connect": True}
+            return render(
+                request,
+                'chess_app/show_the_game.html',
+                context=context)
+        else:
+            context = {
+                'title': "Chess game viewer",
+                "user_is_connect": False}
+            return render(
+                request,
+                'chess_app/show_the_game.html',
+                context=context)
         return redirect("index")
         
 
@@ -110,6 +232,7 @@ def history_game(request):
             else:
                 context["games"], context["paginate"] = get_page(
                     1, all_games, 6)
+            context["paginate"] = True
         else:
             context["paginate"] = False
             context["games"] = all_games
