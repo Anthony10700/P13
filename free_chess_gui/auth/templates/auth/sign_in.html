@@ -133,14 +133,4 @@
     GAME_VIEWER = false;
 </script>
 
-{% endblock %} {% block right %}
-<div class="col-12 bg-night_2" id="div_info">
-    <p id="title_of_info">Info : </p>
-</div>
-<div class="col-12 bg-night_2" id="div_chat">
-    <label>Chat : </label>
-
-</div>
-
-
-{% endblock %} {% load static %}
+{% endblock %} {% load static %}{% block right %} {% include "chess_app/chat_info_block.html" %}{% endblock %}

@@ -20,6 +20,7 @@ var chess_game_history_saved = []
 var pgn_of_chess_game_complete = ""
 var last_move_chess_game_history_saved = ""
 NB_OF_ENGINE = 3
+var list_of_board = []
 
 if (localStorage.getItem("nigh_views_mode_activate") == null || localStorage.getItem("nigh_views_mode_activate") == "true") {
 
@@ -38,8 +39,6 @@ if (localStorage.getItem("nigh_views_mode_activate") == null || localStorage.get
         });
         $('#img_acc_dropdown').css({ "background-color": "rgba(255, 255, 255,0.9)" });
 
-
-
         var styles = "<style type='text/css'>.style-1::-webkit-scrollbar{background-color: #0D1115}.style-1::-webkit-scrollbar-track{background-color: #161B25}</style>";
 
         $(styles).appendTo('head');
@@ -47,6 +46,19 @@ if (localStorage.getItem("nigh_views_mode_activate") == null || localStorage.get
 
         localStorage.setItem("nigh_views_mode_activate", "true");
 
+        console.log("modif color")
+
+        $('#chat_iframe').contents().find('.bg-color').css({
+            "background-color": color_night_views_2,
+            "color": color_day_views
+        });
+        $('#chat_iframe').contents().find('#chat-message').css({
+            "background-color": color_night_views_3,
+            "color": color_day_views
+        });
+        $('#chat_iframe').contents().find('.timestamp').css({
+            "color": "#f2f2f294"
+        });
     }
 
 }
@@ -55,16 +67,13 @@ if (GAME_VIEWER == true) {
     if (data_for_chart_lc0 != "None") {
         var len = data_for_chart_lc0.length;
         var label = [...Array(len).keys()];
-
     } else {
         var label = [];
         var data_for_chart_lc0 = [];
         var data_for_chart_komodo = [];
         var data_for_chart_stockfish = [];
     }
-
     var config = {}
-
     window.chartColors = {
         red: 'rgba(255, 99, 132, 0.5)',
         orange: 'rgba(255, 159, 64, 0.5)',
@@ -74,30 +83,27 @@ if (GAME_VIEWER == true) {
         purple: 'rgba(153, 102, 255, 0.5)',
         grey: 'rgba(201, 203, 207, 0.5)'
     };
-
-
     var ctx = $('#myChart')[0].getContext('2d');
-
     var chart = chart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: label,
             datasets: [{
-                    label: 'lc0 analyse',
+                    label: 'lc0 analysis',
                     backgroundColor: window.chartColors.red,
                     borderColor: window.chartColors.red,
                     data: data_for_chart_lc0,
                     fill: true
                 },
                 {
-                    label: 'stockfish analyse',
+                    label: 'stockfish analysis',
                     backgroundColor: window.chartColors.blue,
                     borderColor: window.chartColors.blue,
                     data: data_for_chart_komodo,
                     fill: true
                 },
                 {
-                    label: 'komodo12 analyse',
+                    label: 'komodo12 analysis',
                     backgroundColor: window.chartColors.green,
                     borderColor: window.chartColors.green,
                     data: data_for_chart_stockfish,
@@ -105,8 +111,6 @@ if (GAME_VIEWER == true) {
                 }
             ]
         },
-
-        // Configuration options go here
         options: {
             responsive: true,
             scales: {
@@ -130,13 +134,8 @@ if (GAME_VIEWER == true) {
             }
         }
     });
-
     ctx.style = window.chartColors.yellow
-
 }
-
-
-
 
 
 $('#img-night-mode').on({
@@ -156,14 +155,26 @@ $('#img-night-mode').on({
             });
             $('#img_acc_dropdown').css({ "background-color": "rgba(255, 255, 255,0.9)" });
 
-
-
             var styles = "<style type='text/css'>.style-1::-webkit-scrollbar{background-color: #0D1115}.style-1::-webkit-scrollbar-track{background-color: #161B25}</style>";
 
             $(styles).appendTo('head');
 
 
             localStorage.setItem("nigh_views_mode_activate", "true");
+
+            console.log("modif color")
+
+            $('#chat_iframe').contents().find('.bg-color').css({
+                "background-color": color_night_views_2,
+                "color": color_day_views
+            });
+            $('#chat_iframe').contents().find('#chat-message').css({
+                "background-color": color_night_views_3,
+                "color": color_day_views
+            });
+            $('#chat_iframe').contents().find('.timestamp').css({
+                "color": "#f2f2f294"
+            });
 
         } else {
             $('#img-night-mode').attr('src', DJANGO_STATIC_URL + 'night-mode.svg');
@@ -184,68 +195,222 @@ $('#img-night-mode').on({
             $(styles).appendTo('head');
 
             localStorage.setItem("nigh_views_mode_activate", "false");
-        }
 
+            $('#chat_iframe').contents().find('.bg-color').css({
+                "background-color": "#fff",
+                "color": "#000"
+            });
+            $('#chat_iframe').contents().find('#chat-message').css({
+                "background-color": color_day_views,
+                "color": "#000"
+            });
+
+            $('#chat_iframe').contents().find('.timestamp').css({
+                "color": "#00000080"
+            });
+
+            $('#chat_iframe').contents().find('#messages').css({
+                "background-color": color_day_views,
+                "color": "#000"
+            });
+        }
     }
 });
 
 $('#img-night-mode').on({
     'mouseover': function() {
         $('#img-night-mode').css("width", "23px");
-
     }
 });
 $('#img-night-mode').on({
     'mouseout': function() {
         $('#img-night-mode').css("width", "20px");
-
     }
 });
+
+function calculateSquareSize() {
+
+    if ($("#myBoard").height() < $("#myBoard").width()) {
+        var containerWidth = parseInt($("#myBoard").height(), 10)
+    } else {
+        var containerWidth = parseInt($("#myBoard").width(), 10)
+    }
+    // defensive, prevent infinite loop
+    if (!containerWidth || containerWidth <= 0) {
+        return 0
+    }
+
+    // pad one pixel
+    var boardWidth = containerWidth - 1
+
+    while (boardWidth % 8 !== 0 && boardWidth > 0) {
+        boardWidth = boardWidth - 1
+    }
+
+    return boardWidth / 8
+}
+
+
+
+function on_resize() {
+    console.log("declenchement resize")
+
+
+    var resolution_md_height = 768
+    var resolution_md_width = 1366
+
+    if ($(window).height() < resolution_md_height && $(window).width() < resolution_md_width) {
+        console.log("declenchement resize 1")
+        $("body").css("height", resolution_md_height);
+        $("body").css("width", resolution_md_width);
+        $("#wrapper").css("width", resolution_md_width);
+        $("#wrapper").css("height", resolution_md_height);
+
+    } else if ($(window).height() < resolution_md_height && $(window).width() > resolution_md_width) {
+        console.log("declenchement resize 2")
+        $("body").css("height", resolution_md_height);
+        $("body").css("width", $(window).width());
+        $("#wrapper").css("width", $(window).width());
+        $("#wrapper").css("height", resolution_md_height);
+
+    } else if ($(window).height() > resolution_md_height && $(window).width() > resolution_md_width) {
+        $('#sidebar-wrapper').promise().done(function() {
+            console.log("declenchement resize 3")
+            $("body").css("height", $(window).outerHeight());
+            $("body").css("width", $(window).width());
+            $("#wrapper").css("width", $("body").width());
+            $("#wrapper").css("height", $("body").outerHeight());
+
+        })
+    } else if ($(window).height() > resolution_md_height && $(window).width() < resolution_md_width) {
+        console.log("declenchement resize 4")
+        $("body").css("height", $(window).outerHeight());
+        $("body").css("width", resolution_md_width);
+        $("#wrapper").css("width", resolution_md_width);
+        $("#wrapper").css("height", $(window).outerHeight());
+
+    }
+
+    if (true) {
+        $("#wrapper-right").css("width", $(window).width() * 0.2);
+        $("#sidebar-wrapper-right").css("width", $(window).width() * 0.2);
+        $("#sidebar-wrapper-right").css("height", $(window).outerHeight() * 0.8);
+        $("#div_info").css("height", $("#sidebar-wrapper-right").height() * 0.2);
+        $("#div_chat").css("height", $("#sidebar-wrapper-right").height() * 0.8 - 40);
+
+        if (TITTLE != "History of your games") {
+            if (MODULE != "") {
+                $('#myBoard').width($(window).width() * 0.6)
+                $('#myBoard').height($(window).height() * 0.6)
+
+                $("#div_of_board_parrent").css("height", $('#div_middle_global').height());
+
+
+            }
+            $("#container_middle").css("width", $("#wrapper").width() - $("#sidebar-wrapper").outerWidth() - 1000);
+
+            $("#div_middle_global").css("height", $("body").outerHeight() - $("#div_of_header").outerHeight() - $("#div_of_footer").outerHeight());
+            $("#div_middle_global").css("width", $("#container_middle").outerWidth());
+
+            $("#div_of_board_parrent").css("width", $(window).width() * 0.7);
+
+
+            $('#div_list_moves').height($('#div_col_left').height() - 8 - 4)
+            $('#div_col_right').height($('#div_list_moves').outerHeight() - 4)
+            $('#div_of_chess_viewer').height($('#div_list_moves').outerHeight() - 4)
+
+            $("#div_of_board_parrent").css("height", $('#div_list_moves').outerHeight());
+
+            $('#myBoard').height($("#div_of_board_parrent").height() * 0.8)
+
+            $('#div_of_board_parrent').width(calculateSquareSize() * 8 - 4)
+            $('#div_col_middle').height($('#div_list_moves').outerHeight())
+            $('#div_col_middle').width($('#div_of_board_parrent').outerWidth())
+
+            $('#div_global_status').width($('#div_of_board_parrent').width() - 15 - 15 - 4 - 15)
+            if (TITTLE == "Inscription") {
+                $("#div_of_board_parrent").css("width", $(window).width() * 0.7);
+            }
+
+            $('#div_global_status').height($('#div_of_board_parrent').height() - calculateSquareSize() * 8 - 48)
+
+            if (MODULE != "") {
+                $('#div_global_status').height($('#div_of_board_parrent').height() - calculateSquareSize() * 8 - 64)
+            }
+
+            if ($("#myBoard").height() > $("#myBoard").width()) {
+                $("#myBoard").height($("#myBoard").outerWidth())
+            }
+
+        }
+
+        $("#chat_iframe").css("height", $("#div_chat").height());
+        $("#chat_iframe").css("width", $("#sidebar-wrapper-right").width() - 10);
+        $('#chat_iframe').contents().find('#chat-message').css({
+            "height": $("#chat_iframe").height() * 0.2
+        });
+        $('#chat_iframe').contents().find('#messages').css({
+            "height": $("#chat_iframe").height() * 0.7
+        });
+
+
+        if (TITTLE == "History of your games") {
+            $.each(list_of_board, function(index, value) {
+                value.resize()
+            });
+        }
+
+    }
+
+    if (typeof board != 'undefined' && board != null) {
+        board.resize();
+    }
+
+
+    if (typeof chart != 'undefined') {
+        chart.resize();
+    }
+
+}
+
 
 
 $(document).ready(function() {
 
-    $('.dropdown-toggle').dropdown()
 
+
+    $('.dropdown-toggle').dropdown()
     if ($(window).width() <= 1450 && $("#menu-toggle-right").text() == ">") {
         $("#menu-toggle-right").trigger('click');
+
     }
     if ($(window).width() > 1450 && $("#menu-toggle-right").text() == "<") {
         $("#menu-toggle-right").trigger('click');
     }
 
-
     if (MODULE != "") {
+
         if (MODULE == "lc0" || MODULE == "stockfish" || MODULE == "komodo") {
             compurteur_vs_human = true
         }
-
         config = {
             orientation: user_color,
             draggable: false,
             position: 'start',
             pieceTheme: DJANGO_STATIC_URL + '{piece}.png',
-
         }
         board = Chessboard('myBoard', config)
         board.start()
-        $(window).resize(function() {
-            board.resize()
-        })
         if (user_color == "white") {
-
             $("#white_info").append("<p> You are white</p>");
             $("#black_info").append("<p> The computer is black</p>");
         } else {
-
             $("#white_info").append("<p> You are black</p>");
             $("#black_info").append("<p> The computer is white</p>");
         }
-
+        $("#menu-toggle-right").trigger('click');
     } else if (TITTLE == "History of your games") {
         $("#menu-toggle-right").trigger('click');
-
-        var list_of_board = []
 
         $.each($(".board_smaller"), function(index, value) {
             config = {
@@ -253,26 +418,18 @@ $(document).ready(function() {
                 draggable: false,
                 position: $("#" + value.id + "").attr("fen"),
                 pieceTheme: DJANGO_STATIC_URL + '{piece}.png',
-
             }
             list_of_board.push(Chessboard(value.id, config))
-
         });
-
-        $(window).resize(
-            function() {
-                $.each(list_of_board, function(index, value) {
-                    value.resize()
-
-                });
-            })
-
     } else if (GAME_VIEWER == true) {
+        $("#div_col_left").removeClass("col-2").addClass("col-2");
+        $("#div_col_middle").removeClass("col-8").addClass("col-5");
+        $("#div_col_right").removeClass("col-2").addClass("col-5");
+        if ($("#menu-toggle-right").text() == ">") {
+            $("#menu-toggle-right").trigger('click');
 
+        }
 
-        $("#div_col_middle").removeClass("col-10").addClass("col-6");
-        $("#div_col_right").removeClass("col-1").addClass("col-5");
-        $("#menu-toggle-right").trigger('click');
 
         game.load_pgn($("#pgn").html())
         pgn_of_chess_game_complete = $("#pgn").html()
@@ -286,19 +443,11 @@ $(document).ready(function() {
             orientation: user_color,
             position: game.fen(),
             pieceTheme: DJANGO_STATIC_URL + '{piece}.png',
-
         }
         board = Chessboard('myBoard', config);
+        load_moves_in_table()
 
-        $(window).resize(function() {
-            board.resize();
-            chart.resize();
-
-        });
-
-
-
-    } else if (MODULE == "" && TITTLE != "Account") {
+    } else if (MODULE == "" && TITTLE != "Account" && TITTLE != "chess at" && TITTLE != "Inscription") {
         config = {
             orientation: user_color,
             draggable: false,
@@ -309,10 +458,24 @@ $(document).ready(function() {
         board = Chessboard('myBoard', config);
         board.start()
     }
+    on_resize()
+    $(window).resize(function() {
+        on_resize()
 
-
+    })
 });
 
+
+function load_moves_in_table() {
+    var table = $('#table_of_moves tbody')
+    $('#table_of_moves tbody tr').remove()
+
+    for (var i = 0; i < game.history().length - 1; i++) {
+        $('#table_of_moves tbody').append("<tr><th scope='row'>" + i + "</th><td>" + game.history()[i] + "</td><td>" + game.history()[i + 1] + "</td></tr>")
+    }
+
+
+}
 
 
 function removeGreySquares() {
@@ -486,21 +649,21 @@ $("#btn-analyse").click(function(e) {
                 var len = Object.keys(response.stockfish).length
                 chart.data.labels = [...Array(len).keys()]
                 chart.data.datasets = [{
-                        label: 'lc0 analyse',
+                        label: 'lc0 analysis',
                         backgroundColor: window.chartColors.red,
                         borderColor: window.chartColors.red,
                         data: response.lc0,
                         fill: true
                     },
                     {
-                        label: 'stockfish analyse',
+                        label: 'stockfish analysis',
                         backgroundColor: window.chartColors.blue,
                         borderColor: window.chartColors.blue,
                         data: response.stockfish,
                         fill: true
                     },
                     {
-                        label: 'komodo12 analyse',
+                        label: 'komodo12 analysis',
                         backgroundColor: window.chartColors.green,
                         borderColor: window.chartColors.green,
                         data: response.komodo12,
@@ -641,6 +804,10 @@ $("#menu-toggle-right").click(function(e) {
     if ($("#menu-toggle-right").text() == "<") {
         $("#menu-toggle-right").text(">");
 
+        $("#container_middle").width($("#container_middle").width() - $("#wrapper-right").outerWidth());
+
+
+
         if (TITTLE == "History of your games") {
             $("#wrapper-right").animate({ "opacity": "show", left: 0 }, 1);
         } else {
@@ -651,6 +818,7 @@ $("#menu-toggle-right").click(function(e) {
             $(window).trigger('resize');
             $(window).trigger('resize');
             $(window).trigger('resize');
+
         });
 
 
@@ -661,7 +829,7 @@ $("#menu-toggle-right").click(function(e) {
         if (TITTLE == "History of your games") {
             $("#wrapper-right").hide();
         } else {
-            $("#wrapper-right").animate({ "opacity": "hide", left: $("#wrapper-right").width() }, 1000);
+            $("#wrapper-right").animate({ "opacity": "hide", left: $("#wrapper-right").outerWidth() }, 1000);
         }
 
 
@@ -714,6 +882,32 @@ $("#btn_load_pgn").click(function() {
     $pgn.html(game.pgn())
     pgn_of_chess_game_complete = $("#pgn").html()
     chess_game_history_saved = game.history();
+    load_moves_in_table()
+
+    chart.data.labels = []
+    chart.data.datasets = [{
+            label: 'lc0 analysis',
+            backgroundColor: window.chartColors.red,
+            borderColor: window.chartColors.red,
+            data: [],
+            fill: true
+        },
+        {
+            label: 'stockfish analysis',
+            backgroundColor: window.chartColors.blue,
+            borderColor: window.chartColors.blue,
+            data: [],
+            fill: true
+        },
+        {
+            label: 'komodo12 analysis',
+            backgroundColor: window.chartColors.green,
+            borderColor: window.chartColors.green,
+            data: [],
+            fill: true
+        }
+    ]
+    chart.update();
 
 });
 
