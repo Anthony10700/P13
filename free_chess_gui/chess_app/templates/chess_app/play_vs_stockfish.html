@@ -1,8 +1,29 @@
-{% extends "base.html" %} {% block content %} {% load static %}
+{% extends "base.html" %}{% block left_opt %}
+<div class="col-12 bg-night_2 mt-2 shadow_perso" id="div_btn_option">
+    <label>Options : </label>
+    <div class="container">
+        <div class="row justify-content-center">
+            <button id="switch_color" type="button" class="btn btn-secondary mt-2 btn_opt mb-2">Switch color</button>
+        </div>
+        <div class="row justify-content-center">
+            <button id="new_game" type="button" class="btn btn-secondary  mt-2  btn_opt mb-2">New game</button>
+        </div>
+        <div class="row justify-content-center">
+            <button id="analyse_opt" type="button" class="btn btn-secondary  mt-2 btn_opt mb-2">Analyse</button>
+        </div>
+        <div class="row justify-content-center">
+            <button id="flip" type="button" class="btn btn-secondary  mt-2 btn_opt mb-2">Flip board</button>
+        </div>
+    </div>
 
-<div class="justify-content-center" id="div_of_board_parrent">
-    <div id="myBoard"></div>
 
+
+
+</div> {% endblock %} {% block content %} {% load static %}
+
+<div class="justify-content-center row" id="div_of_board_parrent">
+    <div id="myBoard" class="col-12"></div>
+    {% include "chess_app/status_block.html" %}
 </div>
 
 
@@ -11,12 +32,7 @@
     MODULE = "stockfish";
     GAME_VIEWER = false;
 </script>
-<div class="col-12 bg-night_2 mt-2" id="div_btn_option">
-    <label>Options : </label>
-    <button id="switch_color" type="button" class="btn btn-secondary mt-2 btn_opt mb-2">Switch color</button>
-    <button id="new_game" type="button" class="btn btn-secondary  mt-2  btn_opt mb-2">New game</button>
-    <button id="analyse_opt" type="button" class="btn btn-secondary  mt-2 btn_opt mb-2">Analyse</button>
-    <button id="flip" type="button" class="btn btn-secondary  mt-2 btn_opt mb-2">Flip board</button>
-</div>
 
-{% include "chess_app/status_block.html" %} {% endblock %} {% block right %} {% include "chess_app/chat_info_block.html" %}{% endblock %}
+
+
+{% endblock %} {% block right %} {% include "chess_app/chat_info_block.html" %}{% endblock %}

@@ -21,9 +21,23 @@
 
 
 
-<div class="justify-content-center" id="div_of_board_parrent">
-    <div id="myBoard"></div>
+<div class="justify-content-center" id="news">
 
+    <div class="card text-center bg-night_2 shadow_perso">
+        <div class="card-header bg-night">
+            News
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">News #1</h5>
+            <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam exercitationem a explicabo ut cum! Veritatis, assumenda alias voluptatum vitae consectetur repudiandae vel accusantium officia hic? Adipisci voluptate repellendus suscipit
+                iusto!
+            </p>
+            <a href="#" class="btn btn-primary">go to the news</a>
+        </div>
+        <div class="card-footer text-muted bg-night">
+            2 days ago
+        </div>
+    </div>
 </div>
 
 
@@ -36,4 +50,4 @@
 
 
 
-{% include "chess_app/status_block.html" %} {% endblock %} {% block right %} {% include "chess_app/chat_info_block.html" %}{% endblock %}
+{% endblock %} {% block right %} {% include "chess_app/chat_info_block.html" %}{% endblock %}

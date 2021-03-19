@@ -19,9 +19,10 @@ from chess_app import views
 
 app_name = "chess_app"
 
-urlpatterns = [
-    path('', views.index),
+urlpatterns = [    
     path('admin/', admin.site.urls),
     path('chess_app/', include('chess_app.urls')),
     path('auth/', include('auth.urls')),
+    path('', include('django_private_chat.urls')),
+    path('', views.index),
 ]

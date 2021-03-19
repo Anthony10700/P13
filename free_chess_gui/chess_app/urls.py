@@ -24,4 +24,9 @@ urlpatterns = [
          name="show_the_game"),
     path('get_list_of_evalutation/', views.get_list_of_evalutation,
          name="get_list_of_evalutation"),
+    path(
+        'users.html',
+        view=views.UserListView.as_view(),
+        name='user_list'
+    ),
 ]

@@ -19,9 +19,9 @@
 {% endif %}
 
 
-<div class="justify-content-center" id="div_of_board_parrent">
-    <div id="myBoard"></div>
-
+<div class="container row" id="div_of_board_parrent">
+    <div id="myBoard" class="col-12"></div>
+    {% include "chess_app/status_block.html" %}
 </div>
 
 <script>
@@ -42,9 +42,9 @@
     var data_for_chart_komodo = JSON.parse("{{games.analyse_list_move_komodo}}");
     var data_for_chart_stockfish = JSON.parse("{{games.analyse_list_move_stockfish}}");
 </script>
-{% endif %} {% include "chess_app/status_block.html" %} {% endblock %} {% block block_of_chess_viewer %}
+{% endif %} {% endblock %} {% block block_of_chess_viewer %}
 
-<div class="col-12 bg-night_2" id="div_of_chess_viewer">
+<div class="col-12 bg-night_2 style-1" id="div_of_chess_viewer">
     <label>Graph  : </label>
     <div class="col-12" id="graph_of_game">
         <canvas id="myChart"></canvas>

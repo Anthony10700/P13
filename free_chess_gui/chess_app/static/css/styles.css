@@ -12,32 +12,41 @@
     cursor: pointer;
 }
 
-#page-top,
+#page-top {
+    background-color: #f2f2f2;
+    min-height: 768px !important;
+    min-width: 1366px !important;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
 #footer_base {
     background-color: #f2f2f2;
 }
 
-#wrapper,
+#wrapper {
+    min-height: 768px !important;
+    min-width: 1366px !important;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+
 #wrapper-right {
     overflow-x: hidden;
     overflow-y: hidden;
 }
 
-#wrapper {
-    min-height: 100vh;
-}
-
 #sidebar-wrapper-right {
-    min-height: 80vh;
+    position: relative;
     box-shadow: 2px 2px 12px #aaa;
     padding: 0.875rem;
     font-size: 1.2rem;
     margin-top: 10vh;
+    margin-bottom: 10vh;
     border-radius: 0.5rem;
 }
 
 #sidebar-wrapper {
-    min-height: 100vh;
     box-shadow: 2px 2px 12px #aaa;
     margin-left: 0;
     max-width: 20rem;
@@ -64,6 +73,7 @@
 }
 
 #menu-toggle-right {
+    position: relative;
     background-color: rgba(48, 48, 48, 0.884);
     color: #f2f2f2;
     width: 30px;
@@ -166,9 +176,10 @@
     font-size: 25px;
 }
 
-.col_middle {
-    height: 80%;
-}
+
+/* .col_middle {
+    height: 85vh;
+} */
 
 #div_info {
     min-height: 150px;
@@ -182,16 +193,13 @@
     margin-left: auto;
     margin-right: auto;
     overflow-y: scroll;
-    overflow-x: hidden;
-    max-width: 764px;
     border: 1px solid rgba(0, 0, 0, .125);
     border-radius: .5rem;
     margin-top: 10px;
-    padding: 5px;
+    padding: 15px;
     background-color: #fff;
     word-wrap: break-word;
-    height: 15vh;
-    scrollbar-color: red yellow;
+    min-height: 100px !important;
 }
 
 #status,
@@ -206,8 +214,7 @@
     margin-top: 10px;
     padding: 5px;
     background-color: #fff;
-    word-wrap: break-word;
-    min-height: 60vh;
+    width: 100%;
 }
 
 .board-b72b1 {
@@ -225,12 +232,9 @@
 }
 
 #myBoard {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#myBoard {
-    max-width: 764px;
+    padding: 0;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
 #div_of_sign_in {
@@ -273,10 +277,6 @@
     background-color: #555;
 }
 
-#div_chat_message {
-    width: 100%;
-}
-
 #sidebar-wrapper-right .btn {
     height: 40px;
 }
@@ -317,7 +317,7 @@
 }
 
 .card-body {
-    overflow-x: auto;
+    overflow-y: auto;
 }
 
 .scrollbar_game::-webkit-scrollbar {
@@ -339,19 +339,16 @@
     border-radius: 15px;
 }
 
-#div_col_middle,
 #div_col_right {
-    height: 80vh;
-}
-
-#div_col_right {
-    width: 150px !important;
+    width: 150px;
+    padding-left: 0px
 }
 
 #div_of_chess_viewer {
     border-radius: 10px;
-    min-height: 764px;
     border: 1px solid rgba(0, 0, 0, .125);
+    overflow: auto;
+    word-wrap: break-word;
 }
 
 #myChart {
@@ -402,7 +399,8 @@
 }
 
 #div_of_load_pgn textarea {
-    height: 200px !important;
+    min-height: 100px !important;
+    max-height: 200px;
     border-radius: 5px;
 }
 
@@ -420,7 +418,7 @@
 }
 
 #div_of_btn_opt_viewer {
-    position: relative;
+    position: absolute;
     bottom: 5px;
 }
 
@@ -438,5 +436,64 @@
     color: #f2f2f2;
     background-color: #161B25 !important;
     border: 1px solid rgb(25, 98, 255) !important;
+    border-radius: 5px;
+}
+
+#div_of_header {
+    min-height: 120px;
+    height: 120px;
+}
+
+#div_of_footer {
+    min-height: 30px;
+    width: 100%;
+}
+
+#div_col_left {
+    padding-top: 0px;
+    height: 100%;
+}
+
+#div_col_middle {
+    height: 100%;
+    padding-right: 0px;
+}
+
+#div_col_right {
+    height: 100% !important;
+}
+
+#div_of_board_parrent {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#table_of_moves,
+#div_list_moves {
+    width: 100% !important;
+    max-width: 100%;
+    overflow-x: auto;
+    word-wrap: break-word;
+    overflow-y: scroll;
+    padding: 0px;
+}
+
+.table th {
+    padding: 0 !important;
+}
+
+.table td {
+    padding-right: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-left: 2px;
+}
+
+#div_list_moves,
+#div_global_status,
+#div_of_chess_viewer,
+.shadow_perso {
+    box-shadow: 1px 1px 15px rgba(117, 117, 117, 0.849);
     border-radius: 5px;
 }

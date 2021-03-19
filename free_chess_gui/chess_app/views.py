@@ -6,7 +6,19 @@ from chess_app.services.chess_app_services import lc0_play_next_move, \
     save_last_move, save_move_engine, get_all_games_of_specify_user, get_page, \
     get_the_game_services, analyse_game
 import threading
+from braces.views import LoginRequiredMixin
+from django.views import generic
+from django.contrib.auth import get_user_model
 # Create your views here.
+
+
+class UserListView(LoginRequiredMixin, generic.ListView):
+    model = get_user_model()
+    # These next two lines tell the view to index lookups by username
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
+    template_name = 'chess_app/users.html'
+    login_url = 'admin/'
 
 
 def get_list_of_evalutation(request):

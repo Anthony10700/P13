@@ -756,8 +756,12 @@
         // fudge factor, and then keep reducing until we find an exact mod 8 for
         // our square size
         function calculateSquareSize() {
-            var containerWidth = parseInt($container.width(), 10)
 
+            if ($container.height() < $container.width()) {
+                var containerWidth = parseInt($container.height(), 10)
+            } else {
+                var containerWidth = parseInt($container.width(), 10)
+            }
             // defensive, prevent infinite loop
             if (!containerWidth || containerWidth <= 0) {
                 return 0
