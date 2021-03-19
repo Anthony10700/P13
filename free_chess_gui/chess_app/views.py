@@ -12,13 +12,13 @@ from django.contrib.auth import get_user_model
 # Create your views here.
 
 
-class UserListView(LoginRequiredMixin, generic.ListView):
-    model = get_user_model()
-    # These next two lines tell the view to index lookups by username
-    slug_field = 'username'
-    slug_url_kwarg = 'username'
-    template_name = 'chess_app/users.html'
-    login_url = 'admin/'
+# class UserListView(LoginRequiredMixin, generic.ListView):
+#     model = get_user_model()
+#     # These next two lines tell the view to index lookups by username
+#     slug_field = 'username'
+#     slug_url_kwarg = 'username'
+#     template_name = 'chess_app/users.html'
+#     login_url = 'admin/'
 
 
 def get_list_of_evalutation(request):

@@ -11,14 +11,16 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.db.models import Q
+from django.shortcuts import render
 
 
 class DialogListView(LoginRequiredMixin, generic.ListView):
     template_name = 'chat_public/dialogs.html'
     model = models.Dialog
     ordering = 'modified'
-    login_url = '/auth/sign_in.html'
-
+    login_url = '/chat_public/connect_required.html'
+    redirect_field_name = ""
+    
     def get_queryset(self):
         dialogs = models.Dialog.objects.filter(
             Q(owner=self.request.user) | Q(opponent=self.request.user))
@@ -54,7 +56,7 @@ class DialogListView(LoginRequiredMixin, generic.ListView):
                 else:
                     dialog = dialog[0]
                     context['active_dialog'] = [dialog]
-            print(dialog)
+            
         else:
             context['active_dialog'] = self.object_list[0]
         context['opponent_username'] = user
@@ -64,3 +66,13 @@ class DialogListView(LoginRequiredMixin, generic.ListView):
             settings.CHAT_WS_SERVER_PORT,
         )
         return context
+
+
+def connect_required(request):
+    """
+    connect_required
+
+    Args:
+        request ([type]): [description]
+    """
+    return render(request, 'chat_public/connect_required.html',  context={})

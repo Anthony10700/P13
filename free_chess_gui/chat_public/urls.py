@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import url
-
+from django.urls import path
 from . import views
 
 urlpatterns = [
@@ -13,5 +13,10 @@ urlpatterns = [
         regex=r'^dialogs/$',
         view=views.DialogListView.as_view(),
         name='dialogs'
+    ),
+    path(
+        'connect_required.html',
+        view=views.connect_required,
+        name='connect_required'
     ),
 ]
