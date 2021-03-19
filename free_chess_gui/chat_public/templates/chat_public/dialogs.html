@@ -1,6 +1,6 @@
 <body class="bg-color">
     {% load static %} {% load i18n %} {% block css %}
-    <link href="{% static 'css/django_private_chat.css' %}" rel="stylesheet" type="text/css" media="all">
+    <link href="{% static 'css/chat_public.css' %}" rel="stylesheet" type="text/css" media="all">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" /> {% endblock css %}
     <input id="owner_username" type="hidden" value="{{ request.user.username }}">
     <div class="container p-0 m-0 bg-color col-12">
