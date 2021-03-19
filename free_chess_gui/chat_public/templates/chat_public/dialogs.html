@@ -10,7 +10,7 @@
             <p class="text-danger" id="offline-status" style="display: none">{% trans "Offline" %}</p>
 
             <div id="messages" class="messages  mt-0 pt-1 pb-1 bg-color style-1">
-                {% for msg in active_dialog %}
+                {% if active_dialog|length > 0 %} {% for msg in active_dialog %}
                 <div class="row {% if msg.read %}msg-read{% else %}msg-unread{% endif %}" data-id="{{ msg.id }}">
                     <p class="{% if msg.sender == request.user %}pull-left{% else %}pull-right{% endif %}">
                         <span class="username">{{ msg.sender.username }}:</span> {{ msg.text }}
@@ -18,7 +18,8 @@
                                                     data-livestamp="{{ msg.get_formatted_create_datetime }}">{{ msg.get_formatted_create_datetime }}</span></span>
                     </p>
                 </div>
-                {% endfor %}
+                {% endfor %} {% endif %}
+
             </div>
 
             <div class="row pl-1 mt-2">

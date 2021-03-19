@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_private_chat',
+    "chat_public",
 ]
 
 MIDDLEWARE = [
@@ -61,6 +61,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR / 'chess_app/templates',
                  BASE_DIR / 'auth/templates',
+                 BASE_DIR / 'chat_public/templates',
                  BASE_ALL_APP_PATH / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -145,7 +146,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'chess_app/static'),
-                    os.path.join(BASE_DIR, 'auth/static')]
+                    os.path.join(BASE_DIR, 'auth/static'),
+                    os.path.join(BASE_DIR, 'chat_public/static')]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = (

@@ -23,6 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('chess_app/', include('chess_app.urls')),
     path('auth/', include('auth.urls')),
-    path('', include('django_private_chat.urls')),
     path('', views.index),
+    path('chat_public/', include('chat_public.urls')),
 ]
