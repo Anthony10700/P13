@@ -1,10 +1,5 @@
 from django.views import generic
 from braces.views import LoginRequiredMixin
-
-try:
-    from django.urls import reverse
-except ImportError:
-    from django.core.urlresolvers import reverse
 from . import models
 from . import utils
 from django.shortcuts import get_object_or_404
@@ -20,7 +15,7 @@ class DialogListView(LoginRequiredMixin, generic.ListView):
     ordering = 'modified'
     login_url = '/chat_public/connect_required.html'
     redirect_field_name = ""
-    
+
     def get_queryset(self):
         dialogs = models.Dialog.objects.filter(
             Q(owner=self.request.user) | Q(opponent=self.request.user))
@@ -29,7 +24,6 @@ class DialogListView(LoginRequiredMixin, generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         if self.kwargs.get('username'):
-            # TODO: show alert that user is not found instead of 404
             user = get_object_or_404(
                 get_user_model(),
                 username=self.kwargs.get('username'))
@@ -49,14 +43,12 @@ class DialogListView(LoginRequiredMixin, generic.ListView):
                     owner=self.request.user, opponent=user)
                 context['active_dialog'] = dialog
             else:
-                
                 if user.username == "chat_user_all":
                     dialog = dialog
                     context['active_dialog'] = dialog
                 else:
                     dialog = dialog[0]
                     context['active_dialog'] = [dialog]
-            
         else:
             context['active_dialog'] = self.object_list[0]
         context['opponent_username'] = user

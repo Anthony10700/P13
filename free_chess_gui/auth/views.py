@@ -98,18 +98,10 @@ def logout_view(request):
         logout(request)
         context = {'title': "Déconnexion",
                    "user_is_connect": False}
-        return redirect("index")
+        return render(request, 'chess_app/index.html',  context=context)
     else:
         context = {'title': "Vous n'êtes pas connecté.",
                    'err_show': "Vous n'êtes pas connecté.",
                    "user_is_connect": False}
         return render(request, 'auth/sign_in.html',  context=context)
-
-def save_game(request):
-    """This views save a game in database
-
-    Args:
-        request ([type]): [description]
-    """
-
 
