@@ -49,7 +49,7 @@ class UrlAuthTests(TestCase):
         time.sleep(1)
         browser.execute_script(
             "document.getElementById('btn_submit_sign_in').click();")
-        time.sleep(2)
+        time.sleep(5)
         browser.quit()
 
     def setUp(self):

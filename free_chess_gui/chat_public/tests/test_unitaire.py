@@ -1,23 +1,23 @@
-"""
-        class of test Services chat_public
-    """
-import json
-from django.test import RequestFactory, TransactionTestCase, Client
-from django.contrib.auth import logout, get_user_model
+# """
+#         class of test Services chat_public
+#     """
+# import json
+# from django.test import RequestFactory, TransactionTestCase, Client
+# from django.contrib.auth import logout, get_user_model
 
 
-# Create your tests here.
+# # Create your tests here.
 
 
-class TestServicesChat_publicUnitaire(TransactionTestCase):
-    """class of test Services chat_public Unitaire API
+# class TestServicesChat_publicUnitaire(TransactionTestCase):
+#     """class of test Services chat_public Unitaire API
 
-    Args:
-        TransactionTestCase ([type]): TransactionTestCase and not
-        TestCase because Every test needs "setUp method"
-    """
-    reset_sequences = True
+#     Args:
+#         TransactionTestCase ([type]): TransactionTestCase and not
+#         TestCase because Every test needs "setUp method"
+#     """
+#     reset_sequences = True
 
-    def setUp(self):
-        """[summary]
-        """
+#     def setUp(self):
+#         """[summary]
+#         """

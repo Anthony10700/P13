@@ -1,7 +1,6 @@
 from test_plus.test import TestCase
-from chat_public.utils import get_dialogs_with_user, get_user_from_session
-from django.contrib.sessions.models import Session
-from chat_public.models import Dialog, Message
+from chat_public.utils import get_dialogs_with_user
+from chat_public.models import Dialog
 
 
 class TestUtilsFunctions(TestCase):
