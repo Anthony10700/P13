@@ -3,6 +3,7 @@ from django.contrib import admin
 # Register your models here.
 from .models import Dialog, Message
 
+
 class DialogAdmin(admin.ModelAdmin):
     list_display = ('id', 'created', 'modified', 'owner', 'opponent')
     list_filter = ('created', 'modified', 'owner', 'opponent')

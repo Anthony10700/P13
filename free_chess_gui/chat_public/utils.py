@@ -18,7 +18,7 @@ async def get_user_from_session(session_key):
     if session:
         session_data = session.get_decoded()
         uid = session_data.get('_auth_user_id')
-        user = get_user_model().objects.filter(id=uid).first()  # get object or none
+        user = get_user_model().objects.filter(id=uid).first()
         return user
     else:
         return None
@@ -29,7 +29,8 @@ def get_dialogs_with_user(user_1, user_2):
     gets the dialog between user_1 and user_2
     :param user_1: the first user in dialog (owner or opponent)
     :param user_2: the second user in dialog (owner or opponent)
-    :return: queryset which include dialog between user_1 and user_2 (queryset can be empty)
+    :return: queryset which include dialog between user_1 and user_2
+    (queryset can be empty)
     """
     return Dialog.objects.filter(
         Q(owner=user_1, opponent=user_2) | Q(opponent=user_1, owner=user_2))
@@ -40,9 +41,11 @@ def get_dialogs_with_chat_all(user_2):
     gets the dialog for user_2
     :param user_1: the first user in dialog (owner or opponent)
     :param user_2: the second user in dialog (owner or opponent)
-    :return: queryset which include dialog between user_1 and user_2 (queryset can be empty)
+    :return: queryset which include dialog between user_1 and user_2
+    (queryset can be empty)
     """
-    return Dialog.objects.filter(Q(opponent=user_2)) #.order_by('-created')
+    return Dialog.objects.filter(Q(opponent=user_2))
+
 
 logging.basicConfig(level=logging.DEBUG,
                     format="%(asctime)s:%(levelname)s:%(message)s",

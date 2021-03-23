@@ -298,7 +298,8 @@ function on_resize() {
         $("#div_info").css("height", $("#sidebar-wrapper-right").height() * 0.2);
         $("#div_chat").css("height", $("#sidebar-wrapper-right").height() * 0.8 - 40);
 
-        if (TITTLE != "History of your games") {
+        if (TITTLE != "History of your games" && TITTLE != "Déconnexion" && TITTLE != "Vous n&#x27;êtes pas connecté.") {
+            console.log("ici 5")
             if (MODULE != "") {
                 $('#myBoard').width($(window).width() * 0.6)
                 $('#myBoard').height($(window).height() * 0.6)
@@ -342,6 +343,10 @@ function on_resize() {
                 $("#myBoard").height($("#myBoard").outerWidth())
             }
 
+        } else {
+            $("#div_of_board_parrent").css("width", $(window).width() * 0.7);
+
+            $("#div_middle_global").css("height", $("body").outerHeight() - $("#div_of_header").outerHeight() - $("#div_of_footer").outerHeight());
         }
 
         $("#chat_iframe").css("height", $("#div_chat").height());
@@ -447,17 +452,18 @@ $(document).ready(function() {
         board = Chessboard('myBoard', config);
         load_moves_in_table()
 
-    } else if (MODULE == "" && TITTLE != "Account" && TITTLE != "chess at" && TITTLE != "Inscription") {
-        config = {
-            orientation: user_color,
-            draggable: false,
-            position: 'start',
-            pieceTheme: DJANGO_STATIC_URL + '{piece}.png',
-
-        }
-        board = Chessboard('myBoard', config);
-        board.start()
     }
+    // else if (MODULE == "" && TITTLE != "Account" && TITTLE != "chess at" && TITTLE != "Inscription") {
+    //     config = {
+    //         orientation: user_color,
+    //         draggable: false,
+    //         position: 'start',
+    //         pieceTheme: DJANGO_STATIC_URL + '{piece}.png',
+
+    //     }
+    //     board = Chessboard('myBoard', config);
+    //     board.start()
+    // }
     on_resize()
     $(window).resize(function() {
         on_resize()

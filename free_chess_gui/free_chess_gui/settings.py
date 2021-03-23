@@ -159,3 +159,5 @@ CHAT_WS_SERVER_PORT = 5002
 CHAT_WS_SERVER_PROTOCOL = 'ws'
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'

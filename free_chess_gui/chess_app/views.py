@@ -3,22 +3,9 @@ import json
 from django.contrib import messages
 from chess_app.services.chess_app_services import lc0_play_next_move, \
     stockfish_play_next_move, komodo_play_next_move, make_new_game,\
-    save_last_move, save_move_engine, get_all_games_of_specify_user, get_page, \
-    get_the_game_services, analyse_game
+    save_last_move, save_move_engine, get_all_games_of_specify_user, \
+    get_page, get_the_game_services, analyse_game
 import threading
-from braces.views import LoginRequiredMixin
-from django.views import generic
-from django.contrib.auth import get_user_model
-# Create your views here.
-
-
-# class UserListView(LoginRequiredMixin, generic.ListView):
-#     model = get_user_model()
-#     # These next two lines tell the view to index lookups by username
-#     slug_field = 'username'
-#     slug_url_kwarg = 'username'
-#     template_name = 'chess_app/users.html'
-#     login_url = 'admin/'
 
 
 def get_list_of_evalutation(request):
@@ -31,10 +18,10 @@ def get_list_of_evalutation(request):
     if "time" in request.GET:
         time = int(request.GET["time"])
     else:
-        time = 0
+        time = 1
     if time < 10:
         context = {}
-        game = get_the_game_services(request)
+        game = get_the_game_services(request.GET)
         if game is not None:
             list_of_process = []
             list_of_process.append(
@@ -42,7 +29,7 @@ def get_list_of_evalutation(request):
                     target=analyse_game,
                     args=(
                         "lc0",
-                        game.pgn,                        
+                        game.pgn,
                         time,
                         context)))
 
@@ -51,7 +38,7 @@ def get_list_of_evalutation(request):
                     target=analyse_game,
                     args=(
                         "stockfish",
-                        game.pgn,                        
+                        game.pgn,
                         time,
                         context)))
 
@@ -60,7 +47,7 @@ def get_list_of_evalutation(request):
                     target=analyse_game,
                     args=(
                         "komodo12",
-                        game.pgn,                        
+                        game.pgn,
                         time,
                         context)))
 
@@ -84,7 +71,7 @@ def get_list_of_evalutation(request):
                         target=analyse_game,
                         args=(
                             "lc0",
-                            pgn,                           
+                            pgn,   
                             time,
                             context)))
 
@@ -93,7 +80,7 @@ def get_list_of_evalutation(request):
                         target=analyse_game,
                         args=(
                             "stockfish",
-                            pgn,                           
+                            pgn,     
                             time,
                             context)))
 
@@ -102,7 +89,7 @@ def get_list_of_evalutation(request):
                         target=analyse_game,
                         args=(
                             "komodo12",
-                            pgn,                            
+                            pgn, 
                             time,
                             context)))
 
@@ -113,6 +100,8 @@ def get_list_of_evalutation(request):
                     proc.join()
 
                 return HttpResponse(json.dumps(context))
+            else:
+                return HttpResponse(json.dumps({}))
     else:
         context = {"error":
                    "time per movement too large, less than ten recommend"}
@@ -143,7 +132,7 @@ def show_the_game(request):
     Args:
         request ([type]): [description]
     """
-    game = get_the_game_services(request)
+    game = get_the_game_services(request.GET)
     if game is not None:
         if request.user.is_authenticated:
             context = {
@@ -180,8 +169,7 @@ def show_the_game(request):
                 request,
                 'chess_app/show_the_game.html',
                 context=context)
-        return redirect("index")
-        
+
 
 def get_fen(request):
     """This views get best move uci 
@@ -235,7 +223,7 @@ def history_game(request):
     context = {'title': "History of your games",
                "user_is_connect": False}
     if request.user.is_authenticated:
-        all_games = get_all_games_of_specify_user(request)
+        all_games = get_all_games_of_specify_user(request.user)
         context["user_is_connect"] = True
         if len(all_games) > 6:
             if "page" in request.GET:

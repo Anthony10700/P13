@@ -1,4 +1,3 @@
-import asyncio
 import json
 import logging
 import websockets
@@ -47,10 +46,14 @@ async def gone_online(stream):
                 logger.debug('User ' + user_owner.username + ' gone online')
                 # find all connections including user_owner as opponent,
                 # send them a message that the user has gone online
-                online_opponents = list(filter(lambda x: x[1] == user_owner.username, ws_connections))
-                online_opponents_sockets = [ws_connections[i] for i in online_opponents]
+                online_opponents = list(
+                    filter(lambda x: x[1] == user_owner.username,
+                           ws_connections))
+                online_opponents_sockets = [
+                    ws_connections[i] for i in online_opponents]
                 await fanout_message(online_opponents_sockets,
-                                     {'type': 'gone-online', 'usernames': [user_owner.username]})
+                                     {'type': 'gone-online',
+                                      'usernames': [user_owner.username]})
             else:
                 pass  # invalid session id
         else:
@@ -59,7 +62,8 @@ async def gone_online(stream):
 
 async def check_online(stream):
     """
-    Used to check user's online opponents and show their online/offline status on page on init
+    Used to check user's online opponents and show
+    their online/offline status on page on init
     """
     while True:
         packet = await stream.get()
@@ -69,16 +73,24 @@ async def check_online(stream):
             user_owner = await get_user_from_session(session_id)
             if user_owner:
                 # Find all connections including user_owner as opponent
-                online_opponents = list(filter(lambda x: x[1] == user_owner.username, ws_connections))
-                logger.debug('User ' + user_owner.username + ' has ' + str(len(online_opponents)) + ' opponents online')
+                online_opponents = list(
+                    filter(lambda x: x[1] == user_owner.username,
+                           ws_connections))
+                logger.debug('User ' + user_owner.username + ' has ' + str(
+                    len(online_opponents)) + ' opponents online')
                 # Send user online statuses of his opponents
-                socket = ws_connections.get((user_owner.username, opponent_username))
+                socket = ws_connections.get((
+                    user_owner.username,
+                    opponent_username))
                 if socket:
-                    online_opponents_usernames = [i[0] for i in online_opponents]
-                    await target_message(socket, {'type': 'gone-online', 'usernames': online_opponents_usernames})
+                    online_opponents_usernames = [
+                        i[0] for i in online_opponents]
+                    await target_message(
+                        socket,
+                        {'type': 'gone-online',
+                         'usernames': online_opponents_usernames})
                 else:
-                    pass  # socket for the pair user_owner.username, opponent_username not found
-                    # this can be in case the user has already gone offline
+                    pass
             else:
                 pass  # invalid session id
         else:
@@ -98,10 +110,15 @@ async def gone_offline(stream):
                 logger.debug('User ' + user_owner.username + ' gone offline')
                 # find all connections including user_owner as opponent,
                 #  send them a message that the user has gone offline
-                online_opponents = list(filter(lambda x: x[1] == user_owner.username, ws_connections))
-                online_opponents_sockets = [ws_connections[i] for i in online_opponents]
-                await fanout_message(online_opponents_sockets,
-                                     {'type': 'gone-offline', 'username': user_owner.username})
+                online_opponents = list(
+                    filter(lambda x: x[1] == user_owner.username,
+                           ws_connections))
+                online_opponents_sockets = [
+                    ws_connections[i] for i in online_opponents]
+                await fanout_message(
+                    online_opponents_sockets,
+                    {'type': 'gone-offline',
+                     'username': user_owner.username})
             else:
                 pass  # invalid session id
         else:
@@ -121,11 +138,10 @@ async def new_messages_handler(stream):
         if session_id and msg and username_opponent:
             user_owner = await get_user_from_session(session_id)
             if user_owner:
-                # all_user_to_send = 
-                user_opponent = get_user_model().objects.get(username=username_opponent)
+                user_opponent = get_user_model().objects.get(
+                    username=username_opponent)
                 dialog = get_dialogs_with_user(user_owner, user_opponent)
                 if len(dialog) > 0:
-                    # Save the message
                     msg = models.Message.objects.create(
                         dialog=dialog[0],
                         sender=user_owner,
@@ -135,30 +151,29 @@ async def new_messages_handler(stream):
                     packet['created'] = msg.get_formatted_create_datetime()
                     packet['sender_name'] = msg.sender.username
                     packet['message_id'] = msg.id
-
-                    # Send the message
                     connections = []
-                    # Find socket of the user which sent the message
-                    if (user_owner.username, user_opponent.username) in ws_connections:
-                        connections.append(ws_connections[(user_owner.username, user_opponent.username)])
-                    # Find socket of the opponent
-                    if (user_opponent.username, user_owner.username) in ws_connections:
-                        connections.append(ws_connections[(user_opponent.username, user_owner.username)])
-
-           
+                    if (user_owner.username,
+                            user_opponent.username) in ws_connections:
+                        connections.append(
+                            ws_connections[
+                                (user_owner.username,
+                                 user_opponent.username)])
+                    if (user_opponent.username,
+                            user_owner.username) in ws_connections:
+                        connections.append(ws_connections[
+                            (user_opponent.username, user_owner.username)])
                     else:
-                        # Find sockets of people who the opponent is talking with
-                        opponent_connections = list(filter(lambda x: x[0] == user_opponent.username, ws_connections))
-                        opponent_connections_sockets = [ws_connections[i] for i in opponent_connections]
+                        opponent_connections = list(
+                            filter(lambda x: x[0] == user_opponent.username,
+                                   ws_connections))
+                        opponent_connections_sockets = [
+                            ws_connections[i] for i in opponent_connections]
                         connections.extend(opponent_connections_sockets)
-                        
                     if user_opponent.username == "chat_user_all":
                         connections = []
                         for con in ws_connections:
                             if con[1] == "chat_user_all":
                                 connections.append(ws_connections[con])
-
-                    # print("########### ici all connections : ",connections)
                     await fanout_message(connections, packet)
                 else:
                     pass  # no dialog found
@@ -202,10 +217,14 @@ async def is_typing_handler(stream):
         if session_id and user_opponent and typing is not None:
             user_owner = await get_user_from_session(session_id)
             if user_owner:
-                opponent_socket = ws_connections.get((user_opponent, user_owner.username))
+                opponent_socket = ws_connections.get(
+                    (user_opponent,
+                     user_owner.username))
                 if typing and opponent_socket:
-                    await target_message(opponent_socket,
-                                         {'type': 'opponent-typing', 'username': user_opponent})
+                    await target_message(
+                        opponent_socket,
+                        {'type': 'opponent-typing',
+                         'username': user_opponent})
             else:
                 pass  # invalid session id
         else:
@@ -229,11 +248,15 @@ async def read_message_handler(stream):
                     message.read = True
                     message.save()
                     logger.debug('Message ' + str(message_id) + ' is now read')
-                    opponent_socket = ws_connections.get((user_opponent, user_owner.username))
+                    opponent_socket = ws_connections.get(
+                        (user_opponent,
+                         user_owner.username))
                     if opponent_socket:
-                        await target_message(opponent_socket,
-                                             {'type': 'opponent-read-message',
-                                              'username': user_opponent, 'message_id': message_id})
+                        await target_message(
+                            opponent_socket,
+                            {'type': 'opponent-read-message',
+                             'username': user_opponent,
+                             'message_id': message_id})
                 else:
                     pass  # message not found
             else:
@@ -262,7 +285,8 @@ async def main_handler(websocket, path):
         ws_connections[(user_owner, username)] = websocket
 
         # While the websocket is open, listen for incoming messages/events
-        # if unable to listening for messages/events, then disconnect the client
+        # if unable to listening for messages/events,
+        # then disconnect the client
         try:
             while websocket.open:
                 data = await websocket.recv()

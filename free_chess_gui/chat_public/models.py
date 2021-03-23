@@ -40,4 +40,6 @@ class Message(TimeStampedModel, SoftDeletableModel):
         return str(self.created)[:-13]
 
     def __str__(self):
-        return self.sender.username + "(" + self.get_formatted_create_datetime() + ") - '" + self.text + "'"
+        return self.sender.username + "(\
+            " + self.get_formatted_create_datetime() + ") - '\
+                " + self.text + "'"

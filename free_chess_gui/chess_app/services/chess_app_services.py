@@ -6,27 +6,25 @@ from chess_app.models import Game_chess
 from django.contrib.auth import get_user_model
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 import io
-import json
-from multiprocessing import Process
 from django.core.exceptions import ObjectDoesNotExist
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 
 
-def get_the_game_services(request):
+def get_the_game_services(request_get):
     """This method test if id in request and get the game model in database
 
     Args:
         request ([type]): [description]
     """
     # TODO test if user send "qsdqsdqsd"
-    if "id" in request.GET and request.GET["id"] != "":
+    if "id" in request_get and request_get["id"] != "":
         try:
-
-            game = Game_chess.objects.get(id=request.GET["id"])
+            game = Game_chess.objects.get(id=request_get["id"])
         except ObjectDoesNotExist:
             return None
         return game
     else:
+        
         return None
 
 
@@ -60,15 +58,15 @@ def get_page(page, all_game, nb_of_articles_per_page):
     return recherche, paginate
 
 
-def get_all_games_of_specify_user(request):
+def get_all_games_of_specify_user(request_user):
     """This method get all game of user
 
     Args:
         request ([type]): [description]
     """
     queryset_games = Game_chess.objects.filter(
-        player_white=request.user.id) | Game_chess.objects.filter(
-            player_black=request.user.id)
+        player_white=request_user.id) | Game_chess.objects.filter(
+            player_black=request_user.id)
     queryset_games = queryset_games.filter(last_move__isnull=False)
     return queryset_games
 
@@ -79,13 +77,17 @@ def save_move_engine(game_id_current, last_move, last_fen_player):
     Args:
         last_move ([type]): [description]
     """
-    game = Game_chess.objects.get(id=game_id_current)
-    game.last_move = last_move
-    game.pgn, game.last_fen = add_last_move_to_pgn(
-        last_move, game.pgn,
-        from_uci=True,
-        last_fen_player=last_fen_player)
-    game.save()
+    try:
+        game = Game_chess.objects.get(id=game_id_current)
+        game.last_move = last_move
+        game.pgn, game.last_fen = add_last_move_to_pgn(
+            last_move, game.pgn,
+            from_uci=True,
+            last_fen_player=last_fen_player)
+        game.save()
+    except ObjectDoesNotExist:
+        pass
+   
 
 
 def add_last_move_to_pgn(last_move, pgn, from_uci=False, last_fen_player=""):
@@ -96,7 +98,6 @@ def add_last_move_to_pgn(last_move, pgn, from_uci=False, last_fen_player=""):
         last_move ([type]): [description]
     """
     try:
-        print(pgn)
         pgn = io.StringIO(pgn)
         pgn_chess_game = chess.pgn.read_game(pgn)
         board = chess.Board()
@@ -186,11 +187,8 @@ def lc0_play_next_move(fen, time_per_move=1):
     engine_lc0 = chess.engine.SimpleEngine.popen_uci(
         str(BASE_DIR) + "/lc0/lc0.exe")
     board = chess.Board(fen)
-    print("board = ", fen)
     # result = engine.play(board, chess.engine.Limit(time=5))
     info = engine_lc0.analyse(board, chess.engine.Limit(time=time_per_move))
-    print(info["score"])    
-    print(info["pv"])
     engine_lc0.quit()
     return str(info["pv"][0])
 
@@ -204,12 +202,9 @@ def stockfish_play_next_move(fen, time_per_move=1):
     engine_stockfish = chess.engine.SimpleEngine.popen_uci(
         str(BASE_DIR) + "/stockfish/stockfish.exe")
     board = chess.Board(fen)
-    print("board = ", fen)
     # result = engine.play(board, chess.engine.Limit(time=5))
     info = engine_stockfish.analyse(
         board, chess.engine.Limit(time=time_per_move))
-    print(info["score"])
-    print(info["pv"])
     engine_stockfish.quit()
     return str(info["pv"][0])
 
@@ -223,11 +218,8 @@ def komodo_play_next_move(fen, time_per_move=1):
     komodo = chess.engine.SimpleEngine.popen_uci(
         str(BASE_DIR) + "/komodo12/Windows/komodo-12.1.1-64bit.exe")
     board = chess.Board(fen)
-    print("board = ", fen)
     # result = engine.play(board, chess.engine.Limit(time=5))
     info = komodo.analyse(board, chess.engine.Limit(time=time_per_move))
-    print(info["score"])
-    print(info["pv"])
     komodo.quit()
     return str(info["pv"][0])
 
