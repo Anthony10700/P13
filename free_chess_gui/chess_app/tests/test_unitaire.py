@@ -1,9 +1,8 @@
 """
         class of test Services Auth
     """
-import json
-from django.test import RequestFactory, TransactionTestCase, Client
-from django.contrib.auth import logout, get_user_model
+from django.test import TransactionTestCase
+from django.contrib.auth import get_user_model
 from chess_app.services.chess_app_services import get_the_game_services
 from chess_app.models import Game_chess
 

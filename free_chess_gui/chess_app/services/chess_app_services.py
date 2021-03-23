@@ -87,7 +87,6 @@ def save_move_engine(game_id_current, last_move, last_fen_player):
         game.save()
     except ObjectDoesNotExist:
         pass
-   
 
 
 def add_last_move_to_pgn(last_move, pgn, from_uci=False, last_fen_player=""):
@@ -167,13 +166,15 @@ def make_new_game(module_name, user, user_color):
             player_white=user,
             player_black=engine,
             pgn=chess.pgn.Game(),
-            last_fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+            last_fen=(
+                "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"))
     else:
         new_game = Game_chess.objects.create(
             player_white=engine,
             player_black=user,
             pgn=chess.pgn.Game(),
-            last_fen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+            last_fen=(
+                "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"))
     new_game.save()
     return new_game.id
 
@@ -239,13 +240,13 @@ def analyse_game(engine, pgn, time_per_move, dict_of_value):
     board = chess.Board()
     if engine == "lc0":
         engine_rdy = chess.engine.SimpleEngine.popen_uci(
-        str(BASE_DIR) + "/lc0/lc0.exe")
+            str(BASE_DIR) + "/lc0/lc0.exe")
     elif engine == "komodo12":
         engine_rdy = chess.engine.SimpleEngine.popen_uci(
-        str(BASE_DIR) + "/komodo12/Windows/komodo-12.1.1-64bit.exe")
+            str(BASE_DIR) + "/komodo12/Windows/komodo-12.1.1-64bit.exe")
     elif engine == "stockfish":
         engine_rdy = chess.engine.SimpleEngine.popen_uci(
-        str(BASE_DIR) + "/stockfish/stockfish.exe")
+            str(BASE_DIR) + "/stockfish/stockfish.exe")
 
     for (i, move) in enumerate(pgn_chess_game.mainline_moves()):
         board.push_uci(move.uci())

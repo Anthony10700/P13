@@ -99,7 +99,7 @@ class TestServicesAuthIntegration(TransactionTestCase):
         self.assertEqual(result_dict, resulta)
 
 
-class TestUrlAuth(TestCase):
+class TestUrlAuthIntegration(TestCase):
     """
     Class test of url of app auth (test views)
 

@@ -1,7 +1,7 @@
 """
         class of test Services ChessApp
     """
-from django.test import RequestFactory, TransactionTestCase, Client
+from django.test import RequestFactory, TransactionTestCase, Client, 
 from django.contrib.auth import get_user_model
 from chess_app.services.chess_app_services import get_page, \
     get_all_games_of_specify_user, save_move_engine, add_last_move_to_pgn, \

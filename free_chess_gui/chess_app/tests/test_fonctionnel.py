@@ -5,8 +5,6 @@ import time
 from django.test import TestCase, Client
 # Create your tests here.
 from selenium import webdriver
-from chess_app.models import Game_chess
-from django.contrib.auth import get_user_model
 from selenium.common.exceptions import NoSuchElementException
 
 firefox_options = webdriver.FirefoxOptions()
@@ -121,7 +119,8 @@ class UrlchessappTests(TestCase):
         grid.click()
         time.sleep(2)
         self.browser.execute_script(
-            "send_fen('rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1');")
+            "send_fen('rnbqkbnr/pppppppp/8/8/8\
+                /5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1');")
         time.sleep(2)
 
         self.browser.get('http://127.0.0.1:8000/chess_app/history_game.html')
