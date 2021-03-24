@@ -1,8 +1,7 @@
 import json
 import logging
 
-from .channels import new_messages, users_changed, online, offline, \
-     check_online, is_typing, read_unread
+from .channels import new_messages, users_changed
 
 logger = logging.getLogger('chat_public-dialog')
 
@@ -11,11 +10,6 @@ class MessageRouter(object):
     MESSAGE_QUEUES = {
         'new-message': new_messages,
         'new-user': users_changed,
-        'online': online,
-        'offline': offline,
-        'check-online': check_online,
-        'is-typing': is_typing,
-        'read_message': read_unread
     }
 
     def __init__(self, data):

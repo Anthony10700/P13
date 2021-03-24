@@ -1,5 +1,5 @@
 """
-        class of test views Auth 
+        class of test views Auth
     """
 import time
 from django.test import TestCase, Client
