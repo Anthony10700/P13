@@ -1,5 +1,5 @@
 """
-        class of test views chess_app 
+        class of test views chess_app
     """
 import time
 from django.test import TestCase, Client
@@ -51,7 +51,6 @@ class UrlchessappTests(TestCase):
         browser.execute_script(
             "document.getElementById('btn_submit_sign_in').click();")
         time.sleep(2)
-        
         browser.quit()
 
     def setUp(self):

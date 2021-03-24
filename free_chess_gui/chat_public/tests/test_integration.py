@@ -22,11 +22,10 @@ class TestDialogListView(TestCase):
 
     def test_get_queryset(self):
         request = self.factory.get(
-            reverse('dialogs_detail', kwargs={'username':'opuser'}))
+            reverse('dialogs_detail', kwargs={'username': 'opuser'}))
         request.user = self.owner_user
         test_view = DialogListView()
         test_view.request = request
         queryset = list(test_view.get_queryset())
         required_queryset = [self.right_dialog]
         self.assertEqual(queryset, required_queryset)
-

@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponse, redirect
+from django.shortcuts import render, HttpResponse
 import json
 from django.contrib import messages
 from chess_app.services.chess_app_services import lc0_play_next_move, \
@@ -71,7 +71,7 @@ def get_list_of_evalutation(request):
                         target=analyse_game,
                         args=(
                             "lc0",
-                            pgn,   
+                            pgn,
                             time,
                             context)))
 
@@ -80,7 +80,7 @@ def get_list_of_evalutation(request):
                         target=analyse_game,
                         args=(
                             "stockfish",
-                            pgn,     
+                            pgn,
                             time,
                             context)))
 
@@ -89,7 +89,7 @@ def get_list_of_evalutation(request):
                         target=analyse_game,
                         args=(
                             "komodo12",
-                            pgn, 
+                            pgn,
                             time,
                             context)))
 
@@ -172,8 +172,8 @@ def show_the_game(request):
 
 
 def get_fen(request):
-    """This views get best move uci 
-
+    """
+    This views get best move uci
     Args:
         request ([type]): reqruiement {"module" = "lc0"} for example
 

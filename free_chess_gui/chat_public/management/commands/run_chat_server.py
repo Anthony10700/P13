@@ -21,7 +21,8 @@ class Command(BaseCommand):
             elif sys.version_info >= (3, 4):
                 protocol = ssl.PROTOCOL_TLSv1
             else:
-                v = str(sys.version_info.major) + '.' + str(sys.version_info.minor)
+                v = str(sys.version_info.major) + '.' + str(
+                    sys.version_info.minor)
                 version_s = 'Version %s is not supported for wss!' % v
                 raise Exception(version_s)
             ssl_context = ssl.SSLContext(protocol)
@@ -30,7 +31,7 @@ class Command(BaseCommand):
             ssl_context = None
 
         if hasattr(asyncio, "ensure_future"):
-            ensure_future = asyncio.ensure_future 
+            ensure_future = asyncio.ensure_future
         else:
             ensure_future = getattr(asyncio, "async")
 
@@ -45,11 +46,5 @@ class Command(BaseCommand):
 
         logger.info('Chat server started')
         ensure_future(handlers.new_messages_handler(channels.new_messages))
-        ensure_future(handlers.users_changed_handler(channels.users_changed))
-        ensure_future(handlers.gone_online(channels.online))
-        ensure_future(handlers.check_online(channels.check_online))
-        ensure_future(handlers.gone_offline(channels.offline))
-        ensure_future(handlers.is_typing_handler(channels.is_typing))
-        ensure_future(handlers.read_message_handler(channels.read_unread))
         loop = asyncio.get_event_loop()
         loop.run_forever()

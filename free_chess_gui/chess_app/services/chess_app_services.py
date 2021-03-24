@@ -24,7 +24,6 @@ def get_the_game_services(request_get):
             return None
         return game
     else:
-        
         return None
 
 
@@ -125,7 +124,7 @@ def add_last_move_to_pgn(last_move, pgn, from_uci=False, last_fen_player=""):
                 node = node.add_variation(
                     board.push_san(last_move))
         return new_pgn_chess_game, board.fen()
-    except ValueError as err:        
+    except ValueError as err:
         if str(err)[:11] == "illegal uci":
             print(str(err)[:11])
             # TODO rajouter ici un logger pour remonter l'info
@@ -266,5 +265,5 @@ def analyse_game(engine, pgn, time_per_move, dict_of_value):
                 list_of_cp.append(-100)
 
     dict_of_value[engine] = list_of_cp
-    engine_rdy.quit()        
+    engine_rdy.quit()
     print("Analyse finish " + engine + " ############")

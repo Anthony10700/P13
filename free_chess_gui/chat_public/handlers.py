@@ -9,19 +9,6 @@ logger = logging.getLogger('chat_public-dialog')
 ws_connections = {}
 
 
-async def target_message(conn, payload):
-    """
-    Distibuted payload (message) to one connection
-    :param conn: connection
-    :param payload: payload(json dumpable)
-    :return:
-    """
-    try:
-        await conn.send(json.dumps(payload))
-    except Exception as e:
-        logger.debug('could not send', e)
-
-
 async def fanout_message(connections, payload):
     """
     Distributes payload (message) to all connected ws clients
@@ -33,103 +20,10 @@ async def fanout_message(connections, payload):
             logger.debug('could not send', e)
 
 
-async def gone_online(stream):
-    """
-    Distributes the users online status to everyone he has dialog with
-    """
-    while True:
-        packet = await stream.get()
-        session_id = packet.get('session_key')
-        if session_id:
-            user_owner = await get_user_from_session(session_id)
-            if user_owner:
-                logger.debug('User ' + user_owner.username + ' gone online')
-                # find all connections including user_owner as opponent,
-                # send them a message that the user has gone online
-                online_opponents = list(
-                    filter(lambda x: x[1] == user_owner.username,
-                           ws_connections))
-                online_opponents_sockets = [
-                    ws_connections[i] for i in online_opponents]
-                await fanout_message(online_opponents_sockets,
-                                     {'type': 'gone-online',
-                                      'usernames': [user_owner.username]})
-            else:
-                pass  # invalid session id
-        else:
-            pass  # no session id
-
-
-async def check_online(stream):
-    """
-    Used to check user's online opponents and show
-    their online/offline status on page on init
-    """
-    while True:
-        packet = await stream.get()
-        session_id = packet.get('session_key')
-        opponent_username = packet.get('username')
-        if session_id and opponent_username:
-            user_owner = await get_user_from_session(session_id)
-            if user_owner:
-                # Find all connections including user_owner as opponent
-                online_opponents = list(
-                    filter(lambda x: x[1] == user_owner.username,
-                           ws_connections))
-                logger.debug('User ' + user_owner.username + ' has ' + str(
-                    len(online_opponents)) + ' opponents online')
-                # Send user online statuses of his opponents
-                socket = ws_connections.get((
-                    user_owner.username,
-                    opponent_username))
-                if socket:
-                    online_opponents_usernames = [
-                        i[0] for i in online_opponents]
-                    await target_message(
-                        socket,
-                        {'type': 'gone-online',
-                         'usernames': online_opponents_usernames})
-                else:
-                    pass
-            else:
-                pass  # invalid session id
-        else:
-            pass  # no session id or opponent username
-
-
-async def gone_offline(stream):
-    """
-    Distributes the users online status to everyone he has dialog with
-    """
-    while True:
-        packet = await stream.get()
-        session_id = packet.get('session_key')
-        if session_id:
-            user_owner = await get_user_from_session(session_id)
-            if user_owner:
-                logger.debug('User ' + user_owner.username + ' gone offline')
-                # find all connections including user_owner as opponent,
-                #  send them a message that the user has gone offline
-                online_opponents = list(
-                    filter(lambda x: x[1] == user_owner.username,
-                           ws_connections))
-                online_opponents_sockets = [
-                    ws_connections[i] for i in online_opponents]
-                await fanout_message(
-                    online_opponents_sockets,
-                    {'type': 'gone-offline',
-                     'username': user_owner.username})
-            else:
-                pass  # invalid session id
-        else:
-            pass  # no session id
-
-
 async def new_messages_handler(stream):
     """
     Saves a new chat message to db and distributes msg to connected users
     """
-    # TODO: handle no user found exception
     while True:
         packet = await stream.get()
         session_id = packet.get('session_key')
@@ -137,10 +31,14 @@ async def new_messages_handler(stream):
         username_opponent = packet.get('username')
         if session_id and msg and username_opponent:
             user_owner = await get_user_from_session(session_id)
+            print("############ ici = ", user_owner)
             if user_owner:
                 user_opponent = get_user_model().objects.get(
                     username=username_opponent)
+
+                print("############ ici = ", user_opponent)
                 dialog = get_dialogs_with_user(user_owner, user_opponent)
+                print("############ ici = ", dialog)
                 if len(dialog) > 0:
                     msg = models.Message.objects.create(
                         dialog=dialog[0],
@@ -176,93 +74,11 @@ async def new_messages_handler(stream):
                                 connections.append(ws_connections[con])
                     await fanout_message(connections, packet)
                 else:
-                    pass  # no dialog found
+                    pass
             else:
-                pass  # no user_owner
+                pass
         else:
-            pass  # missing one of params
-
-
-async def users_changed_handler(stream):
-    """
-    Sends connected client list of currently active users in the chatroom
-    """
-    while True:
-        await stream.get()
-
-        # Get list list of current active users
-        users = [
-            {'username': username, 'uuid': uuid_str}
-            for username, uuid_str in ws_connections.values()
-        ]
-
-        # Make packet with list of new users (sorted by username)
-        packet = {
-            'type': 'users-changed',
-            'value': sorted(users, key=lambda i: i['username'])
-        }
-        logger.debug(packet)
-        await fanout_message(ws_connections.keys(), packet)
-
-
-async def is_typing_handler(stream):
-    """
-    Show message to opponent if user is typing message
-    """
-    while True:
-        packet = await stream.get()
-        session_id = packet.get('session_key')
-        user_opponent = packet.get('username')
-        typing = packet.get('typing')
-        if session_id and user_opponent and typing is not None:
-            user_owner = await get_user_from_session(session_id)
-            if user_owner:
-                opponent_socket = ws_connections.get(
-                    (user_opponent,
-                     user_owner.username))
-                if typing and opponent_socket:
-                    await target_message(
-                        opponent_socket,
-                        {'type': 'opponent-typing',
-                         'username': user_opponent})
-            else:
-                pass  # invalid session id
-        else:
-            pass  # no session id or user_opponent or typing
-
-
-async def read_message_handler(stream):
-    """
-    Send message to user if the opponent has read the message
-    """
-    while True:
-        packet = await stream.get()
-        session_id = packet.get('session_key')
-        user_opponent = packet.get('username')
-        message_id = packet.get('message_id')
-        if session_id and user_opponent and message_id is not None:
-            user_owner = await get_user_from_session(session_id)
-            if user_owner:
-                message = models.Message.objects.filter(id=message_id).first()
-                if message:
-                    message.read = True
-                    message.save()
-                    logger.debug('Message ' + str(message_id) + ' is now read')
-                    opponent_socket = ws_connections.get(
-                        (user_opponent,
-                         user_owner.username))
-                    if opponent_socket:
-                        await target_message(
-                            opponent_socket,
-                            {'type': 'opponent-read-message',
-                             'username': user_opponent,
-                             'message_id': message_id})
-                else:
-                    pass  # message not found
-            else:
-                pass  # invalid session id
-        else:
-            pass  # no session id or user_opponent or typing
+            pass
 
 
 async def main_handler(websocket, path):
@@ -274,19 +90,14 @@ async def main_handler(websocket, path):
     This coroutine can be thought of as a producer.
     """
 
-    # Get users name from the path
     path = path.split('/')
     username = path[2]
     session_id = path[1]
     user_owner = await get_user_from_session(session_id)
     if user_owner:
         user_owner = user_owner.username
-        # Persist users connection, associate user w/a unique ID
         ws_connections[(user_owner, username)] = websocket
 
-        # While the websocket is open, listen for incoming messages/events
-        # if unable to listening for messages/events,
-        # then disconnect the client
         try:
             while websocket.open:
                 data = await websocket.recv()
@@ -298,7 +109,7 @@ async def main_handler(websocket, path):
                 except Exception as e:
                     logger.error('could not route msg', e)
 
-        except websockets.exceptions.InvalidState:  # User disconnected
+        except websockets.exceptions.InvalidState:
             pass
         finally:
             del ws_connections[(user_owner, username)]

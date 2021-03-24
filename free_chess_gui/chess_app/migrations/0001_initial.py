@@ -17,13 +17,24 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Game_chess',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(
+                    auto_created=True,
+                    primary_key=True,
+                    serialize=False,
+                    verbose_name='ID')),
                 ('pgn', models.CharField(max_length=8000, null=True)),
                 ('last_fen', models.CharField(max_length=80)),
                 ('last_move', models.CharField(max_length=5, null=True)),
-                ('analyse_list_move', models.CharField(max_length=8000, null=True)),
-                ('player_black', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='player_black', to=settings.AUTH_USER_MODEL)),
-                ('player_white', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='player_white', to=settings.AUTH_USER_MODEL)),
+                ('analyse_list_move',
+                 models.CharField(max_length=8000, null=True)),
+                ('player_black', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    related_name='player_black',
+                    to=settings.AUTH_USER_MODEL)),
+                ('player_white', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE,
+                    related_name='player_white',
+                    to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'verbose_name': 'Game',

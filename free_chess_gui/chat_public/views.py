@@ -28,6 +28,12 @@ class DialogListView(LoginRequiredMixin, generic.ListView):
                 get_user_model(),
                 username=self.kwargs.get('username'))
             if user.username == "chat_user_all":
+                if len(utils.get_dialogs_with_user(
+                        self.request.user, user)) == 0:
+                    dialog = models.Dialog.objects.create(
+                        owner=self.request.user,
+                        opponent=user)
+
                 dial_to_send = []
                 messages = models.Message.objects.all().order_by('-id')[:20]
                 messages = list(reversed(messages))
@@ -35,6 +41,7 @@ class DialogListView(LoginRequiredMixin, generic.ListView):
                     if str(messa.dialog.opponent) == "chat_user_all":
                         dial_to_send.append(messa)
                 dialog = dial_to_send
+                print(dialog)
             else:
                 dialog = utils.get_dialogs_with_user(self.request.user, user)
 
