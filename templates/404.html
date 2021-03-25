@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block content %} {% load static %}
-<div class="justify-content-center" id="div_of_board_parrent">
-    <p> Error 404 refresh page</p>
+<div class="justify-content-center row" id="div_of_board_parrent">
+    <h1> Error 404 refresh page</h1>
 
 </div>
 
@@ -9,6 +9,7 @@
 <script>
     DJANGO_STATIC_URL = '{% static "img/" %}';
     MODULE = "";
+    GAME_VIEWER = false;
 </script>
 
 
@@ -17,14 +18,4 @@
 
 
 
-{% endblock %} {% block right %}
-<div class="col-12 bg-night_2" id="div_info">
-    <p id="title_of_info">Info : </p>
-</div>
-<div class="col-12 bg-night_2" id="div_chat">
-    <label>Chat : </label>
-
-</div>
-
-
-{% endblock %}
+{% endblock %} {% block right %} {% include "chess_app/chat_info_block.html" %}{% endblock %}
