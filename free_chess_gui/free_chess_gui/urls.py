@@ -26,3 +26,6 @@ urlpatterns = [
     path('', views.index),
     path('chat_public/', include('chat_public.urls')),
 ]
+
+handler404 = 'chess_app.views.page_not_found_view'
+handler500 = 'chess_app.views.page_server_error'

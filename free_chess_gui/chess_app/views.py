@@ -349,3 +349,35 @@ def new_game(request):
             'title': "chess at",
             "user_is_connect": False}
         return render(request, 'chess_app/index.html', context=context)
+
+
+def page_not_found_view(request, exception=None):
+    """Customizing error views 404
+
+    Args:
+        request ([type]): which is the URL that resulted in the error
+        exception ([type]): which is a useful representation of the
+        exception that triggered the view
+        (e.g. containing any message passed to a specific Http404 instance).
+
+    Returns:
+        [type]: [description]
+    """
+
+    return render(request, '404.html')
+
+
+def page_server_error(request, exception=None):
+    """Customizing error views page_server_error
+
+    Args:
+        request ([type]): which is the URL that resulted in the error
+        exception ([type]): which is a useful representation of the
+        exception that triggered the view
+        (e.g. containing any message passed to a specific Http404 instance).
+
+    Returns:
+        render: [description]
+    """
+
+    return render(request, '500.html')
