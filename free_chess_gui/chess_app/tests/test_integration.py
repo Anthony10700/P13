@@ -38,8 +38,8 @@ class TestChessAppIntegration(TransactionTestCase):
             pgn='[Event "Chess game AT"][Site "?"][Date "????.??.??"]'
             '[Round "?"]''[White "?"][Black "?"][Result "*"]1. Nf3 d5 2.'
             ' c4 d4 3. b4 c5 4. e3 Nf6 *',
-            last_fen='rnbqkb1r/pp2pppp/5n2/2p5/1PPp4/4PN2/P2P1PPP/RNBQKB1R '
-            'w KQkq - 1 5',
+            last_fen=('rnbqkb1r/pp2pppp/5n2/2p5/1PPp4/4PN2/P2P1PPP/RNBQKB1R '
+                      'w KQkq - 1 5'),
             last_move='g8f6',
             player_black=self.user,
             player_white=self.user2)
@@ -47,8 +47,8 @@ class TestChessAppIntegration(TransactionTestCase):
             pgn='[Event "Chess game AT"][Site "?"][Date "????.??.??"]'
             '[Round "?"]''[White "?"][Black "?"][Result "*"]1. Nf3 d5 2.'
             ' c4 d4 3. b4 c5 4. e3 *',
-            last_fen='rnbqkbnr/pp2pppp/8/2p5/1PPp4/4PN2/P2P1PPP/RNBQKB1R'
-            ' b KQkq - 0 4',
+            last_fen=('rnbqkbnr/pp2pppp/8/2p5/1PPp4/4PN2/P2P1PPP/RNBQKB1R'
+                      ' b KQkq - 0 4'),
             last_move='e2e3',
             player_black=self.user,
             player_white=self.user2)
@@ -77,10 +77,10 @@ class TestChessAppIntegration(TransactionTestCase):
         """This methode test the add_last_move_to_pgn services."""
         last_move = 'g8f6'
         pgn = '1. Nf3 d5 2. c4 d4 3. b4 c5 4. e3 *'
-        last_fen = 'rnbqkbnr/pp2pppp/8/2p5/1PPp4/4PN2/P2P1PPP/'
-        'RNBQKB1R b KQkq - 0 4'
-        verify_last_fen = 'rnbqkb1r/pp2pppp/5n2/2p5/1PPp4/4PN2/P2P1PPP/'
-        'RNBQKB1R w KQkq - 1 5'
+        last_fen = ('rnbqkbnr/pp2pppp/8/2p5/1PPp4/4PN2/P2P1PPP/'
+                    'RNBQKB1R b KQkq - 0 4')
+        verify_last_fen = ('rnbqkb1r/pp2pppp/5n2/2p5/1PPp4/4PN2/P2P1PPP/'
+                           'RNBQKB1R w KQkq - 1 5')
         verify_pgn, return_last_fen = add_last_move_to_pgn(
             last_move,
             pgn,
@@ -91,21 +91,21 @@ class TestChessAppIntegration(TransactionTestCase):
     def test_save_move_engine(self):
         """This methode test save_move_engine services."""
         last_move = 'g8f6'
-        last_fen = 'rnbqkbnr/pp2pppp/8/2p5/1PPp4/4PN2/P2P1PPP/'
-        'RNBQKB1R b KQkq - 0 4'
+        last_fen = ('rnbqkbnr/pp2pppp/8/2p5/1PPp4/4PN2/P2P1PPP/'
+                    'RNBQKB1R b KQkq - 0 4')
         save_move_engine(2, last_move, last_fen)
         queryset_games = Game_chess.objects.get(id=2)
-        verify_last_fen = 'rnbqkb1r/pp2pppp/5n2/2p5/1PPp4/4PN2/P2P1PPP/'
-        'RNBQKB1R w KQkq - 1 5'
+        verify_last_fen = ('rnbqkb1r/pp2pppp/5n2/2p5/1PPp4/4PN2/P2P1PPP/'
+                           'RNBQKB1R w KQkq - 1 5')
         self.assertEqual(queryset_games.last_fen, verify_last_fen)
 
     def test_save_last_move(self):
         """This methode test save_last_move services."""
         queryset_games = Game_chess.objects.get(id=2)
-        last_fen = 'rnbqkbnr/pp2pppp/8/2p5/1PPp4/4PN2/P2P1PPP/'
-        'RNBQKB1R b KQkq - 0 4'
-        verify_last_fen = 'rnbqkb1r/pp2pppp/5n2/2p5/1PPp4/4PN2/P2P1PPP/'
-        'RNBQKB1R w KQkq - 1 5'
+        last_fen = ('rnbqkbnr/pp2pppp/8/2p5/1PPp4/4PN2/P2P1PPP/'
+                    'RNBQKB1R b KQkq - 0 4')
+        verify_last_fen = ('rnbqkb1r/pp2pppp/5n2/2p5/1PPp4/4PN2/P2P1PPP/'
+                           'RNBQKB1R w KQkq - 1 5')
         self.assertEqual(queryset_games.last_fen, last_fen)
         user = get_user_model()
         info = {
@@ -127,22 +127,22 @@ class TestChessAppIntegration(TransactionTestCase):
 
     def test_lc0_play_next_move(self):
         """This methode test lc0_play_next_move services."""
-        fen = 'rnbqkbnr/pppp1ppp/8/8/6P1/P4N1P/1PPPPp2/'
-        'RNBQKB1R w KQkq - 0 5'
+        fen = ('rnbqkbnr/pppp1ppp/8/8/6P1/P4N1P/1PPPPp2/'
+               'RNBQKB1R w KQkq - 0 5')
         move = lc0_play_next_move(fen)
         self.assertEqual(move, 'e1f2')
 
     def test_stockfish_play_next_move(self):
         """This methode test stockfish_play_next_move services."""
-        fen = 'rnbqkbnr/pppp1ppp/8/8/6P1/P4N1P/1PPPPp2/'
-        'RNBQKB1R w KQkq - 0 5'
+        fen = ('rnbqkbnr/pppp1ppp/8/8/6P1/P4N1P/1PPPPp2/'
+               'RNBQKB1R w KQkq - 0 5')
         move = stockfish_play_next_move(fen)
         self.assertEqual(move, 'e1f2')
 
     def test_komodo_play_next_move(self):
         """This methode test komodo_play_next_move services."""
-        fen = 'rnbqkbnr/pppp1ppp/8/8/6P1/P4N1P/1PPPPp2/'
-        'RNBQKB1R w KQkq - 0 5'
+        fen = ('rnbqkbnr/pppp1ppp/8/8/6P1/P4N1P/1PPPPp2/'
+               'RNBQKB1R w KQkq - 0 5')
         move = komodo_play_next_move(fen)
         self.assertEqual(move, 'e1f2')
 
@@ -186,8 +186,8 @@ class TestUrlAuth(TransactionTestCase):
             pgn='[Event "Chess game AT"][Site "?"][Date "????.??.??"]'
             '[Round "?"][White "?"][Black "?"][Result "*"]1. Nf3 d5 '
             '2. c4 d4 3. b4 c5 4. e3 Nf6 *',
-            last_fen='rnbqkb1r/pp2pppp/5n2/2p5/1PPp4/4PN2/P2P1PPP/'
-            'RNBQKB1R w KQkq - 1 5',
+            last_fen=('rnbqkb1r/pp2pppp/5n2/2p5/1PPp4/4PN2/P2P1PPP/'
+                      'RNBQKB1R w KQkq - 1 5'),
             last_move='g8f6',
             player_black=self.user,
             player_white=self.user2)
@@ -195,8 +195,8 @@ class TestUrlAuth(TransactionTestCase):
             pgn='[Event "Chess game AT"][Site "?"][Date "????.??.??"]'
             '[Round "?"][White "?"][Black "?"][Result "*"]1. Nf3 d5 '
             '2. c4 d4 3. b4 c5 4. e3 *',
-            last_fen='rnbqkbnr/pp2pppp/8/2p5/1PPp4/4PN2/P2P1PPP/'
-            'RNBQKB1R b KQkq - 0 4',
+            last_fen=('rnbqkbnr/pp2pppp/8/2p5/1PPp4/4PN2/P2P1PPP/'
+                      'RNBQKB1R b KQkq - 0 4'),
             last_move='e2e3',
             player_black=self.user,
             player_white=self.user2)
@@ -204,14 +204,14 @@ class TestUrlAuth(TransactionTestCase):
             pgn='[Event "Chess game AT"][Site "?"][Date "????.??.??"]'
             '[Round "?"][White "?"][Black "?"][Result "*"]1. Nf3 d5 '
             '2. c4 d4 3. b4 c5 4. e3 *',
-            last_fen='rnbqkbnr/pp2pppp/8/2p5/1PPp4/4PN2/P2P1PPP/'
-            'RNBQKB1R b KQkq - 0 4',
+            last_fen=('rnbqkbnr/pp2pppp/8/2p5/1PPp4/4PN2/P2P1PPP/'
+                      'RNBQKB1R b KQkq - 0 4'),
             last_move='e2e3',
             player_black=self.user,
             player_white=self.user2)
 
         for game in Game_chess.objects.all():
-            print('game : = ', game.id)
+            # print('game : = ', game.id)
             self.last_game = game.id
 
     def test_get_list_of_evalutation(self):
@@ -317,8 +317,8 @@ class TestUrlAuth(TransactionTestCase):
 
     def test_get_fen(self):
         """This method test the get_fen url."""
-        fen = 'rnbqkbnr/pppp1ppp/8/8/6P1/P4N1P/1PPPPp2/'
-        'RNBQKB1R w KQkq - 0 5'
+        fen = ('rnbqkbnr/pppp1ppp/8/8/6P1/P4N1P/1PPPPp2/'
+               'RNBQKB1R w KQkq - 0 5')
         info = {
             'fen': fen,
             'module': 'stockfish',

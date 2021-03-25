@@ -31,14 +31,11 @@ async def new_messages_handler(stream):
         username_opponent = packet.get('username')
         if session_id and msg and username_opponent:
             user_owner = await get_user_from_session(session_id)
-            print("############ ici = ", user_owner)
             if user_owner:
                 user_opponent = get_user_model().objects.get(
                     username=username_opponent)
 
-                print("############ ici = ", user_opponent)
                 dialog = get_dialogs_with_user(user_owner, user_opponent)
-                print("############ ici = ", dialog)
                 if len(dialog) > 0:
                     msg = models.Message.objects.create(
                         dialog=dialog[0],

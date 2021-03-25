@@ -22,7 +22,7 @@ class UrlAuthTests(TestCase):
         """This method make a account for testing the url form sign_in
         """
         browser = webdriver.Firefox(options=firefox_options)
-        print("\nCreation d'un compte\n")
+        # print("\nCreation d'un compte\n")
         info = {"inputUsername": "Frost101",
                 "inputemail": "anthony.thillerot@laposte.nettt",
                 "inputPassword1": "azerty",
