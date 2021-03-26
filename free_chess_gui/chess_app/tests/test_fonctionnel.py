@@ -118,8 +118,8 @@ class UrlchessappTests(TestCase):
         grid.click()
         time.sleep(2)
         self.browser.execute_script(
-            "send_fen('rnbqkbnr/pppppppp/8/8/8\
-                /5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1');")
+            "send_fen('rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq"
+            " - 1 1');")
         time.sleep(2)
 
         self.browser.get('http://127.0.0.1:8000/chess_app/history_game.html')
