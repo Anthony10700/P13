@@ -2,6 +2,7 @@
 - This deposit concerns the project number 13 of openclassrooms that you can find below the instruction for the installation and the necessary information
 
 - URL HEROKU In progress
+- WINDOWS compatible only for the moment
 
 ## For installation
 #### In your terminal : 
