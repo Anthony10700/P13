@@ -497,3 +497,7 @@
     box-shadow: 1px 1px 15px rgba(117, 117, 117, 0.849);
     border-radius: 5px;
 }
+
+.bg-night_2 {
+    color: black;
+}

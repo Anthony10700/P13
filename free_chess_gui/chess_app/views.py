@@ -381,3 +381,34 @@ def page_server_error(request, exception=None):
     """
 
     return render(request, '500.html')
+
+
+def contact(request):
+    """This view concern the contact page
+
+    Args:
+        request ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """
+    context = {'title': "Contact",
+               "user_is_connect": False}
+    if request.user.is_authenticated:
+        context["user_is_connect"] = True
+    return render(request, 'chess_app/contact.html', context=context)
+
+def legal_notice(request):
+    """This view concern the legal_notice page
+
+    Args:
+        request ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """
+    context = {'title': "Contact",
+               "user_is_connect": False}
+    if request.user.is_authenticated:
+        context["user_is_connect"] = True
+    return render(request, 'chess_app/legal_notice.html', context=context)

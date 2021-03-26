@@ -24,4 +24,9 @@ urlpatterns = [
          name="show_the_game"),
     path('get_list_of_evalutation/', views.get_list_of_evalutation,
          name="get_list_of_evalutation"),
+    path('contact.html', views.contact,
+         name="contact"),
+    path('legal_notice.html', views.legal_notice,
+         name="legal_notice"),
+         
 ]
