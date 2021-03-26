@@ -408,7 +408,7 @@ def legal_notice(request):
     Returns:
         [type]: [description]
     """
-    context = {'title': "Contact",
+    context = {'title': "Legal notice",
                "user_is_connect": False}
     if request.user.is_authenticated:
         context["user_is_connect"] = True
@@ -424,7 +424,7 @@ def faq(request):
     Returns:
         [type]: [description]
     """
-    context = {'title': "Contact",
+    context = {'title': "FAQ",
                "user_is_connect": False}
     if request.user.is_authenticated:
         context["user_is_connect"] = True
@@ -440,7 +440,7 @@ def about(request):
     Returns:
         [type]: [description]
     """
-    context = {'title': "Contact",
+    context = {'title': "About",
                "user_is_connect": False}
     if request.user.is_authenticated:
         context["user_is_connect"] = True
