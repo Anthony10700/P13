@@ -28,5 +28,9 @@ urlpatterns = [
          name="contact"),
     path('legal_notice.html', views.legal_notice,
          name="legal_notice"),
+    path('about.html', views.about,
+         name="about"),
+    path('faq.html', views.faq,
+         name="faq"),
          
 ]

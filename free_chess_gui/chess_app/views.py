@@ -398,6 +398,7 @@ def contact(request):
         context["user_is_connect"] = True
     return render(request, 'chess_app/contact.html', context=context)
 
+
 def legal_notice(request):
     """This view concern the legal_notice page
 
@@ -412,3 +413,35 @@ def legal_notice(request):
     if request.user.is_authenticated:
         context["user_is_connect"] = True
     return render(request, 'chess_app/legal_notice.html', context=context)
+
+
+def faq(request):
+    """This view concern the faq page
+
+    Args:
+        request ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """
+    context = {'title': "Contact",
+               "user_is_connect": False}
+    if request.user.is_authenticated:
+        context["user_is_connect"] = True
+    return render(request, 'chess_app/faq.html', context=context)
+
+
+def about(request):
+    """This view concern the about page
+
+    Args:
+        request ([type]): [description]
+
+    Returns:
+        [type]: [description]
+    """
+    context = {'title': "Contact",
+               "user_is_connect": False}
+    if request.user.is_authenticated:
+        context["user_is_connect"] = True
+    return render(request, 'chess_app/about.html', context=context)
