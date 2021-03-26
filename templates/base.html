@@ -129,16 +129,42 @@
 
                             <hr class="col-6 rounded mt-0 mb-1" style="height: 2px;  background-color: #2a73e0; width: 50%; border: none;">
                             <ul class="nav justify-content-center mb-4 mt-1 nav-pills col-12">
-
+                                {% if title == "chess at" %}
                                 <li class="nav-item">
                                     <a class="nav-link active" href="{% url 'index' %}">Home</a>
                                 </li>
+
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                                    <a class="nav-link " href="{% url 'about' %}">About</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link " href="{% url 'faq' %}">FAQ</a>
+                                </li>
+                                {% elif title == "About" %}
+                                <li class="nav-item">
+                                    <a class="nav-link " href="{% url 'index' %}">Home</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{% url 'faq' %}">FAQ</a>
+                                    <a class="nav-link active" href="{% url 'about' %}">About</a>
                                 </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " href="{% url 'faq' %}">FAQ</a>
+                                </li>
+                                {% elif title == "FAQ" %}
+                                <li class="nav-item">
+                                    <a class="nav-link " href="{% url 'index' %}">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link " href="{% url 'about' %}">About</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="{% url 'faq' %}">FAQ</a>
+                                </li>
+                                {% endif %}
+
+
+
                             </ul>
 
                         </header>
