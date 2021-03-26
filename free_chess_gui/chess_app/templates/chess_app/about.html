@@ -1,0 +1,21 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+<div class="justify-content-center col-12 shadow_perso p-4" id="">
+
+
+</div>
+
+
+
+<script>
+    DJANGO_STATIC_URL = '{% static "img/" %}';
+    MODULE = "";
+    GAME_VIEWER = false;
+</script>
+
+
+
+
+
+
+
+{% endblock %} {% block right %} {% include "chess_app/chat_info_block.html" %}{% endblock %}

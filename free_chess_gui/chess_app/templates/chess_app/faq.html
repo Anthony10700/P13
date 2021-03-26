@@ -1,0 +1,73 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+<div class="justify-content-center col-12 shadow_perso p-4" id="">
+    <div id="accordion">
+        <div class="card bg-night">
+            <div class="card-header bg-night_2 shadow_perso" id="headingOne">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    How to play against the computer ?
+              </button>
+                </h5>
+            </div>
+
+            <div id="collapseOne" class="collapse show shadow_perso" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                    To play against the computer you have to click on the new game button can I play a move
+                </div>
+            </div>
+        </div>
+        <div class="card bg-night">
+            <div class="card-header bg-night_2 shadow_perso" id="headingTwo">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    How to run an analysis ?
+              </button>
+                </h5>
+            </div>
+            <div id="collapseTwo" class="collapse shadow_perso" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div class="card-body">
+                    To launch an analysis you have two choices :
+                    <ul>
+                        <li>
+                            After playing a game against the computer you can click on the analyze button
+                        </li>
+                        <li>
+                            After going to the analysis module you can import a game or play moves by pressing the play move button
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="card bg-night">
+            <div class="card-header bg-night_2 shadow_perso" id="headingThree">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    How to request an analysis ?
+              </button>
+                </h5>
+            </div>
+            <div id="collapseThree" class="collapse shadow_perso" aria-labelledby="headingThree" data-parent="#accordion">
+                <div class="card-body">
+                    To request an analysis you must click on the request an analysis button and enter a value between 1 and 10 seconds
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+<script>
+    DJANGO_STATIC_URL = '{% static "img/" %}';
+    MODULE = "";
+    GAME_VIEWER = false;
+</script>
+
+
+
+
+
+
+
+{% endblock %} {% block right %} {% include "chess_app/chat_info_block.html" %}{% endblock %}
