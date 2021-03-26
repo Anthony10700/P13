@@ -1,0 +1,47 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+<div class="justify-content-center col-12 shadow_perso p-4 bg-night_2" id="">
+    <div class="col-12 text-center justify-content-center text-white ">
+
+        <h3 class="text-primary">Legal Notice</h3>
+
+        <ul class="pt-3 bg-night_2">
+            <hr class="col-12 border    " />
+            <li>Site hosted by <a href="https://www.heroku.com/">www.heroku.com</a></li>
+            <hr class="col-12 border" />
+            <li>Project number 13 of python formation on OpenClassRooms</li>
+            <hr class="col-12 border" />
+
+        </ul>
+
+        <div class="col-12 bg-night_2" wfd-id="70">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" wfd-id="77">
+                <p>Under Article 6 of Law No. 2004-575 of June 21, 2004 on confidence in the digital economy, users of the site are informed&nbsp;http://purbeurre-at.herokuapp.com/&nbsp;the identity of the various stakeholders in the context of its implementation
+                    and monitoring:</p>
+                <ul wfd-id="78">
+                    <li wfd-id="85">Owner : Anthony THILLEROT</li>
+                    <li wfd-id="84">Creator :&nbsp;Anthony THILLEROT</li>
+                    <li wfd-id="83">Webmaster : Anthony THILLEROT – anthony.thillerot@gmail.com</li>
+                </ul>
+                <p>For any questions relating to the site, use the <a href="{% url 'contact' %}">Contact form</a>.</p>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+<script>
+    DJANGO_STATIC_URL = '{% static "img/" %}';
+    MODULE = "";
+    GAME_VIEWER = false;
+</script>
+
+
+
+
+
+
+
+{% endblock %} {% block right %} {% include "chess_app/chat_info_block.html" %}{% endblock %}
