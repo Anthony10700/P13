@@ -152,7 +152,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/staticfiles/'
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'chess_app/static'),
                     os.path.join(BASE_DIR, 'auth/static'),
@@ -173,7 +173,10 @@ if os.environ.get('ENV') == 'PRODUCTION':
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
     STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
     STATICFILES_DIRS = [os.path.join(PROJECT_ROOT, 'static'),
-                        STATIC_ROOT]  
+                        STATIC_ROOT,
+                        os.path.join(BASE_DIR, 'chess_app/static'),
+                        os.path.join(BASE_DIR, 'auth/static'),
+                        os.path.join(BASE_DIR, 'chat_public/static')]  
 
     # STATICFILES_STORAGE = (
     #     'whitenoise.storage.CompressedManifestStaticFilesStorage')
