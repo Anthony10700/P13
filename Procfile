@@ -1,1 +1,1 @@
-web: gunicorn free_chess_gui
+web: gunicorn free_chess_gui.wsgi
