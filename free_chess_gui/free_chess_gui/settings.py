@@ -178,9 +178,9 @@ if os.environ.get('ENV') == 'PRODUCTION':
                         os.path.join(BASE_DIR, 'auth/static'),
                         os.path.join(BASE_DIR, 'chat_public/static')]  
 
-    # STATICFILES_STORAGE = (
-    #     'whitenoise.storage.CompressedManifestStaticFilesStorage')
-    STATICFILES_STORAGE = 'free_chess_gui.storage.WhiteNoiseStaticFilesStorage'
+    STATICFILES_STORAGE = (
+        'whitenoise.storage.CompressedManifestStaticFilesStorage')
+    # STATICFILES_STORAGE = 'free_chess_gui.storage.WhiteNoiseStaticFilesStorage'
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)
 
