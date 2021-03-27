@@ -1,0 +1,81 @@
+.messages {
+    padding: 20px;
+    overflow-x: hidden;
+    height: 75vh;
+    border-radius: 5px;
+    border: 1px solid #DDD;
+}
+
+.user-list {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20%;
+    height: 498px;
+    background: #EFEFEF;
+    margin: 0;
+    padding: 20px;
+    border-left: 1px solid #DDD;
+    border-radius: 5px;
+}
+
+.user-list li {
+    display: block;
+    color: orange;
+    font-weight: bold;
+}
+
+.username {
+    font-weight: bold;
+    color: orange;
+}
+
+.timestamp {
+    font-size: 12px;
+}
+
+.add-message {
+    margin-top: 20px;
+}
+
+.away span {
+    color: #fff;
+    font-style: italic;
+    font-weight: normal;
+}
+
+.msg-read {
+    background-color: lightgray;
+}
+
+.msg-unread {
+    border-bottom: 1px solid #DDD;
+}
+
+#chat-message {
+    max-height: 100px;
+    border-radius: 10px !important;
+}
+
+#chat_iframe {
+    border-radius: 5px;
+    position: absolute;
+    left: 0;
+}
+
+.style-1::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    background-color: #F5F5F5;
+}
+
+.style-1::-webkit-scrollbar {
+    width: 12px;
+    background-color: #F5F5F5;
+}
+
+.style-1::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+    background-color: #555;
+}
