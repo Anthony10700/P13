@@ -163,21 +163,22 @@ MEDIA_ROOT = (
     os.path.join(BASE_DIR, 'media')
 )
 
-CHAT_WS_SERVER_HOST = 'localhost'
+CHAT_WS_SERVER_HOST = '0.0.0.0'
 CHAT_WS_SERVER_PORT = 5002
 CHAT_WS_SERVER_PROTOCOL = 'ws'
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
-
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 if os.environ.get('ENV') == 'PRODUCTION':
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
     STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+    print(STATIC_ROOT)
     STATICFILES_DIRS = (
         os.path.join(PROJECT_ROOT, 'static'),
     )
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
-    STATICFILES_STORAGE = (
-        'whitenoise.storage.CompressedManifestStaticFilesStorage')
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)
 

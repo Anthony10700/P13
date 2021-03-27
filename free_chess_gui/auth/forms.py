@@ -12,6 +12,7 @@ from django.contrib.auth import get_user_model
 from django import forms
 from django.core.exceptions import ValidationError
 from django.contrib.auth.hashers import make_password
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class CustomUserCreationForm(forms.Form):
@@ -56,10 +57,11 @@ class CustomUserCreationForm(forms.Form):
         """
         user = get_user_model()
         email = self.cleaned_data['inputemail'].lower()
-        email_select = user.objects.filter(email=email)
-        if email_select.count():
-            raise ValidationError("Email already exist")
-        return email
+        try:
+            email_select = user.objects.get(email=email)     
+            raise ValidationError("Email already exist")          
+        except ObjectDoesNotExist:
+            return email
 
     def clean_pseudo(self):
         """
@@ -72,10 +74,11 @@ class CustomUserCreationForm(forms.Form):
         """
         user = get_user_model()
         username = self.cleaned_data['inputUsername'].lower()
-        username_select = user.objects.filter(username=username)
-        if username_select.count():
+        try:
+            username_select = user.objects.get(username=username)
             raise ValidationError("Username already exist")
-        return username
+        except ObjectDoesNotExist:
+            return username
 
     def clean_password2(self):
         """
