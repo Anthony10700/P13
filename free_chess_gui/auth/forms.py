@@ -58,10 +58,8 @@ class CustomUserCreationForm(forms.Form):
         user = get_user_model()
         email = self.cleaned_data['inputemail'].lower()
         try:
-            email_select = user.objects.filter(email=email)
-            if email_select.count():
-                raise ValidationError("Email already exist")
-            return email
+            email_select = user.objects.get(email=email)     
+            raise ValidationError("Email already exist")          
         except ObjectDoesNotExist:
             return email
 
@@ -77,10 +75,8 @@ class CustomUserCreationForm(forms.Form):
         user = get_user_model()
         username = self.cleaned_data['inputUsername'].lower()
         try:
-            username_select = user.objects.filter(username=username)
-            if len(username_select) > 0:
-                raise ValidationError("Username already exist")
-            return username
+            username_select = user.objects.get(username=username)
+            raise ValidationError("Username already exist")
         except ObjectDoesNotExist:
             return username
 
