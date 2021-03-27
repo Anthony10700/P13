@@ -172,12 +172,13 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 if os.environ.get('ENV') == 'PRODUCTION':
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
     STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
-    STATICFILES_DIRS = [os.path.join(PROJECT_ROOT, 'static'),
-                       ]  
+    print(STATIC_ROOT)
+    STATICFILES_DIRS = (
+        os.path.join(PROJECT_ROOT, 'static'),
+    )
+    STATICFILES_STORAGE = (
+        'whitenoise.storage.CompressedManifestStaticFilesStorage')
 
-    # STATICFILES_STORAGE = (
-    #     'whitenoise.storage.CompressedManifestStaticFilesStorage')
-    STATICFILES_STORAGE = 'free_chess_gui.storage.WhiteNoiseStaticFilesStorage'
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)
 
