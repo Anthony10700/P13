@@ -32,7 +32,7 @@ if os.environ.get('ENV') == 'PRODUCTION':
 else:
     DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'https://chess-app-gui.herokuapp.com/']
+ALLOWED_HOSTS = ['127.0.0.1', 'chess-app-gui.herokuapp.com']
 
 
 # Application definition
@@ -170,7 +170,7 @@ CHAT_WS_SERVER_PROTOCOL = 'ws'
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 if os.environ.get('ENV') == 'PRODUCTION':
-    PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
+    PROJECT_ROOT = Path(__file__).resolve().parent.parent
     STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
     STATICFILES_DIRS = (
         os.path.join(PROJECT_ROOT, 'static'),
