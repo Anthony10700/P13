@@ -168,7 +168,8 @@ CHAT_WS_SERVER_PORT = 5002
 CHAT_WS_SERVER_PROTOCOL = 'ws'
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
-
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 if os.environ.get('ENV') == 'PRODUCTION':
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
     STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
