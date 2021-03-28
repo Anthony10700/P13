@@ -163,7 +163,7 @@ MEDIA_ROOT = (
     os.path.join(BASE_DIR, 'media')
 )
 
-CHAT_WS_SERVER_HOST = 'localhost'
+CHAT_WS_SERVER_HOST = 'chess-app-gui.herokuapp.com'
 CHAT_WS_SERVER_PORT = 5002
 CHAT_WS_SERVER_PROTOCOL = 'ws'
 
