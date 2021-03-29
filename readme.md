@@ -5,11 +5,12 @@
 - WINDOWS compatible only for the moment
 
 ## For installation
-#### In your terminal : 
+* Get python for windows https://www.python.org/downloads/
+#### In your terminal windows: 
 * Create a python environment : 
     * `$ pip install virtualenv `
     * `$ virtualenv -p python3 venv` 
-    * `$ activate venv` 
+    * `$ ./venv/scripts/activate.ps1` 
 * Clone this repository on the same folder with venv
 * Install requirements :
     * `$ pip install -r requirements.txt`
