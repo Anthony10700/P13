@@ -4,7 +4,7 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" /> {% endblock css %}
     <input id="owner_username" type="hidden" value="{{ request.user.username }}">
     <div class="container p-0 m-0 bg-color col-12">
-        <div class="col-12 p-1 m-0 bg-color">
+        <div class="col-12 p-1 m-0 bg-color" style="height:100%">
 
             <p class="text-success" id="online-status" style="display: none">{% trans "Online" %}</p>
             <p class="text-danger" id="offline-status" style="display: none">{% trans "Offline" %}</p>

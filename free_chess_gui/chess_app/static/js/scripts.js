@@ -8,11 +8,13 @@ var $pgn = $('#pgn')
 var compurteur_vs_computer = false
 var compurteur_vs_human = false
 var human_take_white = true
-var color_night_views_1 = "#0D1115"
-var color_night_views_2 = "#161B25"
-var color_night_views_3 = "#344052"
-var color_day_views = "#f2f2f2"
-var font_color_day_views = "#000000"
+var color_night_views_1 = "rgba(13, 17, 21, 0.5)"
+var color_night_views_2 = "rgba(22, 27, 37, 0.5)"
+var color_night_views_3 = "rgba(52, 64, 82, 0.5)"
+var color_day_views = "rgba(242, 242, 242, 0.2)"
+var color_day_views_font = "rgba(242, 242, 242, 0.9)"
+var color_bg_day_1 = "rgba(255, 255, 255, 0.2)"
+var font_color_day_views = "rgba(0, 0, 0, 0.9)"
 var user_color = "white"
 var last_move = ""
 var game_id_current = 0
@@ -22,46 +24,6 @@ var last_move_chess_game_history_saved = ""
 NB_OF_ENGINE = 3
 var list_of_board = []
 
-if (localStorage.getItem("nigh_views_mode_activate") == null || localStorage.getItem("nigh_views_mode_activate") == "true") {
-
-    if ($('#img-night-mode').attr('src') == DJANGO_STATIC_URL + 'night-mode.svg') {
-        $('#img-night-mode').attr('src', DJANGO_STATIC_URL + 'day-mode.png');
-
-        $('.bg-night').css({
-            "background-color": color_night_views_1,
-            "color": color_day_views,
-            "scrollbar-color": color_night_views_1
-        });
-        $('.shadow_perso').css({ "box-shadow": "2px 2px 12px #344052" });
-        $('.bg-night_2').css({
-            "background-color": color_night_views_2,
-            "color": color_day_views
-        });
-        $('#img_acc_dropdown').css({ "background-color": "rgba(255, 255, 255,0.9)" });
-
-        var styles = "<style type='text/css'>.style-1::-webkit-scrollbar{background-color: #0D1115}.style-1::-webkit-scrollbar-track{background-color: #161B25}</style>";
-
-        $(styles).appendTo('head');
-
-
-        localStorage.setItem("nigh_views_mode_activate", "true");
-
-        console.log("modif color")
-
-        $('#chat_iframe').contents().find('.bg-color').css({
-            "background-color": color_night_views_2,
-            "color": color_day_views
-        });
-        $('#chat_iframe').contents().find('#chat-message').css({
-            "background-color": color_night_views_3,
-            "color": color_day_views
-        });
-        $('#chat_iframe').contents().find('.timestamp').css({
-            "color": "#f2f2f294"
-        });
-    }
-
-}
 
 if (GAME_VIEWER == true) {
     if (data_for_chart_lc0 != "None") {
@@ -138,39 +100,34 @@ if (GAME_VIEWER == true) {
 }
 
 
+
+
+
+
 $('#img-night-mode').on({
     'click': function() {
         if ($('#img-night-mode').attr('src') == DJANGO_STATIC_URL + 'night-mode.svg') {
             $('#img-night-mode').attr('src', DJANGO_STATIC_URL + 'day-mode.png');
 
-            $('.bg-night').css({
-                "background-color": color_night_views_1,
-                "color": color_day_views,
-                "scrollbar-color": color_night_views_1
-            });
-            $('.shadow_perso').css({ "box-shadow": "2px 2px 12px #344052" });
-            $('.bg-night_2').css({
-                "background-color": color_night_views_2,
-                "color": color_day_views
-            });
-            $('#img_acc_dropdown').css({ "background-color": "rgba(255, 255, 255,0.9)" });
 
-            var styles = "<style type='text/css'>.style-1::-webkit-scrollbar{background-color: #0D1115}.style-1::-webkit-scrollbar-track{background-color: #161B25}</style>";
 
+
+            $('.bg-night_day_mode').removeClass("bg-night_day_mode").addClass("bg-night");
+            $('.bg-night_2_day_mode').removeClass("bg-night_2_day_mode").addClass("bg-night_2");
+
+            var styles = "<style type='text/css'>.style-1::-webkit-scrollbar{background-color: #0D111500}.style-1::-webkit-scrollbar-track{background-color: #161B2544}</style>";
             $(styles).appendTo('head');
 
 
             localStorage.setItem("nigh_views_mode_activate", "true");
 
-            console.log("modif color")
-
             $('#chat_iframe').contents().find('.bg-color').css({
-                "background-color": color_night_views_2,
-                "color": color_day_views
+                "background-color": "rgba(22, 27, 37, 0)",
+                "color": color_day_views_font
             });
             $('#chat_iframe').contents().find('#chat-message').css({
-                "background-color": color_night_views_3,
-                "color": color_day_views
+                "background-color": "rgba(52, 64, 82, 0.1)",
+                "color": color_day_views_font
             });
             $('#chat_iframe').contents().find('.timestamp').css({
                 "color": "#f2f2f294"
@@ -179,29 +136,21 @@ $('#img-night-mode').on({
         } else {
             $('#img-night-mode').attr('src', DJANGO_STATIC_URL + 'night-mode.svg');
 
-            $('.shadow_perso').css({ "box-shadow": "2px 2px 12px #aaa" });
-            $('.bg-night').css({
-                "background-color": color_day_views,
-                "color": font_color_day_views
-            });
-            $('.bg-night_2').css({
-                "background-color": "#fff",
-                "color": font_color_day_views
-            });
-            $('#img_acc_dropdown').css({ "background-color": "rgba(248, 249, 250,1)" });
+            $('.bg-night').removeClass("bg-night").addClass("bg-night_day_mode");
+            $('.bg-night_2').removeClass("bg-night_2").addClass("bg-night_2_day_mode");
 
-            var styles = "<style type='text/css'>.style-1::-webkit-scrollbar{background-color: #f8f9fa}.style-1::-webkit-scrollbar-track{background-color: #f8f9fa}</style>";
 
+            var styles = "<style type='text/css'>.style-1::-webkit-scrollbar{background-color: #f8f9fa00}.style-1::-webkit-scrollbar-track{background-color: #f8f9fa44}</style>";
             $(styles).appendTo('head');
-
             localStorage.setItem("nigh_views_mode_activate", "false");
 
+
             $('#chat_iframe').contents().find('.bg-color').css({
-                "background-color": "#fff",
+                "background-color": "rgba(255, 255, 255, 0)",
                 "color": "#000"
             });
             $('#chat_iframe').contents().find('#chat-message').css({
-                "background-color": color_day_views,
+                "background-color": "rgba(242, 242, 242, 0.1)",
                 "color": "#000"
             });
 
@@ -210,7 +159,7 @@ $('#img-night-mode').on({
             });
 
             $('#chat_iframe').contents().find('#messages').css({
-                "background-color": color_day_views,
+                "background-color": rgba(242, 242, 242, 0.4),
                 "color": "#000"
             });
         }
