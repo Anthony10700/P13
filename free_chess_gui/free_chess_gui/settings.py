@@ -163,7 +163,7 @@ MEDIA_ROOT = (
     os.path.join(BASE_DIR, 'media')
 )
 
-CHAT_WS_SERVER_HOST = '0.0.0.0'
+CHAT_WS_SERVER_HOST = '127.0.0.1'
 CHAT_WS_SERVER_PORT = 5002
 CHAT_WS_SERVER_PROTOCOL = 'ws'
 
@@ -171,6 +171,9 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 if os.environ.get('ENV') == 'PRODUCTION':
+    CHAT_WS_SERVER_HOST = '0.0.0.0'
+    CHAT_WS_SERVER_PORT = 5002
+    CHAT_WS_SERVER_PROTOCOL = 'ws'
     PROJECT_ROOT = Path(__file__).resolve().parent.parent
     STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
     print(STATIC_ROOT)
