@@ -9,5 +9,6 @@ __pycache__
 /chess_app/settings/production.py
 geckodriver.log
 .production.py.swo
-
+*.pyc*
+/*.pyc
 
