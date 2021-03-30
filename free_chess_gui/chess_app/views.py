@@ -1,10 +1,10 @@
-from django.shortcuts import render, HttpResponse
+from django.shortcuts import render, HttpResponse, redirect
 import json
 from django.contrib import messages
 from chess_app.services.chess_app_services import lc0_play_next_move, \
     stockfish_play_next_move, komodo_play_next_move, make_new_game,\
     save_last_move, save_move_engine, get_all_games_of_specify_user, \
-    get_page, get_the_game_services, analyse_game
+    get_page, get_the_game_services, analyse_game, save_game_services
 import threading
 
 
@@ -445,3 +445,25 @@ def about(request):
     if request.user.is_authenticated:
         context["user_is_connect"] = True
     return render(request, 'chess_app/about.html', context=context)
+
+
+def save_game(request):
+    """This methode save a current game in analisys module
+
+    Args:
+        request ([type]): [description]
+    """
+    if request.user.is_authenticated:
+        id_of_game = save_game_services(request.GET, request.user)
+        if id_of_game is not None:
+            context = {"message": "game_saved", "game_id": id_of_game}
+        else:
+            context = {"message": "Error in saved game"}
+        return HttpResponse(json.dumps(context))
+    else:
+        messages.error(
+            request, "Create an account for saving a game")
+        context = {
+            'title': "chess at",
+            "user_is_connect": False}
+        return redirect("show_the_game")

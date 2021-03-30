@@ -618,6 +618,26 @@ $("#flip").click(function(e) {
     board.flip();
 });
 
+$("#save_game").click(function(e) {
+    $.ajax({
+        type: "GET",
+        url: "/chess_app/save_game",
+        dataType: "json",
+        data: {
+            "last_fen": game.fen(),
+            "pgn": game.pgn(),
+            "last_move": last_move,
+        },
+
+        success: function(response) {
+            alert("Game saved")
+
+        },
+        error: function(error) {
+            alert("error")
+        }
+    });
+});
 
 $("#btn-analyse").click(function(e) {
     game_save_for_analyse = new Chess()

@@ -32,5 +32,6 @@ urlpatterns = [
          name="about"),
     path('faq.html', views.faq,
          name="faq"),
-         
-]
+    path('save_game', views.save_game,
+         name="save_game"),
+         ]

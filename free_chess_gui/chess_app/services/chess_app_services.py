@@ -267,3 +267,18 @@ def analyse_game(engine, pgn, time_per_move, dict_of_value):
     dict_of_value[engine] = list_of_cp
     engine_rdy.quit()
     print("Analyse finish " + engine + " ############")
+
+
+def save_game_services(request_get, user):
+    if "pgn" in request_get and "last_fen" in request_get and \
+            "last_move" in request_get:
+        new_game = Game_chess.objects.create(
+            player_white=user,
+            player_black=user,
+            pgn=request_get["pgn"],
+            last_fen=request_get["last_fen"],
+            last_move=request_get["last_move"])
+        new_game.save()
+        return new_game.id
+    else:
+        return None

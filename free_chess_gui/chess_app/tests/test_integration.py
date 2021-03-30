@@ -4,10 +4,11 @@ from django.contrib.auth import get_user_model
 from chess_app.services.chess_app_services import get_page, \
     get_all_games_of_specify_user, save_move_engine, add_last_move_to_pgn, \
     save_last_move, make_new_game, lc0_play_next_move, \
-    stockfish_play_next_move, komodo_play_next_move, analyse_game
+    stockfish_play_next_move, komodo_play_next_move, analyse_game, \
+    save_game_services
 from chess_app.views import get_fen, get_list_of_evalutation, index, \
     show_the_game, history_game, play_vs_lc0, play_vs_stockfish, \
-    play_vs_komodo, new_game
+    play_vs_komodo, new_game, save_game
 from chess_app.models import Game_chess
 import json
 from django.contrib.auth.models import AnonymousUser
@@ -163,6 +164,20 @@ class TestChessAppIntegration(TransactionTestCase):
         context = {}
         analyse_game('lc0', '1. e4 e5', 1, context)
         self.assertEqual(len(context['lc0']), len([0.23, 0.28]))
+
+    def test_save_game_services(self):
+        """This methode test save_game_services services.
+        """
+        context = {
+            "pgn": '[Event "Chess game AT"][Site "?"][Date "????.??.??"]'
+            '[Round "?"]''[White "?"][Black "?"][Result "*"]1. Nf3 d5 2.'
+            ' c4 d4 3. b4 c5 4. e3 Nf6 *',
+            "last_fen": (
+                'rnbqkb1r/pp2pppp/5n2/2p5/1PPp4/4PN2/P2P1PPP/RNBQKB1R '
+                'w KQkq - 1 5'),
+            "last_move": 'g8f6'}
+        id_game_save = save_game_services(context, self.user)
+        self.assertEqual(id_game_save, 3)
 
 
 class TestUrlAuth(TransactionTestCase):
@@ -470,4 +485,23 @@ class TestUrlAuth(TransactionTestCase):
         setattr(request, 'session', 'session')
         setattr(request, '_messages', FallbackStorage(request))
         response = new_game(request)
+        self.assertEqual(response.status_code, 200)
+
+    def save_game(self):
+        """This method test the new_game url."""
+        context = {
+            "pgn": '[Event "Chess game AT"][Site "?"][Date "????.??.??"]'
+            '[Round "?"]''[White "?"][Black "?"][Result "*"]1. Nf3 d5 2.'
+            ' c4 d4 3. b4 c5 4. e3 Nf6 *',
+            "last_fen": (
+                'rnbqkb1r/pp2pppp/5n2/2p5/1PPp4/4PN2/P2P1PPP/RNBQKB1R '
+                'w KQkq - 1 5'),
+            "last_move": 'g8f6'}
+
+        user = get_user_model()
+        request = self.factory.get(
+            '/chess_app/save_game', data=context)
+
+        request.user = user.objects.get(username='frost10')
+        response = save_game(request)
         self.assertEqual(response.status_code, 200)
