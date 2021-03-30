@@ -3,6 +3,7 @@
 
 - URL HEROKU In progress
 - WINDOWS compatible only for the moment
+- Launch the application only on branch v1
 
 ## For installation
 * Get python for windows https://www.python.org/downloads/
