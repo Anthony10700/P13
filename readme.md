@@ -25,6 +25,7 @@
 * In your terminal go to the root of the repository, then enter :
     * `$ activate venv` 
     * `$ python manage.py migrate`
+    * `$ python manage.py createsuperuser` the name is "chat_user_all"
     * `$ python manage.py runserver`
     * `$ python manage.py run_chat_server`
 
