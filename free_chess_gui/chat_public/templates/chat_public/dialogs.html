@@ -102,37 +102,7 @@
 
                 websocket.onopen = function(event) {
                     var opponent_username = getOpponnentUsername();
-                    if (opponent_username != "chat_user_all") {
 
-
-                        var onOnlineCheckPacket = JSON.stringify({
-                            type: "check-online",
-                            session_key: '{{ request.session.session_key }}',
-                            username: opponent_username
-
-                        });
-                        var onConnectPacket = JSON.stringify({
-                            type: "online",
-                            session_key: '{{ request.session.session_key }}'
-
-                        });
-
-                        console.log('connected, sending:', onConnectPacket);
-                        websocket.send(onConnectPacket);
-                        console.log('checking online opponents with:', onOnlineCheckPacket);
-                        websocket.send(onOnlineCheckPacket);
-
-                    } else {
-                        var opponent_username = getOpponnentUsername();
-
-                        var onConnectPacket = JSON.stringify({
-                            type: "online",
-                            session_key: '{{ request.session.session_key }}'
-
-                        });
-                        console.log('connected, sending:', onConnectPacket);
-                        websocket.send(onConnectPacket);
-                    }
                 };
                 window.onbeforeunload = function() {
 
@@ -155,49 +125,13 @@
                         console.log(e);
                     }
                     switch (packet.type) {
-                        case "new-dialog":
-                            // TODO: add new dialog to dialog_list
-                            break;
-                        case "user-not-found":
-                            // TODO: dispay some kind of an error that the user is not found
-                            break;
-                        case "gone-online":
-                            if (packet.usernames.indexOf(opponent_username) != -1) {
-                                gone_online();
-                            } else {
-                                gone_offline();
-                            }
-                            for (var i = 0; i < packet.usernames.length; ++i) {
-                                setUserOnlineOffline(packet.usernames[i], true);
-                            }
-                            break;
-                        case "gone-offline":
-                            if (packet.username == opponent_username) {
-                                gone_offline();
-                            }
-                            setUserOnlineOffline(packet.username, false);
-                            break;
+
                         case "new-message":
                             if (packet['sender_name'] == opponent_username || packet['sender_name'] == $("#owner_username").val() || packet['username'] == "chat_user_all") {
                                 addNewMessage(packet);
 
                             } else {
                                 flash_user_button(packet['sender_name']);
-                            }
-                            break;
-                        case "opponent-typing":
-                            var typing_elem = $('#typing-text');
-                            if (!typing_elem.is(":visible")) {
-                                typing_elem.fadeIn(500);
-                            } else {
-                                typing_elem.stop(true);
-                                typing_elem.fadeIn(0);
-                            }
-                            typing_elem.fadeOut(3000);
-                            break;
-                        case "opponent-read-message":
-                            if (packet['username'] == opponent_username) {
-                                $("div[data-id='" + packet['message_id'] + "']").removeClass('msg-unread').addClass('msg-read');
                             }
                             break;
                         default:
