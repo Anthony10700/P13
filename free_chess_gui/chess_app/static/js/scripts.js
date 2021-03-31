@@ -77,38 +77,62 @@ if (GAME_VIEWER == true) {
     window.chartColors = {
         red: 'rgba(255, 99, 132, 0.5)',
         orange: 'rgba(255, 159, 64, 0.5)',
-        yellow: 'rgba(255, 205, 86, 1)',
+        yellow: 'rgba(255, 205, 86, 0.8)',
         green: 'rgba(75, 192, 192, 0.5)',
         blue: 'rgba(54, 162, 235, 0.8)',
         purple: 'rgba(153, 102, 255, 0.5)',
         grey: 'rgba(201, 203, 207, 0.5)'
     };
     var ctx = $('#myChart')[0].getContext('2d');
+    var len = data_for_chart_stockfish.length
+
     var chart = chart = new Chart(ctx, {
+
         type: 'line',
         data: {
-            labels: label,
+            labels: [...Array(len).keys()],
+
             datasets: [{
+                    label: 'Position in game',
+                    backgroundColor: window.chartColors.yellow,
+                    borderColor: window.chartColors.yellow,
+                    // Changes this dataset to become a line
+
+                    type: 'bubble',
+
+                    data: [{ x: len - 1, y: 0, r: 10 }],
+                    order: 1,
+                },
+                {
                     label: 'lc0 analysis',
                     backgroundColor: window.chartColors.red,
                     borderColor: window.chartColors.red,
                     data: data_for_chart_lc0,
-                    fill: true
+                    fill: true,
+                    type: 'line',
+                    order: 2
                 },
                 {
                     label: 'stockfish analysis',
                     backgroundColor: window.chartColors.blue,
                     borderColor: window.chartColors.blue,
                     data: data_for_chart_komodo,
-                    fill: true
+                    fill: true,
+                    type: 'line',
+                    order: 3
+
                 },
                 {
                     label: 'komodo12 analysis',
                     backgroundColor: window.chartColors.green,
                     borderColor: window.chartColors.green,
                     data: data_for_chart_stockfish,
-                    fill: true
+                    fill: true,
+                    type: 'line',
+                    order: 4
+
                 }
+
             ]
         },
         options: {
@@ -584,7 +608,7 @@ function updateStatus() {
 
 
     last_move = list_of_moves[list_of_moves.length - 1]
-    chess_game_history_saved = game.history();
+
 }
 
 
@@ -674,27 +698,46 @@ $("#btn-analyse").click(function(e) {
             } else {
                 var len = Object.keys(response.stockfish).length
                 chart.data.labels = [...Array(len).keys()]
+                data_for_chart_lc0 = response.lc0;
+                data_for_chart_komodo = response.stockfish;
+                data_for_chart_stockfish = response.komodo12;
+
                 chart.data.datasets = [{
+                        label: 'Position in game',
+                        backgroundColor: window.chartColors.yellow,
+                        borderColor: window.chartColors.yellow,
+                        // Changes this dataset to become a line
+
+                        type: 'bubble',
+
+                        data: [{ x: len - 1, y: 0, r: 10 }],
+                        order: 1,
+                    },
+                    {
                         label: 'lc0 analysis',
                         backgroundColor: window.chartColors.red,
                         borderColor: window.chartColors.red,
                         data: response.lc0,
-                        fill: true
+                        fill: true,
+                        order: 2,
                     },
                     {
                         label: 'stockfish analysis',
                         backgroundColor: window.chartColors.blue,
                         borderColor: window.chartColors.blue,
                         data: response.stockfish,
-                        fill: true
+                        fill: true,
+                        order: 3,
                     },
                     {
                         label: 'komodo12 analysis',
                         backgroundColor: window.chartColors.green,
                         borderColor: window.chartColors.green,
                         data: response.komodo12,
-                        fill: true
+                        fill: true,
+                        order: 4,
                     }
+
                 ]
                 chart.update();
                 $("#message_analyse").text("Indicate the time between 1 to 10 sec per movement")
@@ -872,15 +915,29 @@ $("#menu-toggle-right").click(function(e) {
 });
 
 
-$("#fa-arrow-left").click(function() {
+$("#arrow-left").click(function() {
     game.undo()
     board.position(game.fen())
     $status.html(status)
     $fen.html(game.fen())
     $pgn.html(game.pgn())
+
+    if (chart.data.datasets[0].data[0].x > 0) {
+        chart.data.datasets[0].data[0].x = chart.data.datasets[0].data[0].x - 1
+
+        chart.update();
+    }
+    list_of_moves = game.history()
+
+
+    last_move = list_of_moves[list_of_moves.length - 1]
+
+
+
+
 });
 
-$("#fa-arrow-right").click(function() {
+$("#arrow-right").click(function() {
     move_to_play = chess_game_history_saved[game.history().length]
 
     game.move(move_to_play)
@@ -888,6 +945,21 @@ $("#fa-arrow-right").click(function() {
     $status.html(status)
     $fen.html(game.fen())
     $pgn.html(game.pgn())
+
+    if (chart.data.datasets[0].data[0].x < data_for_chart_lc0.length - 1) {
+
+        chart.data.datasets[0].data[0].x = chart.data.datasets[0].data[0].x + 1
+
+        chart.update();
+    }
+
+    list_of_moves = game.history()
+
+
+    last_move = list_of_moves[list_of_moves.length - 1]
+
+
+
 });
 
 $("#analyse_opt").click(function() {
@@ -931,6 +1003,17 @@ $("#btn_load_pgn").click(function() {
             borderColor: window.chartColors.green,
             data: [],
             fill: true
+        },
+        {
+            label: 'Position in game',
+            backgroundColor: window.chartColors.yellow,
+            borderColor: window.chartColors.yellow,
+            // Changes this dataset to become a line
+
+            type: 'bubble',
+
+            data: [{ x: 0, y: 0, r: 10 }],
+            order: 1,
         }
     ]
     chart.update();
@@ -939,21 +1022,42 @@ $("#btn_load_pgn").click(function() {
 
 
 $("#do_any_moves_btn").click(function() {
-    game = new Chess()
-    config = {
-        orientation: user_color,
-        draggable: true,
-        position: 'start',
-        onDragStart: onDragStart,
-        onDrop: onDrop,
-        onMouseoutSquare: onMouseoutSquare,
-        onMouseoverSquare: onMouseoverSquare,
-        onSnapEnd: onSnapEnd,
-        pieceTheme: DJANGO_STATIC_URL + '{piece}.png',
-        onChange: onChange
+    if (game.history().length > 0) {
+        last_fen = game.fen()
+        config = {
+            orientation: user_color,
+            draggable: true,
+            position: last_fen,
+            onDragStart: onDragStart,
+            onDrop: onDrop,
+            onMouseoutSquare: onMouseoutSquare,
+            onMouseoverSquare: onMouseoverSquare,
+            onSnapEnd: onSnapEnd,
+            pieceTheme: DJANGO_STATIC_URL + '{piece}.png',
+            onChange: onChange
+        }
+        board = Chessboard('myBoard', config)
+
+    } else {
+        game = new Chess()
+        config = {
+            orientation: user_color,
+            draggable: true,
+            position: 'start',
+            onDragStart: onDragStart,
+            onDrop: onDrop,
+            onMouseoutSquare: onMouseoutSquare,
+            onMouseoverSquare: onMouseoverSquare,
+            onSnapEnd: onSnapEnd,
+            pieceTheme: DJANGO_STATIC_URL + '{piece}.png',
+            onChange: onChange
+        }
+        board = Chessboard('myBoard', config)
+        board.start()
     }
-    board = Chessboard('myBoard', config)
-    board.start()
+
+
+
     $status.html(status)
     $fen.html(game.fen())
     $pgn.html(game.pgn())
