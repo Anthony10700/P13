@@ -1,5 +1,8 @@
 ## About Project 13
 - This deposit concerns the project number 13 of openclassrooms that you can find below the instruction for the installation and the necessary information
+- This project is for all amateur chess players, professional chess players and even programmers who want to contribute to the project. This project is open source. 
+- If you want to add functionality please make an issue and then a pull request.
+- If you want a new feature, please create an issue.
 
 - URL HEROKU In progress
 - WINDOWS compatible only for the moment
